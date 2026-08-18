@@ -1,2 +1,2 @@
-// models 库的源文件（数据结构为纯头文件内联，此文件提供编译单元）
+// models library source (data structures are header-only; this file provides a TU)
 #include "models/model.h"

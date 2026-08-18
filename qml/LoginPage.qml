@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 
 /**
- * 登录页（登录窗口内容）。所有文案用 qsTr() 包裹，支持中/英切换。
- * 语言选择通过暴露给 QML 的 "lang" (LanguageHelper) 实现。
+ * Login page (login window content). All texts use qsTr() for EN/zh_CN switching.
+ * Language selection uses the QML-exposed "lang" (LanguageHelper).
  */
 Item {
     id: loginPage
@@ -48,7 +48,7 @@ Item {
             ComboBox {
                 id: languageBox
                 width: parent.width * 0.42
-                // 语言列表显示各自语言名（不随界面语言改变）
+                // Language list shows each language's own name (not translated).
                 model: ["English", "中文"]
                 onActivated: (index) => lang.setLanguage(index === 0 ? "en" : "zh_CN")
             }

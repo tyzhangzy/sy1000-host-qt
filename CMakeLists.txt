@@ -5,17 +5,17 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
-# Qt 6: Quick (QML UI) + QuickControls2 (控件) + LinguistTools (i18n) + Sql (SQLite) + SerialPort (串口)
+# Qt 6: Quick (QML UI) + QuickControls2 + LinguistTools (i18n) + Sql (SQLite) + SerialPort
 find_package(Qt6 6.2 REQUIRED COMPONENTS Quick QuickControls2 LinguistTools Sql SerialPort)
 qt_standard_project_setup()
 
-# 数据模型层（纯 C++ 标准库，跨平台；不依赖 Qt）
+# Data model layer (pure C++ standard library, cross-platform; no Qt dependency)
 add_library(models STATIC
   src/models/model.cpp
 )
 target_include_directories(models PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-# DAO 层（SQLite，使用 models 的 std::string 结构）
+# DAO layer (SQLite; uses the std::string models)
 add_library(dao STATIC
   src/dao/database.cpp
   src/dao/userdao.cpp
@@ -25,7 +25,7 @@ add_library(dao STATIC
 target_include_directories(dao PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(dao PUBLIC models Qt6::Sql)
 
-# 状态机/业务核心层（State 模式 + 手写异步子任务 + QML 桥接），依赖 models
+# Core layer: state machine (State pattern) + async sub-tasks + QML bridge
 add_library(core STATIC
   src/core/subtask.cpp
   src/core/tasks.cpp
@@ -55,7 +55,7 @@ qt_add_executable(testcontroller
 )
 target_link_libraries(testcontroller PRIVATE core models Qt6::Core)
 
-# 服务层（Qt 桥接：登录 + 结果服务），依赖 dao + models
+# Services layer (Qt bridge: login + result services), depends on dao + models
 add_library(services STATIC
   src/services/loginservice.cpp
   src/services/testresultservice.cpp
@@ -63,7 +63,7 @@ add_library(services STATIC
 target_include_directories(services PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(services PUBLIC dao models Qt6::Core Qt6::Sql)
 
-# 设备层（QSerialPort + Modbus RTU），跨平台
+# Devices layer (QSerialPort + Modbus RTU), cross-platform
 add_library(devices STATIC
   src/devices/modbusrtu.cpp
   src/devices/tasio.cpp
@@ -78,7 +78,7 @@ qt_add_executable(SY1000
   src/languagehelper.cpp
 )
 
-# 界面资源（QML）打包进可执行文件
+# QML resources bundled into the executable
 qt_add_resources(SY1000 "app"
   PREFIX "/"
   FILES
@@ -87,7 +87,7 @@ qt_add_resources(SY1000 "app"
     qml/TestPage.qml
 )
 
-# 国际化：lrelease 编译 ts -> qm，并嵌入 /i18n/ 资源前缀
+# i18n: lrelease compiles ts -> qm, embedded under /i18n/
 set(TS_FILES
   i18n/sy1000_zh_CN.ts
 )

@@ -7,8 +7,8 @@
 class QQmlApplicationEngine;
 
 /**
- * LanguageHelper - 运行时切换界面语言（中/英）。
- * 通过 context property "lang" 暴露给 QML，例如：lang.setLanguage("zh_CN")
+ * LanguageHelper - switch UI language at runtime (EN default / zh_CN).
+ * Exposed to QML via context property "lang", e.g. lang.setLanguage("zh_CN")
  */
 class LanguageHelper : public QObject
 {

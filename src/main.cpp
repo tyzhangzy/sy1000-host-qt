@@ -27,28 +27,29 @@ int main(int argc, char *argv[])
         &app, []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
 
-    // 打印 QML 加载/语法错误，便于诊断
+    // Print QML load/syntax errors for diagnostics
     QObject::connect(&engine, &QQmlEngine::warnings,
                      [](const QList<QQmlError> &warnings) {
                          for (const auto &w : warnings)
                              qWarning().noquote() << w.toString();
                      });
 
-    // 语言切换助手（默认英文，可切中文）。暴露为 QML 全局 "lang"。
+    // Language switcher (default EN, can switch to zh_CN). Exposed to QML as "lang".
     LanguageHelper langHelper(&engine);
     engine.rootContext()->setContextProperty(QStringLiteral("lang"), &langHelper);
 
-    // 登录服务（接入 SQLite 用户表）。暴露为 QML 全局 "loginService"。
+    // Login service (SQLite users table). Exposed to QML as "loginService".
     LoginService loginService;
     engine.rootContext()->setContextProperty(QStringLiteral("loginService"), &loginService);
 
-    // 水压试验控制器（用模拟设备，无硬件也能演示完整流程）。暴露为 QML 全局 "hydro"。
+    // Hydrostatic test controller (simulated device, so the flow runs without
+    // real hardware). Exposed to QML as "hydro".
     sy1000::SimulatedDeviceProvider simDevice;
     sy1000::HydroTestControllerAdapter hydro(&simDevice);
     engine.rootContext()->setContextProperty(QStringLiteral("hydro"), &hydro);
 
-    // 入口 QML 界面（登录页；后续把 core/devices/dao/report 分层接入）
-    // qt_add_resources(PREFIX "/") 下，文件 qml/Main.qml 的资源路径为 qrc:/qml/Main.qml
+    // Entry QML UI (login page; core/devices/dao/report layers plug in later).
+    // qt_add_resources(PREFIX "/") -> qml/Main.qml is served at qrc:/qml/Main.qml
     engine.load(QUrl(QStringLiteral("qrc:/qml/Main.qml")));
 
     return app.exec();
