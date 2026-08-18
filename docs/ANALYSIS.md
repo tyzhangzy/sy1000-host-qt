@@ -226,3 +226,46 @@ App.xaml → LoginWindow → MenuWindow → MainTestWindow
 | LoginWindow/ViewModel | QML 登录页 + `QObject` 服务暴露 |
 | UserSession（静态全局） | 全局单例（如 `UserSession` C++ 类）|
 | SpeechSynthesizer | `QTextToSpeech` |
+
+---
+
+## 11. 报告生成与界面细节（补充）
+
+### 11.1 报告生成 `TestReportGenerator`（`Utils/`）
+- **输出目录**：`Documents/水压测试结果/`
+- **文件夹命名**：`{manufacturer}_{serialNo}_{yyyyMMdd_HHmm}`
+- **PDF 命名**：`{manufacturer}_{serialNo}_试验报告.pdf`
+- **流程**：`SavePdfTestReport` → `CreateTestResultFolder` → `SaveChartImages`（LiveCharts 曲线截图 PNG）→ `GeneratePDFReport`（PDFsharp 手写排版，A4 竖版，嵌入图表图片）
+- **PDF 元信息**：Title=水压测试报告-流水号, Author=检验员, Subject
+
+### 11.2 外观检查 `AppearenceInspectionWindow`（`TestPreparationPage/`）
+- **四部分**：External（外观）/ Internal（内部）/ Thread（螺纹）/ Valve（瓶阀）
+- 每部分：检查项（`bool?`/文本）+ 结果(`InspectionResult`) + 缺陷位置 + 其他
+- **检验员信息**：InspectorName, InspectorCertNo, InspectorDate
+- `LoadFromSampleData`：从 `SampleInspectionData` 载入全部字段
+- **确认后回写**：4 个结果 + `InspectionCompleted=true` + `InspectionDate=Now`
+
+### 11.3 样品卡片 `SampleCardUserControl`（`TestPreparationPage/`）
+- DataContext 绑定 `SampleInspectionData`
+- 按钮：**外观检测**（打开外观检查窗口）、**保存**
+- **保存校验**：气瓶型号/制造厂商/容积>0/使用单位/产品编号 非空 + 外观检测已完成
+- 保存成功 → `SampleSaved` 事件 → `TestPreparationPage` → `MainViewModel.UpdateSampleInfo`
+
+### 11.4 标准卡片 `StandardCardUserControl`
+- 填 `TestStandard` → `TestStandardSaved` → `MainViewModel.UpdateTestStandardInfo`
+
+### 11.5 系统维护 `SystemMaintainWindow`（`ManagementWindows/`）
+- 显示系统信息（设备名/厂商/日期/序列号，来自 `config.json`）
+- 连接设备：`ConnectAllDevicesAsync` → 显示水压机 + 天平组连接状态
+- 手动控制：水套锁(4 个 Toggle)、进水、快泵、慢泵 Toggle（调 `TasIO`）
+
+### 11.6 报告查看 `TestReportWindow`（`ManagementWindows/`）
+- **WebView2** 加载 PDF；支持多 PDF 前后翻页（Previous/Next + 页码）
+
+### 11.7 Qt 映射补充
+| 原（WPF/C#） | Qt6 重构 |
+|------|------|
+| TestReportGenerator（PDFsharp + LiveCharts 截图） | `QTextDocument`/`QPrinter` + `QQuickPaintedItem` 曲线导出图片 |
+| AppearenceInspectionWindow | QML 对话框（四部分检查表单）|
+| SystemMaintainWindow（WMI/SerialPort） | QML + `QSerialPortInfo` |
+| TestReportWindow（WebView2 显示 PDF） | `QPdfView` / QML 内嵌 PDF 查看 |
