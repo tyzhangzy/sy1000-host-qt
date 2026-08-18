@@ -1,19 +1,21 @@
 #pragma once
 
+#include <memory>
+
 #include <QObject>
 #include <QString>
 
 #include "core/hydrotypes.h"
 #include "core/ideviceprovider.h"
+#include "core/states.h"
 #include "models/model.h"
 
 namespace sy1000 {
 
 class HydroSubTask;
 
-// Macro state machine for the hydrostatic test. Uses a hand-written
-// enum + switch (no QStateMachine). Drives sub-tasks; sub-task completion
-// triggers state transitions.
+// Orchestrator for the hydrostatic test. Owns the current HydroStateBase,
+// the shared test data and device; state classes drive the transitions.
 class HydrostaticTestController : public QObject
 {
     Q_OBJECT
@@ -26,33 +28,41 @@ public:
 
     // Residual deformation rate limit (%) for pass/fail (default 3.0).
     void setResidualDeformationRateLimit(double limit) { m_rateLimit = limit; }
-
     // Runtime options (intervals / pressures / timeouts).
-    void setOptions(const sy1000::TestOptions &options) { m_options = options; }
-    const sy1000::TestOptions &options() const { return m_options; }
+    void setOptions(const TestOptions &options) { m_options = options; }
+    const TestOptions &options() const { return m_options; }
 
     HydroTestState state() const { return m_state; }
     const HydroTestData &testData() const { return m_data; }
 
+    // ---- accessors used by state classes ----
+    IHydroDeviceProvider *device() { return m_device; }
+    HydroTestData &data() { return m_data; }
+    double rateLimit() const { return m_rateLimit; }
+
+    void runTask(HydroSubTask *task, const TaskParams &params);
+    void voice(const QString &text) { emit voicePrompt(text); }
+    void emitDataUpdated() { emit dataUpdated(); }
+    void emitTestCompleted(bool ok) { emit testCompleted(ok); }
+    void safeShutdown();
+    void transitionTo(HydroTestState next);
+
 signals:
-    void stateChanged(sy1000::HydroTestState state);
+    void stateChanged(HydroTestState state);
     void statusChanged(const QString &content);
     void voicePrompt(const QString &text);
     void dataUpdated();
     void testCompleted(bool success);
-    void testAborted(sy1000::HydroTestError error, const QString &message);
+    void testAborted(HydroTestError error, const QString &message);
 
 private:
-    void transitionTo(HydroTestState next);
-    void enterState(HydroTestState state);
+    std::unique_ptr<HydroStateBase> createState(HydroTestState s);
     void onSubTaskFinished(bool success, HydroTestError error, const TaskResult &result);
-    void runTask(HydroSubTask *task, const TaskParams &params);
-    void calculateResult();
-    void safeShutdown();
 
     IHydroDeviceProvider *m_device;
     HydroTestState m_state = HydroTestState::Idle;
     HydroTestData m_data;
+    std::unique_ptr<HydroStateBase> m_currentState;
     HydroSubTask *m_currentTask = nullptr;
     double m_rateLimit = 3.0;
     TestOptions m_options;

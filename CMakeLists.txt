@@ -25,10 +25,11 @@ add_library(dao STATIC
 target_include_directories(dao PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(dao PUBLIC models Qt6::Sql)
 
-# 状态机/业务核心层（手写 C++ 异步状态机），依赖 models
+# 状态机/业务核心层（State 模式 + 手写异步子任务），依赖 models
 add_library(core STATIC
   src/core/subtask.cpp
   src/core/tasks.cpp
+  src/core/states.cpp
   src/core/controller.cpp
 )
 target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
