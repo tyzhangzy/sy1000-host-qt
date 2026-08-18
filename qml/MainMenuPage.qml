@@ -3,38 +3,115 @@ import QtQuick.Controls
 
 Page {
     id: menuPage
+    property string title: qsTr("Main Menu")
 
-    Column {
+    // Center: function card buttons (matches the WPF menu grid layout).
+    Grid {
         anchors.centerIn: parent
-        spacing: 16
-        width: 320
+        columns: 2
+        spacing: 24
 
-        Label {
-            text: qsTr("SY1000 Main Menu")
-            font.pixelSize: 22
-            font.bold: true
-            anchors.horizontalCenter: parent.horizontalCenter
+        Rectangle {
+            width: 260; height: 150; radius: 12
+            border.color: "#CCCCCC"; color: "white"
+            Rectangle {
+                width: 52; height: 52; radius: 26; color: "#303F9F"
+                anchors.top: parent.top; anchors.topMargin: 18
+                anchors.horizontalCenter: parent.horizontalCenter
+                Label { text: "▶"; color: "white"; font.pixelSize: 26; anchors.centerIn: parent }
+            }
+            Label {
+                text: qsTr("Start Hydrostatic Test")
+                font.pixelSize: 18; font.bold: true
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom; anchors.bottomMargin: 20
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: stack.push("TestPreparationPage.qml")
+            }
         }
 
-        Button {
-            text: qsTr("Start Hydrostatic Test")
-            width: parent.width
-            onClicked: stack.push("TestPreparationPage.qml")
+        Rectangle {
+            width: 260; height: 150; radius: 12
+            border.color: "#CCCCCC"; color: "white"
+            Rectangle {
+                width: 52; height: 52; radius: 26; color: "#303F9F"
+                anchors.top: parent.top; anchors.topMargin: 18
+                anchors.horizontalCenter: parent.horizontalCenter
+                Label { text: "≡"; color: "white"; font.pixelSize: 26; anchors.centerIn: parent }
+            }
+            Label {
+                text: qsTr("Result Management")
+                font.pixelSize: 18; font.bold: true
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom; anchors.bottomMargin: 20
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: stack.push("ResultManagementPage.qml")
+            }
         }
-        Button {
-            text: qsTr("Result Management")
-            width: parent.width
-            onClicked: stack.push("ResultManagementPage.qml")
+
+        Rectangle {
+            width: 260; height: 150; radius: 12
+            border.color: "#CCCCCC"; color: "white"
+            Rectangle {
+                width: 52; height: 52; radius: 26; color: "#303F9F"
+                anchors.top: parent.top; anchors.topMargin: 18
+                anchors.horizontalCenter: parent.horizontalCenter
+                Label { text: "☺"; color: "white"; font.pixelSize: 26; anchors.centerIn: parent }
+            }
+            Label {
+                text: qsTr("User Management")
+                font.pixelSize: 18; font.bold: true
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom; anchors.bottomMargin: 20
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: stack.push("UserManagementPage.qml")
+            }
         }
-        Button {
-            text: qsTr("User Management")
-            width: parent.width
-            onClicked: stack.push("UserManagementPage.qml")
-        }
-        Button {
-            text: qsTr("Log out")
-            width: parent.width
-            onClicked: stack.replace("LoginPage.qml")
+
+        Rectangle {
+            width: 260; height: 150; radius: 12
+            border.color: "#CCCCCC"; color: "white"
+            Rectangle {
+                width: 52; height: 52; radius: 26; color: "#303F9F"
+                anchors.top: parent.top; anchors.topMargin: 18
+                anchors.horizontalCenter: parent.horizontalCenter
+                Label { text: "⚙"; color: "white"; font.pixelSize: 26; anchors.centerIn: parent }
+            }
+            Label {
+                text: qsTr("System Maintain")
+                font.pixelSize: 18; font.bold: true
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom; anchors.bottomMargin: 20
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: menuStatus.text = qsTr("System Maintain: not implemented yet")
+            }
         }
     }
+
+    // Bottom-right: log out button (matches WPF).
+    Button {
+        text: qsTr("Log out")
+        width: 200; height: 60
+        anchors.right: parent.right; anchors.bottom: parent.bottom
+        anchors.margins: 50
+        font.pixelSize: 20; font.bold: true
+        onClicked: stack.replace("LoginPage.qml")
+    }
+
+    Label {
+        id: menuStatus
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom; anchors.bottomMargin: 20
+        color: "#888"
+        text: ""
+    }
 }
+

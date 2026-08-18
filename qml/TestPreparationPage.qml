@@ -3,6 +3,7 @@ import QtQuick.Controls
 
 Page {
     id: prepPage
+    property string title: qsTr("Test Preparation")
 
     // Test standard fields.
     property string standardName: "GB1234"

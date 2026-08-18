@@ -3,6 +3,7 @@ import QtQuick.Controls
 
 Page {
     id: resultPage
+    property string title: qsTr("Result Management")
 
     function refresh() {
         list.model = resultService.results()
