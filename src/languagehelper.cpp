@@ -1,0 +1,37 @@
+#include "languagehelper.h"
+
+#include <QCoreApplication>
+#include <QQmlApplicationEngine>
+#include <QDebug>
+
+LanguageHelper::LanguageHelper(QQmlApplicationEngine *engine, QObject *parent)
+    : QObject(parent)
+    , m_engine(engine)
+{
+}
+
+void LanguageHelper::setLanguage(const QString &lang)
+{
+    // 移除旧的 translator，恢复英文（英文为源码语言，无需翻译）
+    QCoreApplication::removeTranslator(&m_translator);
+    m_current = (lang == QLatin1String("zh_CN")) ? QStringLiteral("zh_CN") : QStringLiteral("en");
+
+    if (m_current == QLatin1String("zh_CN")) {
+        // .qm 由 CMake qt_add_translations 生成并嵌入资源，前缀 /i18n/
+        if (!m_translator.load(QStringLiteral(":/i18n/sy1000_zh_CN.qm"))) {
+            qWarning() << "Failed to load zh_CN translation: :/i18n/sy1000_zh_CN.qm";
+            m_current = QStringLiteral("en");
+        } else {
+            QCoreApplication::installTranslator(&m_translator);
+        }
+    }
+
+    // 让 QML 中已加载的 qsTr() 重新求值
+    m_engine->retranslate();
+    emit currentChanged();
+}
+
+QString LanguageHelper::current() const
+{
+    return m_current;
+}

@@ -1,0 +1,7 @@
+build/
+CMakeLists.txt.user
+*.user
+.vs/
+.idea/
+# lrelease 生成物（由 .ts 编译而来，不提交）
+i18n/*.qm
