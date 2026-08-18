@@ -25,14 +25,13 @@ add_library(dao STATIC
 target_include_directories(dao PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(dao PUBLIC models Qt6::Sql)
 
-# Core layer: state machine (State pattern) + async sub-tasks + QML bridge
+# Core layer: state machine (State pattern) + async sub-tasks
 add_library(core STATIC
   src/core/subtask.cpp
   src/core/tasks.cpp
   src/core/states.cpp
   src/core/controller.cpp
   src/core/simdevice.h
-  src/core/hydroadapter.cpp
 )
 target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(core PUBLIC models Qt6::Core)
@@ -55,13 +54,14 @@ qt_add_executable(testcontroller
 )
 target_link_libraries(testcontroller PRIVATE core models Qt6::Core)
 
-# Services layer (Qt bridge: login + result services), depends on dao + models
+# Services layer (Qt bridge: login + result + hydro adapter), depends on dao + models + core
 add_library(services STATIC
   src/services/loginservice.cpp
   src/services/testresultservice.cpp
+  src/services/hydroadapter.cpp
 )
 target_include_directories(services PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(services PUBLIC dao models Qt6::Core Qt6::Sql)
+target_link_libraries(services PUBLIC dao models core Qt6::Core Qt6::Sql)
 
 # Devices layer (QSerialPort + Modbus RTU), cross-platform
 add_library(devices STATIC

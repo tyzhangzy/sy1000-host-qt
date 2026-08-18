@@ -6,12 +6,13 @@
 
 #include "core/controller.h"
 #include "core/ideviceprovider.h"
+#include "models/model.h"
 
 namespace sy1000 {
 
 // QML bridge for the hydrostatic test controller. Exposes start/stop, current
-// state/status and a finished signal so the QML test page can drive the flow.
-// Also samples the pressure periodically for the realtime chart.
+// state/status, samples pressure for the realtime chart, and persists the
+// result to SQLite when the test completes.
 class HydroTestControllerAdapter : public QObject
 {
     Q_OBJECT
@@ -27,6 +28,7 @@ public:
     Q_INVOKABLE void stopTest();
     Q_INVOKABLE void setWorkingPressure(double p);
     Q_INVOKABLE void setTestingPressure(double p);
+    Q_INVOKABLE void setTester(const QString &name, const QString &company);
 
     int state() const;
     QString status() const { return m_status; }
@@ -44,9 +46,12 @@ private:
     int countPassed() const;
     int countFailed() const;
     void updateRunning();
+    UnifiedTestResult buildResult() const;
 
     HydrostaticTestController m_controller;
     QString m_status;
+    QString m_testerName;
+    QString m_testerCompany;
     QTimer m_sampleTimer;
 };
 

@@ -1,4 +1,6 @@
-#include "core/hydroadapter.h"
+#include "services/hydroadapter.h"
+
+#include "services/testresultservice.h"
 
 namespace sy1000 {
 
@@ -23,6 +25,11 @@ HydroTestControllerAdapter::HydroTestControllerAdapter(IHydroDeviceProvider *dev
                      this, [this](const QString &s) { m_status = s; emit statusChanged(); });
     QObject::connect(&m_controller, &HydrostaticTestController::testCompleted,
                      this, [this](bool ok) {
+                         if (ok) {
+                             const int id = TestResultService::save(buildResult());
+                             m_status = QStringLiteral("Result saved (id=%1)").arg(id);
+                             emit statusChanged();
+                         }
                          emit testFinished(ok, countPassed(), countFailed());
                          updateRunning();
                      });
@@ -67,6 +74,12 @@ void HydroTestControllerAdapter::setTestingPressure(double p)
     m_controller.setOptions(opt);
 }
 
+void HydroTestControllerAdapter::setTester(const QString &name, const QString &company)
+{
+    m_testerName = name;
+    m_testerCompany = company;
+}
+
 int HydroTestControllerAdapter::state() const
 {
     return static_cast<int>(m_controller.state());
@@ -99,6 +112,37 @@ int HydroTestControllerAdapter::countFailed() const
 void HydroTestControllerAdapter::updateRunning()
 {
     emit runningChanged();
+}
+
+UnifiedTestResult HydroTestControllerAdapter::buildResult() const
+{
+    const auto &d = m_controller.testData();
+
+    Sample sample;
+    sample.sampleId = QStringLiteral("S1").toStdString();
+    sample.sampleModel = QStringLiteral("Simulated").toStdString();
+    sample.manufacturer = QStringLiteral("Simulated").toStdString();
+    sample.serialNo = QStringLiteral("SIM-001").toStdString();
+
+    auto &h = sample.hydroStaticTest;
+    h.initialWeight = d.initialWeights[1];
+    h.pressureWeight = d.testingPressureWeights[1];
+    h.finalWeight = d.releasedWeights[1];
+    h.fullDeformation = d.fullDeformations[1];
+    h.residualDeformation = d.residualDeformations[1];
+    h.residualDeformationRate = d.residualDeformationRates[1];
+    h.testResult = d.results[1];
+    sample.overallResult = TestResultService::determineOverallResult(sample.appearanceInspection, h);
+
+    TestStandard ts;
+    ts.standardName = QStringLiteral("Demo").toStdString();
+    ts.workingPressure = m_controller.options().workingPressure;
+    ts.testingPressure = m_controller.options().testingPressure;
+    ts.residualDeformationRate = 3.0;
+
+    return TestResultService::createUnifiedTestResult(m_testerName.toStdString(),
+                                                      m_testerCompany.toStdString(),
+                                                      sample, ts);
 }
 
 } // namespace sy1000
