@@ -14,12 +14,11 @@ qt_add_executable(SY1000
   src/languagehelper.cpp
 )
 
-# 数据模型层（纯 C++ 数据结构，依赖 QtCore）
+# 数据模型层（纯 C++ 标准库，跨平台；不依赖 Qt）
 add_library(models STATIC
   src/models/model.cpp
 )
 target_include_directories(models PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(models PUBLIC Qt6::Core)
 
 # 界面资源（QML）打包进可执行文件
 qt_add_resources(SY1000 "app"

@@ -1,13 +1,16 @@
 #pragma once
 
-#include <QDateTime>
-#include <QList>
-#include <QString>
+#include <chrono>
+#include <string>
+#include <vector>
 
 namespace sy1000 {
 
+// Time point alias (UTC epoch; serializable as sec/ms timestamp, cross-platform)
+using DateTime = std::chrono::system_clock::time_point;
+
 // ============================================================
-// 枚举（对应原 WPF Models + Dao）
+// Enums (mapped from original WPF Models + Dao)
 // ============================================================
 
 enum class InspectionResult { Qualified, ToRepair, ToReplace, Scrapped };
@@ -20,86 +23,86 @@ enum class HydroTestState {
 enum class ComConnectionStatus { CONNECTING, CONNECTED, UNCONNECTED, ERROR };
 
 // ============================================================
-// 用户（对应 User）
+// User
 // ============================================================
 struct User {
     int id = 0;
-    QString username;
-    QString company;
-    QString password;
-    QDateTime createDate;
+    std::string username;
+    std::string company;
+    std::string password;
+    DateTime createDate;
     int isAdmin = 0;
 };
 
 // ============================================================
-// 试验标准（对应 TestStandard；压力/变形率用 -1 表示"未设置"）
+// TestStandard (pressure/rate use -1 for "not set")
 // ============================================================
 struct TestStandard {
-    QString standardName;
+    std::string standardName;
     double workingPressure = -1;             // MPa
     double testingPressure = -1;             // MPa
-    int pressureHoldingTime = 0;             // 秒
+    int pressureHoldingTime = 0;             // seconds
     double residualDeformationRate = -1;     // %
-    double residualDeformation = -1;         // 残余变形量
+    double residualDeformation = -1;         // residual deformation
 };
 
 // ============================================================
-// 样品外观检查（对应 SampleInspectionData / SerializableSampleInspectionData）
+// SampleInspectionData (appearance/internal/thread/valve inspection)
 // ============================================================
 struct SampleInspectionData {
-    // 基本信息
-    QString sampleId;
-    QString sampleModel;
-    QString manufacturer;
+    // Basic info
+    std::string sampleId;
+    std::string sampleModel;
+    std::string manufacturer;
     double volume = 6.8;
-    QString userCompany;
-    QString serialNo;
-    QDateTime inspectionDate;
-    QString inspectorName;
-    QString inspectorCertNo;
+    std::string userCompany;
+    std::string serialNo;
+    DateTime inspectionDate;
+    std::string inspectorName;
+    std::string inspectorCertNo;
     bool inspectionCompleted = false;
 
-    // 四部分结果
+    // Four section results
     InspectionResult externalResult = InspectionResult::Qualified;
     InspectionResult internalResult = InspectionResult::Qualified;
     InspectionResult threadResult = InspectionResult::Qualified;
     InspectionResult valveResult = InspectionResult::Qualified;
 
-    // External 外观检查
+    // External inspection
     bool externalThermalDamage = false;
     bool externalScratch = false;
     bool externalWear = false;
     bool externalDelamination = false;
     bool externalDeformation = false;
-    QString externalDefectLocation;
-    QString externalOther;
+    std::string externalDefectLocation;
+    std::string externalOther;
 
-    // Internal 内部检查
+    // Internal inspection
     bool internalSmell = false;
-    QString internalDebris;
-    QString internalSurfaceCondition;
-    QString internalDefectLocation;
-    QString internalOther;
+    std::string internalDebris;
+    std::string internalSurfaceCondition;
+    std::string internalDefectLocation;
+    std::string internalOther;
 
-    // Thread 螺纹检查
-    QString threadSpecification;
-    QString threadCondition;
-    QString threadEvaluation;
-    QString threadOther;
+    // Thread inspection
+    std::string threadSpecification;
+    std::string threadCondition;
+    std::string threadEvaluation;
+    std::string threadOther;
 
-    // Valve 瓶阀检查
-    QString valveNo;
-    QString valveThreadCondition;
-    QString valveAirTightness;
+    // Valve inspection
+    std::string valveNo;
+    std::string valveThreadCondition;
+    std::string valveAirTightness;
     bool valveDiaphragmReplaced = false;
-    QString valveOther;
+    std::string valveOther;
 };
 
 // ============================================================
-// 水压试验数据（对应 HydroStaticTestData / PressureWeightPoint）
+// Hydrostatic test data (HydroStaticTestData / PressureWeightPoint)
 // ============================================================
 struct PressureWeightPoint {
-    QDateTime timestamp;
+    DateTime timestamp;
     double pressure = 0;
     double weight = 0;
 };
@@ -113,45 +116,45 @@ struct HydroStaticTestData {
     double residualDeformationRate = 0;
     double workingPressure = 0;
     double testPressure = 0;
-    QList<PressureWeightPoint> pressureWeightData;
+    std::vector<PressureWeightPoint> pressureWeightData;
     TestResultStatus testResult = TestResultStatus::NotTested;
-    QString resultDetails;
+    std::string resultDetails;
 };
 
 // ============================================================
-// 环境数据（对应 TestEnvironmentData）
+// Environment data (TestEnvironmentData)
 // ============================================================
 struct TestEnvironmentData {
     double roomTemperature = 0;
     double humidity = 0;
-    QString equipmentId;
-    QString equipmentModel;
+    std::string equipmentId;
+    std::string equipmentModel;
 };
 
 // ============================================================
-// 样品（对应 Sample）
+// Sample
 // ============================================================
 struct Sample {
-    QString sampleId;
-    QString sampleModel;
-    QString manufacturer;
-    QString serialNo;
+    std::string sampleId;
+    std::string sampleModel;
+    std::string manufacturer;
+    std::string serialNo;
     double volume = 0;
     SampleInspectionData appearanceInspection;
     HydroStaticTestData hydroStaticTest;
     TestResultStatus overallResult = TestResultStatus::NotTested;
-    QString notes;
+    std::string notes;
 };
 
 // ============================================================
-// 统一试验结果（对应 UnifiedTestResult）
+// UnifiedTestResult
 // ============================================================
 struct UnifiedTestResult {
     int id = 0;
-    QString testSerialNo;
-    QDateTime testDate;
-    QString testerName;
-    QString testerCompany;
+    std::string testSerialNo;
+    DateTime testDate;
+    std::string testerName;
+    std::string testerCompany;
     TestStandard testStandard;
     Sample sample;
     TestEnvironmentData testEnvironment;
