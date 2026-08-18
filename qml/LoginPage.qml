@@ -1,36 +1,42 @@
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
 
 /**
- * Login page (login window content). Matches the original WPF layout:
- * left 65% = logo + device title, right 35% = centered login card.
+ * Login page, matched to the original WPF LoginWindow layout:
+ * full-screen light-grey background; left 65% brand panel; right 35% holds a
+ * floating white login card.
  */
 Item {
     id: loginPage
     property string title: qsTr("Login")
 
-    // Left brand panel (65%).
+    // Unified light-grey background (matches WPF #E0E0E0 gradient).
     Rectangle {
+        anchors.fill: parent
+        color: "#E0E0E0"
+    }
+
+    // Left brand area (65%).
+    Item {
+        id: brandArea
         width: parent.width * 0.65
         height: parent.height
-        color: "#E0E0E0"
 
         Column {
             anchors.centerIn: parent
-            spacing: 16
+            spacing: 24
 
             // Logo placeholder (original uses dklogo.png).
             Rectangle {
-                width: 220
-                height: 130
-                radius: 8
+                width: 260
+                height: 150
+                radius: 10
                 color: "#193660"
                 anchors.horizontalCenter: parent.horizontalCenter
                 Label {
-                    text: qsTr("DKSY")
+                    text: "DKSY"
                     color: "white"
-                    font.pixelSize: 44
+                    font.pixelSize: 52
                     font.bold: true
                     anchors.centerIn: parent
                 }
@@ -38,14 +44,15 @@ Item {
 
             Label {
                 text: qsTr("SY1000 Hydrostatic Test System")
-                font.pixelSize: 44
+                font.pixelSize: 56
                 font.bold: true
                 color: "#193660"
                 horizontalAlignment: Text.AlignHCenter
             }
+
             Label {
                 text: qsTr("Quanshen")
-                font.pixelSize: 28
+                font.pixelSize: 34
                 font.bold: true
                 color: "#444"
                 horizontalAlignment: Text.AlignHCenter
@@ -53,27 +60,27 @@ Item {
         }
     }
 
-    // Right login card (35%).
-    Rectangle {
+    // Right login card area (35%), anchored to the right of the brand area.
+    Item {
         width: parent.width * 0.35
         height: parent.height
-        color: "#F5F5F5"
+        anchors.left: brandArea.right
 
         Rectangle {
-            width: 380
-            height: 420
+            width: 400
+            height: 460
             radius: 15
-            border.color: "#CCCCCC"
             color: "white"
+            border.color: "#DDDDDD"
             anchors.centerIn: parent
 
             Column {
                 anchors.centerIn: parent
-                spacing: 14
+                spacing: 16
 
                 Label {
                     text: qsTr("User Login")
-                    font.pixelSize: 30
+                    font.pixelSize: 32
                     font.bold: true
                     color: "#303F9F"
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -99,10 +106,10 @@ Item {
 
                 Button {
                     id: signInButton
-                    width: 300
+                    width: 320
                     height: 52
                     text: qsTr("Login")
-                    font.pixelSize: 20
+                    font.pixelSize: 22
                     font.bold: true
                     onClicked: {
                         if (loginService.tryLogin(userBox.currentText, passwordField.text)) {
@@ -121,7 +128,7 @@ Item {
                     width: 300
                     wrapMode: Text.Wrap
                     horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: 13
+                    font.pixelSize: 14
                     color: "#c62828"
                     text: ""
                 }
@@ -134,7 +141,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     ComboBox {
-                        width: 140
+                        width: 150
                         model: ["English", "中文"]
                         onActivated: (index) => lang.setLanguage(index === 0 ? "en" : "zh_CN")
                     }
@@ -143,4 +150,5 @@ Item {
         }
     }
 }
+
 
