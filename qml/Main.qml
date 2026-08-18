@@ -16,11 +16,11 @@ ApplicationWindow {
         initialItem: "LoginPage.qml"
     }
 
-    // After a successful login, navigate to the test page.
+    // After a successful login, navigate to the main menu.
     Connections {
         target: loginService
         function onLoginSucceeded() {
-            stack.replace("TestPage.qml")
+            stack.replace("MainMenuPage.qml")
         }
     }
 }

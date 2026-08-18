@@ -59,6 +59,7 @@ add_library(services STATIC
   src/services/loginservice.cpp
   src/services/testresultservice.cpp
   src/services/hydroadapter.cpp
+  src/services/resultservice.cpp
 )
 target_include_directories(services PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(services PUBLIC dao models core Qt6::Core Qt6::Sql)
@@ -91,7 +92,9 @@ qt_add_resources(SY1000 "app"
   FILES
     qml/Main.qml
     qml/LoginPage.qml
+    qml/MainMenuPage.qml
     qml/TestPage.qml
+    qml/ResultManagementPage.qml
 )
 
 # i18n: lrelease compiles ts -> qm, embedded under /i18n/

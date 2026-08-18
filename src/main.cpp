@@ -10,6 +10,7 @@
 #include "languagehelper.h"
 #include "services/hydroadapter.h"
 #include "services/loginservice.h"
+#include "services/resultservice.h"
 #include "ui/charts/RealTimeChart.h"
 
 int main(int argc, char *argv[])
@@ -57,6 +58,10 @@ int main(int argc, char *argv[])
     QObject::connect(&loginService, &LoginService::loginSucceeded, [&]() {
         hydro.setTester(loginService.username(), loginService.company());
     });
+
+    // Result management bridge for QML (query saved results).
+    sy1000::ResultServiceAdapter resultService;
+    engine.rootContext()->setContextProperty(QStringLiteral("resultService"), &resultService);
 
     // Entry QML UI (login page; core/devices/dao/report layers plug in later).
     // qt_add_resources(PREFIX "/") -> qml/Main.qml is served at qrc:/qml/Main.qml

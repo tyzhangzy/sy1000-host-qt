@@ -112,9 +112,9 @@ Page {
         }
 
         Button {
-            text: qsTr("Log out")
+            text: qsTr("Back to menu")
             anchors.horizontalCenter: parent.horizontalCenter
-            onClicked: stack.replace("LoginPage.qml")
+            onClicked: stack.pop()
         }
     }
 }
