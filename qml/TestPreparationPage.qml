@@ -78,9 +78,30 @@ Page {
                                 value: sampleData[index].volume; editable: true
                                 onValueModified: sampleData[index].volume = value
                             }
+                            Row {
+                                spacing: 8
+                                Button {
+                                    text: qsTr("Inspect")
+                                    onClicked: {
+                                        inspectDlg.sampleIndex = index
+                                        inspectDlg.target = sampleData[index]
+                                        inspectDlg.open()
+                                    }
+                                }
+                                Label {
+                                    text: sampleData[index].inspected ? qsTr("Done") : qsTr("Not inspected")
+                                    color: sampleData[index].inspected ? "#2e7d32" : "#c62828"
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+                            }
                         }
                     }
                 }
+            }
+
+            // Shared appearance inspection dialog.
+            AppearanceInspectionDialog {
+                id: inspectDlg
             }
 
             // Bottom actions.
