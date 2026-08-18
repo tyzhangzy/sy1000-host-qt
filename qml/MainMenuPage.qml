@@ -27,6 +27,11 @@ Page {
             onClicked: stack.push("ResultManagementPage.qml")
         }
         Button {
+            text: qsTr("User Management")
+            width: parent.width
+            onClicked: stack.push("UserManagementPage.qml")
+        }
+        Button {
             text: qsTr("Log out")
             width: parent.width
             onClicked: stack.replace("LoginPage.qml")

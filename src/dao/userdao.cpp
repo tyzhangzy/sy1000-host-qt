@@ -48,3 +48,38 @@ User UserDao::findByUsernameAndPassword(const std::string &username, const std::
         return rowToUser(q);
     return {};
 }
+
+int UserDao::insert(const User &u)
+{
+    QSqlQuery q;
+    q.prepare(QStringLiteral("INSERT INTO users (username, company, password, create_date, is_admin)"
+                             " VALUES (?, ?, ?, ?, ?)"));
+    q.addBindValue(QString::fromStdString(u.username));
+    q.addBindValue(QString::fromStdString(u.company));
+    q.addBindValue(QString::fromStdString(u.password));
+    q.addBindValue(QStringLiteral("2026-01-01 00:00:00"));
+    q.addBindValue(u.isAdmin);
+    if (!q.exec())
+        return 0;
+    return q.lastInsertId().toInt();
+}
+
+bool UserDao::remove(int id)
+{
+    QSqlQuery q;
+    q.prepare(QStringLiteral("DELETE FROM users WHERE id = ?"));
+    q.addBindValue(id);
+    return q.exec();
+}
+
+bool UserDao::update(const User &u)
+{
+    QSqlQuery q;
+    q.prepare(QStringLiteral("UPDATE users SET username=?, company=?, password=?, is_admin=? WHERE id=?"));
+    q.addBindValue(QString::fromStdString(u.username));
+    q.addBindValue(QString::fromStdString(u.company));
+    q.addBindValue(QString::fromStdString(u.password));
+    q.addBindValue(u.isAdmin);
+    q.addBindValue(u.id);
+    return q.exec();
+}
