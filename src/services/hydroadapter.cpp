@@ -80,6 +80,14 @@ void HydroTestControllerAdapter::setTester(const QString &name, const QString &c
     m_testerCompany = company;
 }
 
+void HydroTestControllerAdapter::setSample(int index, const QString &model, const QString &manufacturer,
+                                           const QString &serialNo, double volume)
+{
+    if (index < 1 || index > 4)
+        return;
+    m_samples[index] = { model, manufacturer, serialNo, volume };
+}
+
 int HydroTestControllerAdapter::state() const
 {
     return static_cast<int>(m_controller.state());
@@ -118,11 +126,13 @@ UnifiedTestResult HydroTestControllerAdapter::buildResult() const
 {
     const auto &d = m_controller.testData();
 
+    const auto &s = m_samples[1];
     Sample sample;
     sample.sampleId = QStringLiteral("S1").toStdString();
-    sample.sampleModel = QStringLiteral("Simulated").toStdString();
-    sample.manufacturer = QStringLiteral("Simulated").toStdString();
-    sample.serialNo = QStringLiteral("SIM-001").toStdString();
+    sample.sampleModel = s.model.toStdString();
+    sample.manufacturer = s.manufacturer.toStdString();
+    sample.serialNo = s.serialNo.toStdString();
+    sample.volume = s.volume;
 
     auto &h = sample.hydroStaticTest;
     h.initialWeight = d.initialWeights[1];

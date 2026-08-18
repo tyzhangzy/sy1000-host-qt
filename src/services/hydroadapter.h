@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include <QObject>
 #include <QString>
 #include <QTimer>
@@ -29,6 +31,9 @@ public:
     Q_INVOKABLE void setWorkingPressure(double p);
     Q_INVOKABLE void setTestingPressure(double p);
     Q_INVOKABLE void setTester(const QString &name, const QString &company);
+    // Sample info (index 1..4) used when persisting the result.
+    Q_INVOKABLE void setSample(int index, const QString &model, const QString &manufacturer,
+                               const QString &serialNo, double volume);
 
     int state() const;
     QString status() const { return m_status; }
@@ -43,6 +48,13 @@ signals:
     void pressureSample(double value);
 
 private:
+    struct SampleInfo {
+        QString model;
+        QString manufacturer;
+        QString serialNo;
+        double volume = 0;
+    };
+
     int countPassed() const;
     int countFailed() const;
     void updateRunning();
@@ -52,6 +64,7 @@ private:
     QString m_status;
     QString m_testerName;
     QString m_testerCompany;
+    std::array<SampleInfo, 5> m_samples;
     QTimer m_sampleTimer;
 };
 

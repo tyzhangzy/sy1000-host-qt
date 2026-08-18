@@ -19,7 +19,7 @@ Page {
         Button {
             text: qsTr("Start Hydrostatic Test")
             width: parent.width
-            onClicked: stack.push("TestPage.qml")
+            onClicked: stack.push("TestPreparationPage.qml")
         }
         Button {
             text: qsTr("Result Management")

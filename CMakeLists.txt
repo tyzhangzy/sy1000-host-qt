@@ -93,6 +93,7 @@ qt_add_resources(SY1000 "app"
     qml/Main.qml
     qml/LoginPage.qml
     qml/MainMenuPage.qml
+    qml/TestPreparationPage.qml
     qml/TestPage.qml
     qml/ResultManagementPage.qml
 )
