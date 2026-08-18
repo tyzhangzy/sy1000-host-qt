@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
-# Qt 6: Quick (QML UI) + QuickControls2 (控件) + LinguistTools (i18n) + Sql (SQLite)。Charts/SerialPort 后续按需加入
-find_package(Qt6 6.2 REQUIRED COMPONENTS Quick QuickControls2 LinguistTools Sql)
+# Qt 6: Quick (QML UI) + QuickControls2 (控件) + LinguistTools (i18n) + Sql (SQLite) + SerialPort (串口)
+find_package(Qt6 6.2 REQUIRED COMPONENTS Quick QuickControls2 LinguistTools Sql SerialPort)
 qt_standard_project_setup()
 
 # 数据模型层（纯 C++ 标准库，跨平台；不依赖 Qt）
@@ -31,6 +31,12 @@ qt_add_executable(testcore
 )
 target_link_libraries(testcore PRIVATE services models dao Qt6::Core Qt6::Sql)
 
+# Headless smoke test for the devices layer (Modbus frame + CRC)
+qt_add_executable(testdevices
+  src/tests/testdevices.cpp
+)
+target_link_libraries(testdevices PRIVATE devices Qt6::Core Qt6::SerialPort)
+
 # 服务层（Qt 桥接：登录 + 结果服务），依赖 dao + models
 add_library(services STATIC
   src/services/loginservice.cpp
@@ -38,6 +44,16 @@ add_library(services STATIC
 )
 target_include_directories(services PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(services PUBLIC dao models Qt6::Core Qt6::Sql)
+
+# 设备层（QSerialPort + Modbus RTU），跨平台
+add_library(devices STATIC
+  src/devices/modbusrtu.cpp
+  src/devices/tasio.cpp
+  src/devices/precisa.cpp
+  src/devices/devicemanager.cpp
+)
+target_include_directories(devices PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(devices PUBLIC Qt6::Core Qt6::SerialPort)
 
 qt_add_executable(SY1000
   src/main.cpp
@@ -58,6 +74,6 @@ set(TS_FILES
 )
 qt_add_lrelease(SY1000 TS_FILES ${TS_FILES})
 
-target_link_libraries(SY1000 PRIVATE services models dao Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
+target_link_libraries(SY1000 PRIVATE services models dao devices Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
 
 
