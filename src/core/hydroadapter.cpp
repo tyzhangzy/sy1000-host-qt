@@ -32,6 +32,13 @@ HydroTestControllerAdapter::HydroTestControllerAdapter(IHydroDeviceProvider *dev
                          emit statusChanged();
                          updateRunning();
                      });
+
+    // Sample pressure periodically for the realtime chart.
+    m_sampleTimer.setInterval(100);
+    QObject::connect(&m_sampleTimer, &QTimer::timeout, this, [this]() {
+        emit pressureSample(m_controller.device()->currentPressure());
+    });
+    m_sampleTimer.start();
 }
 
 void HydroTestControllerAdapter::startTest()

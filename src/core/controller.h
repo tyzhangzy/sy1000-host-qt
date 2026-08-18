@@ -36,7 +36,7 @@ public:
     const HydroTestData &testData() const { return m_data; }
 
     // ---- accessors used by state classes ----
-    IHydroDeviceProvider *device() { return m_device; }
+    IHydroDeviceProvider *device() const { return m_device; }
     HydroTestData &data() { return m_data; }
     double rateLimit() const { return m_rateLimit; }
 

@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import SyCharts 1.0
 
 Page {
     id: testPage
@@ -7,7 +8,7 @@ Page {
     Column {
         anchors.centerIn: parent
         spacing: 14
-        width: 380
+        width: 420
 
         Label {
             text: qsTr("Hydrostatic Test")
@@ -79,6 +80,35 @@ Page {
             function onTestFinished(ok, passed, failed) {
                 resultLabel.text = qsTr("Finished ok=%1, passed=%2, failed=%3").arg(ok).arg(passed).arg(failed)
             }
+            function onPressureSample(value) {
+                pressureChart.addValue(value)
+            }
+        }
+
+        // Realtime pressure chart (reused QQuickPaintedItem component).
+        Rectangle {
+            width: parent.width
+            height: 220
+            color: "#fafafa"
+            border.color: "#ddd"
+            radius: 6
+            clip: true
+            RealTimeChart {
+                id: pressureChart
+                anchors.fill: parent
+                anchors.margins: 6
+                title: qsTr("Pressure (MPa)")
+                yAxisLabel: qsTr("MPa")
+                yMax: 60
+                maxPoints: 600
+                showGrid: true
+            }
+        }
+
+        Button {
+            text: qsTr("Clear chart")
+            anchors.horizontalCenter: parent.horizontalCenter
+            onClicked: pressureChart.clear()
         }
 
         Button {

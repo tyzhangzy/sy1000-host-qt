@@ -3,18 +3,23 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 #include <QUrl>
+#include <QtQml>
 
 #include "core/hydroadapter.h"
 #include "core/simdevice.h"
 #include "dao/database.h"
 #include "languagehelper.h"
 #include "services/loginservice.h"
+#include "ui/charts/RealTimeChart.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     QGuiApplication::setApplicationName(QStringLiteral("SY1000"));
     QQuickStyle::setStyle(QStringLiteral("Basic"));
+
+    // Register the realtime chart widget for QML (import SyCharts 1.0).
+    qmlRegisterType<RealTimeChart>("SyCharts", 1, 0, "RealTimeChart");
 
     // Initialize SQLite (database + tables + seed admin).
     if (!Database::initialize()) {

@@ -73,6 +73,13 @@ add_library(devices STATIC
 target_include_directories(devices PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(devices PUBLIC Qt6::Core Qt6::SerialPort)
 
+# Realtime chart widget (reused QQuickPaintedItem component)
+add_library(charts STATIC
+  src/ui/charts/RealTimeChart.cpp
+)
+target_include_directories(charts PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(charts PUBLIC Qt6::Core Qt6::Gui Qt6::Quick)
+
 qt_add_executable(SY1000
   src/main.cpp
   src/languagehelper.cpp
@@ -93,6 +100,6 @@ set(TS_FILES
 )
 qt_add_lrelease(SY1000 TS_FILES ${TS_FILES})
 
-target_link_libraries(SY1000 PRIVATE core services models dao devices Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
+target_link_libraries(SY1000 PRIVATE core services models dao devices charts Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
 
 
