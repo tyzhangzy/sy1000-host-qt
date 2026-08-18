@@ -38,6 +38,7 @@ Item {
             width: parent.width
             placeholderText: qsTr("Password")
             echoMode: TextInput.Password
+            onAccepted: signInButton.clicked()
         }
 
         Row {
@@ -57,11 +58,26 @@ Item {
                 width: parent.width - languageBox.width - parent.spacing
                 text: qsTr("Sign In")
                 onClicked: {
-                    // 占位：后续接入登录校验（用户/密码/角色）
-                    console.log("sign in attempt, user =", usernameField.text,
-                                ", lang =", lang.current())
+                    if (loginService.tryLogin(usernameField.text, passwordField.text)) {
+                        statusLabel.color = "#2e7d32"
+                        statusLabel.text = qsTr("Welcome, ") + loginService.username() +
+                                           (loginService.isAdmin() ? qsTr(" (admin)") : "")
+                    } else {
+                        statusLabel.color = "#c62828"
+                        statusLabel.text = loginService.errorMessage()
+                    }
                 }
             }
+        }
+
+        Label {
+            id: statusLabel
+            width: parent.width
+            wrapMode: Text.Wrap
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 12
+            color: "#c62828"
+            text: ""
         }
 
         Label {
