@@ -60,13 +60,20 @@ bool Database::createTables()
         "CREATE TABLE IF NOT EXISTS unified_test_results ("
         " id INTEGER PRIMARY KEY AUTOINCREMENT,"
         " test_serial_no TEXT,"
-        " test_date TEXT,"
+        " test_date INTEGER,"
         " tester_name TEXT,"
-        " tester_company TEXT)";
+        " tester_company TEXT,"
+        " manufacturer TEXT,"
+        " overall_result INTEGER,"
+        " payload TEXT)";
     if (!q.exec(QString::fromLatin1(resultsSql))) {
         qWarning() << "[dao] create results failed:" << q.lastError().text();
         return false;
     }
+
+    // index for common queries
+    QSqlQuery idx(QStringLiteral("CREATE INDEX IF NOT EXISTS idx_results_serial ON unified_test_results(test_serial_no)"));
+    idx.exec();
     return true;
 }
 

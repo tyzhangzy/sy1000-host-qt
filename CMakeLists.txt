@@ -19,14 +19,29 @@ target_include_directories(models PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_library(dao STATIC
   src/dao/database.cpp
   src/dao/userdao.cpp
+  src/dao/testresultdao.cpp
+  src/dao/json_serializer.cpp
 )
 target_include_directories(dao PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(dao PUBLIC models Qt6::Sql)
 
+# Headless smoke test for the data/services layer
+qt_add_executable(testcore
+  src/tests/testcore.cpp
+)
+target_link_libraries(testcore PRIVATE services models dao Qt6::Core Qt6::Sql)
+
+# 服务层（Qt 桥接：登录 + 结果服务），依赖 dao + models
+add_library(services STATIC
+  src/services/loginservice.cpp
+  src/services/testresultservice.cpp
+)
+target_include_directories(services PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(services PUBLIC dao models Qt6::Core Qt6::Sql)
+
 qt_add_executable(SY1000
   src/main.cpp
   src/languagehelper.cpp
-  src/services/loginservice.cpp
 )
 
 # 界面资源（QML）打包进可执行文件
@@ -43,6 +58,6 @@ set(TS_FILES
 )
 qt_add_lrelease(SY1000 TS_FILES ${TS_FILES})
 
-target_link_libraries(SY1000 PRIVATE models dao Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
+target_link_libraries(SY1000 PRIVATE services models dao Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
 
 
