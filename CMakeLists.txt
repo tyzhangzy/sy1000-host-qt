@@ -61,9 +61,10 @@ add_library(services STATIC
   src/services/hydroadapter.cpp
   src/services/resultservice.cpp
   src/services/userservice.cpp
+  src/services/deviceservice.cpp
 )
 target_include_directories(services PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(services PUBLIC dao models core Qt6::Core Qt6::Sql)
+target_link_libraries(services PUBLIC dao models core devices Qt6::Core Qt6::Sql)
 
 # Devices layer (QSerialPort + Modbus RTU), cross-platform
 add_library(devices STATIC
@@ -99,6 +100,7 @@ qt_add_resources(SY1000 "app"
     qml/ResultManagementPage.qml
     qml/ResultDetailsPage.qml
     qml/UserManagementPage.qml
+    qml/SystemMaintainPage.qml
 )
 
 # i18n: lrelease compiles ts -> qm, embedded under /i18n/

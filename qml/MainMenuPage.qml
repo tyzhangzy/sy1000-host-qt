@@ -91,7 +91,7 @@ Page {
             }
             MouseArea {
                 anchors.fill: parent
-                onClicked: menuStatus.text = qsTr("System Maintain: not implemented yet")
+                onClicked: stack.push("SystemMaintainPage.qml")
             }
         }
     }

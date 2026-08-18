@@ -8,6 +8,7 @@
 #include "core/simdevice.h"
 #include "dao/database.h"
 #include "languagehelper.h"
+#include "services/deviceservice.h"
 #include "services/hydroadapter.h"
 #include "services/loginservice.h"
 #include "services/resultservice.h"
@@ -72,6 +73,10 @@ int main(int argc, char *argv[])
     // User management bridge for QML.
     sy1000::UserServiceAdapter userService;
     engine.rootContext()->setContextProperty(QStringLiteral("userService"), &userService);
+
+    // Device maintenance bridge for QML.
+    sy1000::DeviceServiceAdapter deviceService;
+    engine.rootContext()->setContextProperty(QStringLiteral("deviceService"), &deviceService);
 
     // Entry QML UI (login page; core/devices/dao/report layers plug in later).
     // qt_add_resources(PREFIX "/") -> qml/Main.qml is served at qrc:/qml/Main.qml
