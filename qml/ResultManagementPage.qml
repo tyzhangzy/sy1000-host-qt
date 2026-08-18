@@ -51,6 +51,11 @@ Page {
                     Label { text: modelData.tester; width: 100 }
                     Label { text: modelData.manufacturer; width: 120 }
                     Label { text: modelData.rate.toFixed(2); width: 80 }
+                    Button {
+                        text: qsTr("Detail")
+                        anchors.verticalCenter: parent.verticalCenter
+                        onClicked: stack.push("ResultDetailsPage.qml", { resultId: modelData.id })
+                    }
                 }
             }
         }
