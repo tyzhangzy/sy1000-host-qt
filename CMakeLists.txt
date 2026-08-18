@@ -14,6 +14,13 @@ qt_add_executable(SY1000
   src/languagehelper.cpp
 )
 
+# 数据模型层（纯 C++ 数据结构，依赖 QtCore）
+add_library(models STATIC
+  src/models/model.cpp
+)
+target_include_directories(models PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(models PUBLIC Qt6::Core)
+
 # 界面资源（QML）打包进可执行文件
 qt_add_resources(SY1000 "app"
   PREFIX "/"
@@ -28,6 +35,6 @@ set(TS_FILES
 )
 qt_add_lrelease(SY1000 TS_FILES ${TS_FILES})
 
-target_link_libraries(SY1000 PRIVATE Qt6::Quick Qt6::QuickControls2)
+target_link_libraries(SY1000 PRIVATE models Qt6::Quick Qt6::QuickControls2)
 
 
