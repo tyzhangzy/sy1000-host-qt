@@ -4,6 +4,8 @@
 #include <QQuickStyle>
 #include <QUrl>
 
+#include "core/hydroadapter.h"
+#include "core/simdevice.h"
 #include "dao/database.h"
 #include "languagehelper.h"
 #include "services/loginservice.h"
@@ -39,6 +41,11 @@ int main(int argc, char *argv[])
     // 登录服务（接入 SQLite 用户表）。暴露为 QML 全局 "loginService"。
     LoginService loginService;
     engine.rootContext()->setContextProperty(QStringLiteral("loginService"), &loginService);
+
+    // 水压试验控制器（用模拟设备，无硬件也能演示完整流程）。暴露为 QML 全局 "hydro"。
+    sy1000::SimulatedDeviceProvider simDevice;
+    sy1000::HydroTestControllerAdapter hydro(&simDevice);
+    engine.rootContext()->setContextProperty(QStringLiteral("hydro"), &hydro);
 
     // 入口 QML 界面（登录页；后续把 core/devices/dao/report 分层接入）
     // qt_add_resources(PREFIX "/") 下，文件 qml/Main.qml 的资源路径为 qrc:/qml/Main.qml

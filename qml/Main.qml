@@ -10,25 +10,18 @@ ApplicationWindow {
     minimumHeight: 560
     visible: true
 
-    // 顶部标题栏
-    header: ToolBar {
-        Label {
-            anchors.centerIn: parent
-            text: qsTr("SY1000 Hydrostatic Test System")
-            font.bold: true
+    StackView {
+        id: stack
+        anchors.fill: parent
+        initialItem: "LoginPage.qml"
+    }
+
+    // After a successful login, navigate to the test page.
+    Connections {
+        target: loginService
+        function onLoginSucceeded() {
+            stack.replace("TestPage.qml")
         }
     }
-
-    // 登录页内容（后续：登录成功 → 主菜单 → 测试页）
-    Loader {
-        anchors.fill: parent
-        source: "LoginPage.qml"
-    }
-
-    footer: Label {
-        text: qsTr("core / devices / dao / report / ui")
-        horizontalAlignment: Text.AlignHCenter
-        color: "#aaa"
-        padding: 6
-    }
 }
+
