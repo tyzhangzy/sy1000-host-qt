@@ -15,9 +15,14 @@
 
 int main(int argc, char *argv[])
 {
+    // Material style tuned toward the WPF MaterialDesign theme (Indigo primary, Amber accent).
+    qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", "Light");
+    qputenv("QT_QUICK_CONTROLS_MATERIAL_PRIMARY", "Indigo");
+    qputenv("QT_QUICK_CONTROLS_MATERIAL_ACCENT", "Amber");
+    QQuickStyle::setStyle(QStringLiteral("Material"));
+
     QGuiApplication app(argc, argv);
     QGuiApplication::setApplicationName(QStringLiteral("SY1000"));
-    QQuickStyle::setStyle(QStringLiteral("Basic"));
 
     // Register the realtime chart widget for QML (import SyCharts 1.0).
     qmlRegisterType<RealTimeChart>("SyCharts", 1, 0, "RealTimeChart");
