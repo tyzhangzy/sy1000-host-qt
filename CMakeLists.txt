@@ -25,6 +25,15 @@ add_library(dao STATIC
 target_include_directories(dao PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(dao PUBLIC models Qt6::Sql)
 
+# 状态机/业务核心层（手写 C++ 异步状态机），依赖 models
+add_library(core STATIC
+  src/core/subtask.cpp
+  src/core/tasks.cpp
+  src/core/controller.cpp
+)
+target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(core PUBLIC models Qt6::Core)
+
 # Headless smoke test for the data/services layer
 qt_add_executable(testcore
   src/tests/testcore.cpp
@@ -36,6 +45,12 @@ qt_add_executable(testdevices
   src/tests/testdevices.cpp
 )
 target_link_libraries(testdevices PRIVATE devices Qt6::Core Qt6::SerialPort)
+
+# Headless smoke test for the hydrostatic state machine
+qt_add_executable(testcontroller
+  src/tests/testcontroller.cpp
+)
+target_link_libraries(testcontroller PRIVATE core models Qt6::Core)
 
 # 服务层（Qt 桥接：登录 + 结果服务），依赖 dao + models
 add_library(services STATIC
