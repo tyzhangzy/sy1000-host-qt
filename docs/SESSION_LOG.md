@@ -5,6 +5,20 @@
 
 ---
 
+## 2026-08-19 · 登录页左侧三项纵向间距对齐 WPF ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：品牌区 logo / 设备名 / 制造商 的纵向排列间距
+
+### 修复
+- WPF `StackPanel` 中 logo→DeviceName、DeviceName→Manufacturer 间距均为 **50px**（`Margin="0 50 0 0"`）
+- Qt 品牌区 `Column` 的 `spacing` 由 30 改为 **50**，对齐 WPF
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 登录按钮风格对齐 WPF ✅
 
 - **提交**：`5ebb989` `feat(ui): login button raised Material style match WPF`

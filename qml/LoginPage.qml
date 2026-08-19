@@ -25,7 +25,8 @@ Item {
 
         Column {
             anchors.centerIn: parent
-            spacing: 30
+            // Vertical spacing matches WPF (Margin top 50 between each item).
+            spacing: 50
 
             // Real product logo (from original WPF Resources/dklogo.png).
             Image {
