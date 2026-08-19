@@ -5,6 +5,19 @@
 
 ---
 
+## 2026-08-19 · 登录卡高度调小 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：用户登录框高度 545→500
+
+### 实现（`qml/LoginPage.qml`）
+- `loginCard` 高度 `545` → `500`（更紧凑，仍完整容纳标题/用户名/密码/语言/按钮/状态）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 登录卡布局调整（语言行移到登录按钮上方）✅
 
 - **提交**：`e8a0104` `feat(ui): reorder login card - language row above login button, WPF-aligned spacing`

@@ -79,7 +79,7 @@ Item {
         Rectangle {
             id: loginCard
             width: 400
-            height: 545
+            height: 500
             radius: 15
             color: "white"
             border.color: "#DDDDDD"
