@@ -76,6 +76,8 @@ FIX = {
     "Return to Main Menu": "返回主菜单",
     "Finished ok=%1, passed=%2, failed=%3": "完成 ok=%1，通过=%2，失败=%3",
     "Hydrostatic Test": "水压试验",
+    "Test Standard": "试验标准",
+    "Cylinder Model %1": "气瓶型号 %1",
 }
 
 

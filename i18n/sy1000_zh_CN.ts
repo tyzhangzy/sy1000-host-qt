@@ -231,7 +231,7 @@
     <name>LoginPage</name>
     <message>
         <location filename="../qml/LoginPage.qml" line="12"/>
-        <location filename="../qml/LoginPage.qml" line="131"/>
+        <location filename="../qml/LoginPage.qml" line="154"/>
         <source>Login</source>
         <translation>登录</translation>
     </message>
@@ -244,29 +244,28 @@
         <translation type="vanished">Quanshen</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="92"/>
+        <location filename="../qml/LoginPage.qml" line="96"/>
         <source>User Login</source>
         <translation>用户登录</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="139"/>
+        <location filename="../qml/LoginPage.qml" line="162"/>
         <source>Click to sign in and enter the main menu</source>
         <translation>点击登录进入主菜单</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="143"/>
+        <location filename="../qml/LoginPage.qml" line="166"/>
         <source>Welcome, </source>
         <translation>欢迎，</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="144"/>
+        <location filename="../qml/LoginPage.qml" line="167"/>
         <source> (admin)</source>
         <translation>（管理员）</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="166"/>
         <source>Language:</source>
-        <translation>语言：</translation>
+        <translation type="vanished">语言：</translation>
     </message>
     <message>
         <source>Please sign in to continue</source>
@@ -277,7 +276,7 @@
         <translation type="vanished">用户名</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="120"/>
+        <location filename="../qml/LoginPage.qml" line="126"/>
         <source>Password</source>
         <translation>密码</translation>
     </message>
@@ -356,36 +355,37 @@
         <translation>主菜单</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="38"/>
+        <location filename="../qml/MainMenuPage.qml" line="39"/>
         <source>Test Functions</source>
         <translation>测试功能</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="47"/>
+        <location filename="../qml/MainMenuPage.qml" line="48"/>
         <source>Start Hydrostatic Test</source>
         <translation>开始水压试验</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="69"/>
+        <location filename="../qml/MainMenuPage.qml" line="77"/>
         <source>Management System</source>
         <translation>管理系统</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="80"/>
+        <location filename="../qml/MainMenuPage.qml" line="88"/>
         <source>Result Management</source>
         <translation>试验结果管理</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="81"/>
+        <location filename="../qml/MainMenuPage.qml" line="89"/>
         <source>User Management</source>
         <translation>用户管理</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="82"/>
+        <location filename="../qml/MainMenuPage.qml" line="90"/>
         <source>System Maintain</source>
         <translation>系统维护</translation>
     </message>
     <message>
+        <location filename="../qml/MainMenuPage.qml" line="118"/>
         <source>Log out Menu</source>
         <translation>登出菜单</translation>
     </message>
@@ -398,7 +398,6 @@
         <translation>连接状态</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="99"/>
         <source>Log out</source>
         <translation>退出登录</translation>
     </message>
@@ -781,7 +780,7 @@
     <name>TestPage</name>
     <message>
         <location filename="../qml/TestPage.qml" line="11"/>
-        <location filename="../qml/TestPage.qml" line="31"/>
+        <location filename="../qml/TestPage.qml" line="36"/>
         <source>Hydrostatic Test</source>
         <translation>水压试验</translation>
     </message>
@@ -794,12 +793,12 @@
         <translation type="vanished">试验压力 (MPa)</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="119"/>
+        <location filename="../qml/TestPage.qml" line="142"/>
         <source>Start</source>
         <translation>开始试验</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="125"/>
+        <location filename="../qml/TestPage.qml" line="148"/>
         <source>Stop</source>
         <translation>停止试验</translation>
     </message>
@@ -808,77 +807,77 @@
         <translation type="vanished">状态：</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="146"/>
+        <location filename="../qml/TestPage.qml" line="169"/>
         <source>Finished ok=%1, passed=%2, failed=%3</source>
         <translation>完成 ok=%1，通过=%2，失败=%3</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="107"/>
+        <location filename="../qml/TestPage.qml" line="130"/>
         <source>Pressure / Deformation</source>
         <translation>压力 / 变形</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="37"/>
+        <location filename="../qml/TestPage.qml" line="56"/>
         <source>Status: </source>
         <translation>状态：</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="42"/>
+        <location filename="../qml/TestPage.qml" line="65"/>
         <source>Cylinder pressure</source>
         <translation>气瓶压力</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="72"/>
+        <location filename="../qml/TestPage.qml" line="95"/>
         <source>%1 cylinder</source>
         <translation>%1 号气瓶</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="76"/>
+        <location filename="../qml/TestPage.qml" line="99"/>
         <source>Start Hydrostatic Test</source>
         <translation>开始水压试验</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="88"/>
+        <location filename="../qml/TestPage.qml" line="111"/>
         <source>Save Test Result</source>
         <translation>保存试验结果</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="89"/>
+        <location filename="../qml/TestPage.qml" line="112"/>
         <source>View Test Report</source>
         <translation>查看试验报告</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="90"/>
+        <location filename="../qml/TestPage.qml" line="113"/>
         <source>Return to Main Menu</source>
         <translation>返回主菜单</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="107"/>
+        <location filename="../qml/TestPage.qml" line="130"/>
         <source>Pressure (MPa)</source>
         <translation>压力 (MPa)</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="107"/>
+        <location filename="../qml/TestPage.qml" line="130"/>
         <source>Weight (g)</source>
         <translation>重量 (g)</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="110"/>
+        <location filename="../qml/TestPage.qml" line="133"/>
         <source>Sample 1</source>
         <translation>样品 1</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="110"/>
+        <location filename="../qml/TestPage.qml" line="133"/>
         <source>Sample 2</source>
         <translation>样品 2</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="111"/>
+        <location filename="../qml/TestPage.qml" line="134"/>
         <source>Sample 3</source>
         <translation>样品 3</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="111"/>
+        <location filename="../qml/TestPage.qml" line="134"/>
         <source>Sample 4</source>
         <translation>样品 4</translation>
     </message>
@@ -903,7 +902,7 @@
         <translation type="vanished">S4</translation>
     </message>
     <message>
-        <location filename="../qml/TestPage.qml" line="130"/>
+        <location filename="../qml/TestPage.qml" line="153"/>
         <source>Clear chart</source>
         <translation>清空曲线</translation>
     </message>
@@ -920,98 +919,100 @@
         <translation>试验准备</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="64"/>
+        <location filename="../qml/TestPreparationPage.qml" line="71"/>
         <source>Hydrostatic Test</source>
         <translation>水压试验</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="67"/>
+        <location filename="../qml/TestPreparationPage.qml" line="90"/>
         <source>Status: </source>
         <translation>状态：</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="69"/>
+        <location filename="../qml/TestPreparationPage.qml" line="98"/>
         <source>Cylinder pressure</source>
         <translation>气瓶压力</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="94"/>
+        <location filename="../qml/TestPreparationPage.qml" line="123"/>
         <source>Start Hydrostatic Test</source>
         <translation>开始水压试验</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="106"/>
+        <location filename="../qml/TestPreparationPage.qml" line="135"/>
         <source>Save Test Result</source>
         <translation>保存试验结果</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="107"/>
+        <location filename="../qml/TestPreparationPage.qml" line="136"/>
         <source>View Test Report</source>
         <translation>查看试验报告</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="108"/>
+        <location filename="../qml/TestPreparationPage.qml" line="137"/>
         <source>Return to Main Menu</source>
         <translation>返回主菜单</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="138"/>
+        <location filename="../qml/TestPreparationPage.qml" line="228"/>
+        <source>Cylinder Model %1</source>
+        <translation>气瓶型号 %1</translation>
+    </message>
+    <message>
         <source>Input Test Standard</source>
         <translation>输入试验标准</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="148"/>
+        <location filename="../qml/TestPreparationPage.qml" line="167"/>
         <source>Test Standard</source>
         <translation>试验标准</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="152"/>
+        <location filename="../qml/TestPreparationPage.qml" line="178"/>
         <source>Working Pressure</source>
         <translation>公称工作压力</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="159"/>
+        <location filename="../qml/TestPreparationPage.qml" line="185"/>
         <source>Testing Pressure</source>
         <translation>试验压力</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="166"/>
+        <location filename="../qml/TestPreparationPage.qml" line="192"/>
         <source>Hold Time</source>
         <translation>保压时间</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="169"/>
+        <location filename="../qml/TestPreparationPage.qml" line="195"/>
         <source>sec</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="173"/>
+        <location filename="../qml/TestPreparationPage.qml" line="199"/>
         <source>Residual Deformation Rate</source>
         <translation>允许容积残余变形率</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="182"/>
-        <location filename="../qml/TestPreparationPage.qml" line="261"/>
+        <location filename="../qml/TestPreparationPage.qml" line="208"/>
+        <location filename="../qml/TestPreparationPage.qml" line="284"/>
         <source>Confirm</source>
         <translation>确 定</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="202"/>
         <source>Input Cylinder %1 Info</source>
         <translation>输入 %1 号气瓶信息</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="212"/>
         <source>Cylinder Model</source>
         <translation>气瓶型号</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="257"/>
+        <location filename="../qml/TestPreparationPage.qml" line="280"/>
         <source>Appearance Inspection</source>
         <translation>外观检测评估</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="287"/>
+        <location filename="../qml/TestPreparationPage.qml" line="311"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -1020,32 +1021,32 @@
         <translation>开始试验</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="297"/>
+        <location filename="../qml/TestPreparationPage.qml" line="321"/>
         <source>Please enter cylinder model.</source>
         <translation>请输入气瓶型号。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="298"/>
+        <location filename="../qml/TestPreparationPage.qml" line="322"/>
         <source>Please enter manufacturer.</source>
         <translation>请输入制造厂商。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="299"/>
+        <location filename="../qml/TestPreparationPage.qml" line="323"/>
         <source>Please enter a valid cylinder volume.</source>
         <translation>请输入有效的气瓶容积。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="300"/>
+        <location filename="../qml/TestPreparationPage.qml" line="324"/>
         <source>Please enter user company.</source>
         <translation>请输入使用单位。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="301"/>
+        <location filename="../qml/TestPreparationPage.qml" line="325"/>
         <source>Please enter serial No.</source>
         <translation>请输入产品编号。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="302"/>
+        <location filename="../qml/TestPreparationPage.qml" line="326"/>
         <source>Please complete appearance inspection before saving.</source>
         <translation>请完成外观检测评估后再保存。</translation>
     </message>
@@ -1078,22 +1079,22 @@
         <translation type="vanished">产品型号</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="218"/>
+        <location filename="../qml/TestPreparationPage.qml" line="241"/>
         <source>Manufacturer</source>
         <translation>生产厂家</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="224"/>
+        <location filename="../qml/TestPreparationPage.qml" line="247"/>
         <source>Cylinder Volume</source>
         <translation>气瓶容积</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="239"/>
+        <location filename="../qml/TestPreparationPage.qml" line="262"/>
         <source>User Company</source>
         <translation>使用单位</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="245"/>
+        <location filename="../qml/TestPreparationPage.qml" line="268"/>
         <source>Serial No</source>
         <translation>产品编号</translation>
     </message>
