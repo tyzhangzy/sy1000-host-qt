@@ -25,8 +25,17 @@ Rectangle {
                 color: "white"; font.pixelSize: 18; font.bold: true
             }
         }
-        FieldRow { id: valNo; label: qsTr("Valve No") + ":" }
-        FieldRow { id: valThreadCond; label: qsTr("Thread condition") + ":" }
+        Row {
+            spacing: 8
+            Label { text: qsTr("Valve No") + ":"; font.pixelSize: 16; color: "#333"; anchors.verticalCenter: parent.verticalCenter }
+            TextField { id: valNo; width: 220; height: 40; Material.background: "transparent"; Material.underlineColor: "transparent"; padding: 4
+                Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 1; color: "#9E9E9E" }
+            }
+            Label { text: qsTr("Thread condition") + ":"; font.pixelSize: 16; color: "#333"; anchors.verticalCenter: parent.verticalCenter }
+            TextField { id: valThreadCond; width: 220; height: 40; Material.background: "transparent"; Material.underlineColor: "transparent"; padding: 4
+                Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 1; color: "#9E9E9E" }
+            }
+        }
         FieldRow { id: valAirtight; label: qsTr("Air tightness") + ":" }
         CheckBox { id: valDiaphragm; text: qsTr("Diaphragm replaced") }
         FieldRow { id: valOther; label: qsTr("Other") + ":" }

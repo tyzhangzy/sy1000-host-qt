@@ -25,8 +25,17 @@ Rectangle {
                 color: "white"; font.pixelSize: 18; font.bold: true
             }
         }
-        FieldRow { id: thrSpec; label: qsTr("Specification") + ":" }
-        FieldRow { id: thrCond; label: qsTr("Condition") + ":" }
+        Row {
+            spacing: 8
+            Label { text: qsTr("Specification") + ":"; font.pixelSize: 16; color: "#333"; anchors.verticalCenter: parent.verticalCenter }
+            TextField { id: thrSpec; width: 220; height: 40; Material.background: "transparent"; Material.underlineColor: "transparent"; padding: 4
+                Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 1; color: "#9E9E9E" }
+            }
+            Label { text: qsTr("Condition") + ":"; font.pixelSize: 16; color: "#333"; anchors.verticalCenter: parent.verticalCenter }
+            TextField { id: thrCond; width: 220; height: 40; Material.background: "transparent"; Material.underlineColor: "transparent"; padding: 4
+                Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 1; color: "#9E9E9E" }
+            }
+        }
         FieldRow { id: thrEval; label: qsTr("Evaluation") + ":" }
         FieldRow { id: thrOther; label: qsTr("Other") + ":" }
         Row {
