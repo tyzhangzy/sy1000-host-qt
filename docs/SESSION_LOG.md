@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 外观检查对话框对齐 WPF ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`a808a0d` `feat(ui): inspection dialog radios + save/reset buttons match WPF`
 - **范围**：`qml/AppearanceInspectionDialog.qml`（"外观检测评估"按钮加载的对话框）
 
 ### 实现（对照 WPF `AppearenceInspectionWindow.xaml`）
