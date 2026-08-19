@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-08-19 · 主菜单右下角按钮改为"返回主菜单" ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：主菜单右下角按钮文案由"退出登录"改为"返回主菜单"
+
+### 实现
+- `qml/MainMenuPage.qml`：`logoutBtn` 文案 `qsTr("Log out")` → `qsTr("Return to Main Menu")`（"返回主菜单"），宽 200→220
+- 翻译：新增 `Return to Main Menu`→返回主菜单；清理 6 个 Drawer 文案的 unfinished 标记（Connection Status 等）
+- `tools/correct_translations.py` 补充这些词条
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；ts 0 unfinished；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 修复登录后主菜单标题栏不显示 ✅
 
 - **提交**：`6930f06` `fix(ui): show title bar after login (header visible based on isLoginPage)`

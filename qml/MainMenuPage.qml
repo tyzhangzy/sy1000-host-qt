@@ -100,11 +100,11 @@ Page {
         }
     }
 
-    // Bottom-right: log out button (WPF LogoutButton).
+    // Bottom-right: return-to-main-menu button (WPF LogoutButton).
     Button {
         id: logoutBtn
-        text: qsTr("Log out")
-        width: 200; height: 60
+        text: qsTr("Return to Main Menu")
+        width: 220; height: 60
         anchors.right: parent.right; anchors.bottom: parent.bottom
         anchors.margins: 50
         font.pixelSize: 20; font.bold: true
