@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 主菜单卡片风格对齐 WPF（MaterialDesignRaisedButton）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`16b192c` `feat(ui): menu cards match WPF MaterialDesignRaisedButton style`
 - **范围**：主菜单功能卡片（测试功能 + 管理系统三按钮）风格对齐 WPF 的 MaterialDesignRaisedButton
 
 ### 调整（`qml/ShadowCard.qml`）
