@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 试验数据闭环补全（曲线点 + 环境数据）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`b9e46b0` `feat(services,dao): persist curve points + environment data in test result`
 - **范围**：实现 WPF 中此前 Qt 未实现的部分——试验结果数据的曲线与环境信息
 
 ### 实现
