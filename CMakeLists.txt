@@ -128,6 +128,10 @@ qt_add_resources(SY1000 "app"
     qml/UserManagementPage.qml
     qml/SystemMaintainPage.qml
     qml/AppearanceInspectionPage.qml
+    qml/InspectionExternal.qml
+    qml/InspectionInternal.qml
+    qml/InspectionThread.qml
+    qml/InspectionValve.qml
     qml/HydroTestMessageDialog.qml
     qml/ReportViewPage.qml
     qml/ShadowCard.qml

@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-08-19 · 外观检查四个分组独立组件化 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：新建 4 个检查分组组件，页面只负责加载
+
+### 实现
+- 新建 `InspectionExternal / InspectionInternal / InspectionThread / InspectionValve.qml`：每个是独立分组组件（深蓝标题条 + 字段"标签:下划线输入框" + 评定 3 单选框），各自封装 `load/save/reset`
+- `AppearanceInspectionPage.qml` 只加载 4 个组件（传 `inspection` 对象），保存/重置调各组件方法
+- CMake 资源加入 4 个组件
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 外观检查四组布局统一 ✅
 
 - **提交**：`b48f6de` `feat(ui): unify layout of all four inspection groups`
