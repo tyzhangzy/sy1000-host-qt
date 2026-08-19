@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-08-19 · 外观检查对话框对齐 WPF ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/AppearanceInspectionDialog.qml`（"外观检测评估"按钮加载的对话框）
+
+### 实现（对照 WPF `AppearenceInspectionWindow.xaml`）
+- 标题改为"复合气瓶外观检查评估表"
+- 四个分组（外部/内部/螺纹/阀）评定结果由 `ComboBox` 改为 **`RadioButton`（合格/待修复/待更换/判废）**
+- 底部按钮改为自定义 **"保存并关闭"（Accept）+ "重置"（Reset，清空全部字段）**
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 准备页右侧 5 卡高度撑满到底部 ✅
 
 - **提交**：`5eb664e` `feat(ui): prep cards fill height to window bottom`

@@ -4,9 +4,13 @@
 <context>
     <name>AppearanceInspectionDialog</name>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="13"/>
         <source>Appearance Inspection - Sample %1</source>
-        <translation>外观检测 - 样品 %1</translation>
+        <translation type="vanished">外观检测 - 样品 %1</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="13"/>
+        <source>Appearance Inspection</source>
+        <translation>外观检测评估</translation>
     </message>
     <message>
         <location filename="../qml/AppearanceInspectionDialog.qml" line="19"/>
@@ -29,189 +33,199 @@
         <translation>判废</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="48"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="60"/>
         <source>Inspector</source>
         <translation>检验员</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="53"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="65"/>
         <source>Name</source>
         <translation>姓名</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="54"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="66"/>
         <source>Inspector name</source>
         <translation>检验员姓名</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="55"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="67"/>
         <source>Cert No</source>
         <translation>证书号</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="56"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="68"/>
         <source>Certificate No</source>
         <translation>证书号</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="57"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="69"/>
         <source>Date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="63"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="75"/>
         <source>External</source>
         <translation>外部检查</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="69"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="98"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="121"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="143"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="81"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="113"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="139"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="164"/>
         <source>Result</source>
         <translation>评定结果</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="74"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="89"/>
         <source>Thermal damage</source>
         <translation>热损伤迹象</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="75"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="90"/>
         <source>Scratch</source>
         <translation>有无划伤</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="76"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="91"/>
         <source>Wear</source>
         <translation>有无磨损</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="80"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="95"/>
         <source>Delamination</source>
         <translation>有无分层</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="81"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="96"/>
         <source>Deformation</source>
         <translation>有无异常变形</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="83"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="84"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="106"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="107"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="98"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="99"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="124"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="125"/>
         <source>Defect location</source>
         <translation>缺陷位置描述</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="85"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="108"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="130"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="153"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="100"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="126"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="151"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="177"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="86"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="109"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="131"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="154"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="101"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="127"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="152"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="178"/>
         <source>Other notes</source>
         <translation>其他备注</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="92"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="107"/>
         <source>Internal</source>
         <translation>内部检查</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="101"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="119"/>
         <source>Smell present</source>
         <translation>有无气味</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="102"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="120"/>
         <source>Debris</source>
         <translation>杂物的种类和数量</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="103"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="121"/>
         <source>Debris description</source>
         <translation>杂物描述</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="104"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="105"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="122"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="123"/>
         <source>Surface condition</source>
         <translation>内表面状况描述</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="115"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="133"/>
         <source>Thread</source>
         <translation>瓶口螺纹检查</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="124"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="145"/>
         <source>Specification</source>
         <translation>规格</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="125"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="146"/>
         <source>Thread specification</source>
         <translation>螺纹规格</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="126"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="147"/>
         <source>Condition</source>
         <translation>状况</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="127"/>
         <location filename="../qml/AppearanceInspectionDialog.qml" line="148"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="172"/>
         <source>Thread condition</source>
         <translation>螺纹状况描述</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="128"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="149"/>
         <source>Evaluation</source>
         <translation>评定</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="129"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="150"/>
         <source>Thread evaluation</source>
         <translation>螺纹状况评估</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="137"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="158"/>
         <source>Valve</source>
         <translation>气瓶阀检查</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="146"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="170"/>
         <source>Valve No</source>
         <translation>气瓶阀编号</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="147"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="171"/>
         <source>Valve number</source>
         <translation>阀号</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="149"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="173"/>
         <source>Valve thread condition</source>
         <translation>连接螺纹状况描述</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="150"/>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="151"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="174"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="175"/>
         <source>Air tightness</source>
         <translation>气密状况描述</translation>
     </message>
     <message>
-        <location filename="../qml/AppearanceInspectionDialog.qml" line="152"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="176"/>
         <source>Diaphragm replaced</source>
         <translation>爆破片是否更换</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="187"/>
+        <source>Save and Close</source>
+        <translation>保存并关闭</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="188"/>
+        <source>Reset</source>
+        <translation>重置</translation>
     </message>
 </context>
 <context>
@@ -954,7 +968,7 @@
         <translation>返回主菜单</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="228"/>
+        <location filename="../qml/TestPreparationPage.qml" line="229"/>
         <source>Cylinder Model %1</source>
         <translation>气瓶型号 %1</translation>
     </message>
@@ -963,38 +977,38 @@
         <translation>输入试验标准</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="167"/>
+        <location filename="../qml/TestPreparationPage.qml" line="168"/>
         <source>Test Standard</source>
         <translation>试验标准</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="178"/>
+        <location filename="../qml/TestPreparationPage.qml" line="179"/>
         <source>Working Pressure</source>
         <translation>公称工作压力</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="185"/>
+        <location filename="../qml/TestPreparationPage.qml" line="186"/>
         <source>Testing Pressure</source>
         <translation>试验压力</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="192"/>
+        <location filename="../qml/TestPreparationPage.qml" line="193"/>
         <source>Hold Time</source>
         <translation>保压时间</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="195"/>
+        <location filename="../qml/TestPreparationPage.qml" line="196"/>
         <source>sec</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="199"/>
+        <location filename="../qml/TestPreparationPage.qml" line="200"/>
         <source>Residual Deformation Rate</source>
         <translation>允许容积残余变形率</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="208"/>
-        <location filename="../qml/TestPreparationPage.qml" line="284"/>
+        <location filename="../qml/TestPreparationPage.qml" line="209"/>
+        <location filename="../qml/TestPreparationPage.qml" line="285"/>
         <source>Confirm</source>
         <translation>确 定</translation>
     </message>
@@ -1007,12 +1021,12 @@
         <translation>气瓶型号</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="280"/>
+        <location filename="../qml/TestPreparationPage.qml" line="281"/>
         <source>Appearance Inspection</source>
         <translation>外观检测评估</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="311"/>
+        <location filename="../qml/TestPreparationPage.qml" line="312"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -1021,32 +1035,32 @@
         <translation>开始试验</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="321"/>
+        <location filename="../qml/TestPreparationPage.qml" line="322"/>
         <source>Please enter cylinder model.</source>
         <translation>请输入气瓶型号。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="322"/>
+        <location filename="../qml/TestPreparationPage.qml" line="323"/>
         <source>Please enter manufacturer.</source>
         <translation>请输入制造厂商。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="323"/>
+        <location filename="../qml/TestPreparationPage.qml" line="324"/>
         <source>Please enter a valid cylinder volume.</source>
         <translation>请输入有效的气瓶容积。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="324"/>
+        <location filename="../qml/TestPreparationPage.qml" line="325"/>
         <source>Please enter user company.</source>
         <translation>请输入使用单位。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="325"/>
+        <location filename="../qml/TestPreparationPage.qml" line="326"/>
         <source>Please enter serial No.</source>
         <translation>请输入产品编号。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="326"/>
+        <location filename="../qml/TestPreparationPage.qml" line="327"/>
         <source>Please complete appearance inspection before saving.</source>
         <translation>请完成外观检测评估后再保存。</translation>
     </message>
@@ -1079,22 +1093,22 @@
         <translation type="vanished">产品型号</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="241"/>
+        <location filename="../qml/TestPreparationPage.qml" line="242"/>
         <source>Manufacturer</source>
         <translation>生产厂家</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="247"/>
+        <location filename="../qml/TestPreparationPage.qml" line="248"/>
         <source>Cylinder Volume</source>
         <translation>气瓶容积</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="262"/>
+        <location filename="../qml/TestPreparationPage.qml" line="263"/>
         <source>User Company</source>
         <translation>使用单位</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="268"/>
+        <location filename="../qml/TestPreparationPage.qml" line="269"/>
         <source>Serial No</source>
         <translation>产品编号</translation>
     </message>
