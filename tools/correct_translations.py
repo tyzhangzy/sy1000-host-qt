@@ -45,6 +45,28 @@ FIX = {
     "Internal:": "内部检查：",
     "Thread:": "瓶口螺纹检查：",
     "Valve:": "气瓶阀检查：",
+    # Test preparation page (WPF StandardCard / SampleCard terminology).
+    "Input Test Standard": "输入试验标准",
+    "Working Pressure": "公称工作压力",
+    "Testing Pressure": "试验压力",
+    "Hold Time": "保压时间",
+    "sec": "秒",
+    "Residual Deformation Rate": "允许容积残余变形率",
+    "Confirm": "确 定",
+    "Input Cylinder %1 Info": "输入 %1 号气瓶信息",
+    "Cylinder Model": "气瓶型号",
+    "Cylinder Volume": "气瓶容积",
+    "User Company": "使用单位",
+    "Appearance Inspection": "外观检测评估",
+    "Start Test": "开始试验",
+    "Back": "返回",
+    "OK": "确定",
+    "Please enter cylinder model.": "请输入气瓶型号。",
+    "Please enter manufacturer.": "请输入制造厂商。",
+    "Please enter a valid cylinder volume.": "请输入有效的气瓶容积。",
+    "Please enter user company.": "请输入使用单位。",
+    "Please enter serial No.": "请输入产品编号。",
+    "Please complete appearance inspection before saving.": "请完成外观检测评估后再保存。",
 }
 
 

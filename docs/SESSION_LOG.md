@@ -5,6 +5,25 @@
 
 ---
 
+## 2026-08-19 · 测试准备页控件/布局对齐 WPF ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/TestPreparationPage.qml` 重写，与 WPF TestPreparationPage 控件内容和布局一致
+
+### 实现
+- 一行 5 张卡（WPF Grid 5 列）：标准卡 + 4 张样品卡
+- 每卡顶部 Amber 标题栏（ColorZone SecondaryMid + ☰ hamburger + 标题）
+- **标准卡**（StandardCardUserControl）：试验标准(GB/T9251-2022)、公称工作压力(30 MPa)、试验压力(45 MPa)、保压时间(30 秒)、允许容积残余变形率(5%) + "确 定"
+- **样品卡**（SampleCardUserControl）：气瓶型号、制造厂商、气瓶容积(L)、使用单位、产品编号 + "外观检测评估"/"确 定"
+- 底部"开始试验"（转入 TestPage）/ "返回"
+- 样品"确 定"校验对齐 WPF ValidateSampleData；标准卡确 定写入压力
+- 复用 `AppearanceInspectionDialog`
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 拷贝 WPF 图片资源到 Qt 并注册 ✅
 
 - **提交**：`8171f83` `assets(wpf): copy WPF image resources into Qt and register in qrc`
