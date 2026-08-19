@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 测试准备页补 MainTestWindow 布局（修正）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`726b535` `feat(ui): prep page gets MainTestWindow top bar + left column`
 - **范围**：用户点"开始水压试验"进入的是准备页 `TestPreparationPage.qml`，上一版误把布局加到了执行页 `TestPage`；本版把 MainTestWindow 布局补到准备页
 
 ### 实现（`qml/TestPreparationPage.qml`）
