@@ -41,6 +41,11 @@ public:
     // Full appearance inspection data (index 1..4) captured on the prep page;
     // written into the saved result via buildResult().
     Q_INVOKABLE void setSampleInspection(int index, const QVariantMap &inspection);
+    // Test-standard text fields (name/hold/rate) captured on the prep page.
+    Q_INVOKABLE void setTestStandard(const QString &name, int holdTime, int residualRate);
+    // Formatted strings shown in the left column of the test page.
+    Q_INVOKABLE QString testStandardInfo() const;
+    Q_INVOKABLE QString sampleInfo(int index) const;
 
     int state() const;
     QString status() const { return m_status; }
@@ -77,6 +82,10 @@ private:
     QString m_testerCompany;
     std::array<SampleInfo, 5> m_samples;
     std::array<SampleInspectionData, 5> m_inspections;
+    // Test-standard fields (from the preparation page).
+    QString m_standardName = QStringLiteral("GB/T9251-2022");
+    int m_holdTime = 30;
+    double m_residualRate = 3.0;
     // Sampled pressure/weight points collected during the test (report curve).
     std::vector<PressureWeightPoint> m_curvePoints;
     QTimer m_sampleTimer;

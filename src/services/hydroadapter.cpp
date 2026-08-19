@@ -185,6 +185,34 @@ void HydroTestControllerAdapter::setSampleInspection(int index, const QVariantMa
         m_inspections[index].inspectionDate = std::chrono::system_clock::now();
 }
 
+void HydroTestControllerAdapter::setTestStandard(const QString &name, int holdTime, int residualRate)
+{
+    m_standardName = name;
+    m_holdTime = holdTime;
+    m_residualRate = residualRate;
+}
+
+QString HydroTestControllerAdapter::testStandardInfo() const
+{
+    const auto &o = m_controller.options();
+    return QStringLiteral("试验标准: %1\n公称工作压力: %2 MPa\n试验压力: %3 MPa\n"
+                          "保压时间: %4 秒\n允许容积残余变形率: %5%")
+        .arg(m_standardName)
+        .arg(o.workingPressure)
+        .arg(o.testingPressure)
+        .arg(m_holdTime)
+        .arg(m_residualRate);
+}
+
+QString HydroTestControllerAdapter::sampleInfo(int index) const
+{
+    if (index < 1 || index > 4)
+        return QString();
+    const auto &s = m_samples[index];
+    return QStringLiteral("气瓶型号: %1\n制造厂商: %2\n产品编号: %3\n气瓶容积: %4 L")
+        .arg(s.model, s.manufacturer, s.serialNo, QString::number(s.volume));
+}
+
 int HydroTestControllerAdapter::state() const
 {
     return static_cast<int>(m_controller.state());

@@ -126,6 +126,7 @@ Page {
                         onClicked: {
                             hydro.setWorkingPressure(workingPressure)
                             hydro.setTestingPressure(testingPressure)
+                            hydro.setTestStandard(standardName, holdTime, residualRate)
                         }
                     }
                 }

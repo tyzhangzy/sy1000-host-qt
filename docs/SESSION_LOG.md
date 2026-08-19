@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-08-19 · 水压试验页布局对齐 WPF MainTestWindow ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/TestPage.qml` 重写 + hydroadapter 增加标准/样品信息接口
+
+### 实现
+- **顶栏**（WPF ColorZone）：测试状态显示框（hydro.status/state）+ "气瓶压力"标签 + 压力值编辑框（currentPressure + MPa）
+- **左侧列**（WPF MainTestWindow 左列）：
+  - 上半：使用标准（hydro.testStandardInfo()）+ 1..4 号气瓶（hydro.sampleInfo(i)）+ "开始水压试验"按钮
+  - 下半："保存试验结果 / 查看试验报告 / 返回主菜单"
+- 右侧：实时双轴曲线 + Start/Stop/Clear
+- `hydroadapter`：新增 `setTestStandard/testStandardInfo/sampleInfo`；准备页确 定时保存标准名/保压/变形率
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 测试准备页控件/布局对齐 WPF ✅
 
 - **提交**：`89c65e3` `feat(ui): test prep page matches WPF card layout/controls`

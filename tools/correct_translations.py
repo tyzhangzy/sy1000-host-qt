@@ -67,6 +67,14 @@ FIX = {
     "Please enter user company.": "请输入使用单位。",
     "Please enter serial No.": "请输入产品编号。",
     "Please complete appearance inspection before saving.": "请完成外观检测评估后再保存。",
+    # Hydrostatic test page (WPF MainTestWindow terminology).
+    "Cylinder pressure": "气瓶压力",
+    "Status: ": "状态：",
+    "%1 cylinder": "%1 号气瓶",
+    "Save Test Result": "保存试验结果",
+    "View Test Report": "查看试验报告",
+    "Return to Main Menu": "返回主菜单",
+    "Finished ok=%1, passed=%2, failed=%3": "完成 ok=%1，通过=%2，失败=%3",
 }
 
 
