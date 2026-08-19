@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 外观检查四个分组独立组件化 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`9602941` `refactor(ui): inspection groups as four independent components`
 - **范围**：新建 4 个检查分组组件，页面只负责加载
 
 ### 实现
