@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 回退 5 卡标题栏改动，恢复第一个字段标签 + 修复登录 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`2533201` `revert(ui): restore prep card first-field labels; fix login username prop`
 - **范围**：撤销 `f53f31b` 的 5 卡标题栏改动，恢复字段区第一个控件标签
 
 ### 实现
