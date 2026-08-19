@@ -5,6 +5,20 @@
 
 ---
 
+## 2026-08-19 · 主菜单卡片组件化（Repeater + 数据驱动）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：主菜单功能卡片用 `ShadowCard` 组件 + `Repeater` + 数据模型序号化，避免重复代码
+
+### 实现（`qml/MainMenuPage.qml`）
+- 测试功能 / 管理系统区的卡片改为 `Repeater` + 数据 model（`{icon, text, page}`）
+- `ShadowCard` 作为唯一复用组件，通过 `modelData` 传入不同 icon/text/page，按序号渲染
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`MainMenuPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 主菜单对齐 WPF MenuWindow（分区 + 布局）✅
 
 - **提交**：`0d265e2` `feat(ui): main menu two-section layout matching WPF MenuWindow + zh_CN`

@@ -36,10 +36,16 @@ Page {
                         color: "#303F9F"
                     }
                     Rectangle { width: parent.width; height: 1; color: "#303F9F" }
-                    ShadowCard {
-                        title: qsTr("Start Hydrostatic Test")
-                        icon: "▶"
-                        onClicked: stack.push("TestPreparationPage.qml")
+                    // Test-function card (reused component, data-driven).
+                    Repeater {
+                        model: [
+                            { icon: "▶", text: qsTr("Start Hydrostatic Test"), page: "TestPreparationPage.qml" }
+                        ]
+                        delegate: ShadowCard {
+                            title: modelData.text
+                            icon: modelData.icon
+                            onClicked: stack.push(modelData.page)
+                        }
                     }
                 }
             }
@@ -61,22 +67,20 @@ Page {
                         color: "#303F9F"
                     }
                     Rectangle { width: parent.width; height: 1; color: "#303F9F" }
+                    // Management cards (reused component, data-driven by index).
                     Row {
                         spacing: 20
-                        ShadowCard {
-                            title: qsTr("Result Management")
-                            icon: "≡"
-                            onClicked: stack.push("ResultManagementPage.qml")
-                        }
-                        ShadowCard {
-                            title: qsTr("User Management")
-                            icon: "☺"
-                            onClicked: stack.push("UserManagementPage.qml")
-                        }
-                        ShadowCard {
-                            title: qsTr("System Maintain")
-                            icon: "⚙"
-                            onClicked: stack.push("SystemMaintainPage.qml")
+                        Repeater {
+                            model: [
+                                { icon: "≡", text: qsTr("Result Management"), page: "ResultManagementPage.qml" },
+                                { icon: "☺", text: qsTr("User Management"), page: "UserManagementPage.qml" },
+                                { icon: "⚙", text: qsTr("System Maintain"), page: "SystemMaintainPage.qml" }
+                            ]
+                            delegate: ShadowCard {
+                                title: modelData.text
+                                icon: modelData.icon
+                                onClicked: stack.push(modelData.page)
+                            }
                         }
                     }
                 }
