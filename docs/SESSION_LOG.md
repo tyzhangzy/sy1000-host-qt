@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 修复主菜单分区不显示（登录后误显示管理系统）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`fa14648` `fix(ui): main menu section rectangles now sized by content (was showing only management)`
 - **范围**：登录后进入主菜单却只显示"管理系统"区——根因是分区 Rectangle 高度异常
 
 ### 根因
