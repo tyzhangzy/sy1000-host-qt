@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录卡阴影增强（确保可见）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`73fbbb0` `feat(ui): strengthen login card downward shadow to be clearly visible`
 - **范围**：此前阴影 alpha 过弱在浅灰背景上不可见，增强为明显的向下阴影
 
 ### 修复（`qml/LoginPage.qml`）
