@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 外观检查对话框重新布局（修复混乱）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`be8f282` `feat(ui): redesign inspection dialog layout (wider, tidy rows)`
 - **范围**：`qml/AppearanceInspectionDialog.qml`（"复合气瓶外观检查评估表"）
 - **实现**：重写布局解决混乱——对话框加宽 860、加大间距、字段"标签:输入框"一行对齐（标签 160 + 输入框填满）、每组评定 3 个单选框（合格/待修复/判废）、底部"保存并关闭/重置"
 - **验证**：✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
