@@ -1,12 +1,19 @@
 import QtQuick
 import QtQuick.Controls
 
+// Result management (B5): split into two tabs matching the WPF windows.
+//   Tab 1 "Test Results"       -> TestResultManagementWindow columns
+//   Tab 2 "Unified Results"    -> UnifiedTestResultManagementWindow columns
 Page {
     id: resultPage
     property string title: qsTr("Result Management")
+    property var data: []
 
-    function refresh() {
-        list.model = resultService.results()
+    function refresh() { data = resultService.results() }
+    function statusLabel(i) {
+        var labels = [qsTr("Not Tested"), qsTr("In Progress"), qsTr("Passed"), qsTr("Failed"),
+                      qsTr("Qualified"), qsTr("To Repair"), qsTr("To Replace"), qsTr("Scrapped")]
+        return (i === undefined || i < 0 || i >= labels.length) ? "-" : labels[i]
     }
 
     Column {
@@ -15,47 +22,96 @@ Page {
         spacing: 8
 
         Label {
-            text: qsTr("Saved Test Results")
+            text: qsTr("Result Management")
             font.pixelSize: 20
             font.bold: true
         }
 
-        ListView {
-            id: list
+        TabBar {
+            id: tabBar
             width: parent.width
-            height: parent.height - 80
-            clip: true
-            model: []
+            TabButton { text: qsTr("Test Results") }
+            TabButton { text: qsTr("Unified Results") }
+        }
 
-            header: Rectangle {
-                width: parent.width
-                height: 28
-                color: "#eee"
-                Row {
+        StackLayout {
+            width: parent.width
+            height: parent.height - tabBar.height - 78
+            currentIndex: tabBar.currentIndex
+
+            // ===== Tab 1: TestResultManagementWindow-style =====
+            Item {
+                Column {
                     anchors.fill: parent
-                    anchors.margins: 8
-                    Label { text: qsTr("Serial"); width: 150; font.bold: true }
-                    Label { text: qsTr("Tester"); width: 100; font.bold: true }
-                    Label { text: qsTr("Manufacturer"); width: 120; font.bold: true }
-                    Label { text: qsTr("Rate(%)"); width: 80; font.bold: true }
+                    spacing: 4
+                    Rectangle {  // header
+                        width: parent.width; height: 28; color: "#eee"
+                        Row { anchors.fill: parent; anchors.margins: 8
+                            Label { text: qsTr("Tester"); width: 120; font.bold: true }
+                            Label { text: qsTr("Date"); width: 130; font.bold: true }
+                            Label { text: qsTr("Model"); width: 120; font.bold: true }
+                            Label { text: qsTr("Serial No"); width: 150; font.bold: true }
+                            Label { text: qsTr("Manufacturer"); width: 160; font.bold: true }
+                        }
+                    }
+                    ListView {
+                        width: parent.width; height: parent.height - 32; clip: true
+                        model: resultPage.data
+                        delegate: Rectangle {
+                            width: parent.width; height: 34
+                            color: index % 2 ? "#fafafa" : "#ffffff"
+                            Row { anchors.fill: parent; anchors.margins: 8
+                                Label { text: modelData.tester || "-"; width: 120; anchors.verticalCenter: parent.verticalCenter }
+                                Label { text: modelData.date || "-"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                                Label { text: modelData.sampleModel || "-"; width: 120; anchors.verticalCenter: parent.verticalCenter }
+                                Label { text: modelData.sampleSerial || "-"; width: 150; anchors.verticalCenter: parent.verticalCenter }
+                                Label { text: modelData.manufacturer || "-"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                                Button {
+                                    text: qsTr("Delete")
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    onClicked: { resultService.removeResult(modelData.id); resultPage.refresh() }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
-            delegate: Rectangle {
-                width: parent.width
-                height: 36
-                color: index % 2 ? "#fafafa" : "#ffffff"
-                Row {
+
+            // ===== Tab 2: UnifiedTestResultManagementWindow-style =====
+            Item {
+                Column {
                     anchors.fill: parent
-                    anchors.margins: 8
-                    Label { text: modelData.serial; width: 150 }
-                    Label { text: modelData.tester; width: 100 }
-                    Label { text: modelData.manufacturer; width: 120 }
-                    Label { text: modelData.rate.toFixed(2); width: 80 }
-                    Button {
-                        text: qsTr("Detail")
-                        anchors.verticalCenter: parent.verticalCenter
-                        onClicked: stack.push("ResultDetailsPage.qml", { resultId: modelData.id })
+                    spacing: 4
+                    Rectangle {  // header
+                        width: parent.width; height: 28; color: "#eee"
+                        Row { anchors.fill: parent; anchors.margins: 8
+                            Label { text: qsTr("Manufacturer"); width: 150; font.bold: true }
+                            Label { text: qsTr("Cylinder No"); width: 140; font.bold: true }
+                            Label { text: qsTr("Date"); width: 140; font.bold: true }
+                            Label { text: qsTr("Tester"); width: 120; font.bold: true }
+                            Label { text: qsTr("Result"); width: 120; font.bold: true }
+                        }
+                    }
+                    ListView {
+                        width: parent.width; height: parent.height - 32; clip: true
+                        model: resultPage.data
+                        delegate: Rectangle {
+                            width: parent.width; height: 34
+                            color: index % 2 ? "#fafafa" : "#ffffff"
+                            Row { anchors.fill: parent; anchors.margins: 8
+                                Label { text: modelData.manufacturer || "-"; width: 150; anchors.verticalCenter: parent.verticalCenter }
+                                Label { text: modelData.sampleSerial || "-"; width: 140; anchors.verticalCenter: parent.verticalCenter }
+                                Label { text: modelData.date || "-"; width: 140; anchors.verticalCenter: parent.verticalCenter }
+                                Label { text: modelData.tester || "-"; width: 120; anchors.verticalCenter: parent.verticalCenter }
+                                Label { text: resultPage.statusLabel(modelData.overall); width: 120; anchors.verticalCenter: parent.verticalCenter }
+                                Button {
+                                    text: qsTr("Details")
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    onClicked: stack.push("ResultDetailsPage.qml", { resultId: modelData.id })
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -70,3 +126,4 @@ Page {
 
     Component.onCompleted: refresh()
 }
+

@@ -24,6 +24,8 @@ QVariantList ResultServiceAdapter::results() const
         m[QStringLiteral("tester")] = QString::fromStdString(r.testerName);
         m[QStringLiteral("company")] = QString::fromStdString(r.testerCompany);
         m[QStringLiteral("manufacturer")] = QString::fromStdString(r.sample.manufacturer);
+        m[QStringLiteral("sampleModel")] = QString::fromStdString(r.sample.sampleModel);
+        m[QStringLiteral("sampleSerial")] = QString::fromStdString(r.sample.serialNo);
         m[QStringLiteral("overall")] = static_cast<int>(r.sample.overallResult);
         m[QStringLiteral("rate")] = r.sample.hydroStaticTest.residualDeformationRate;
         const auto t = std::chrono::system_clock::to_time_t(r.testDate);

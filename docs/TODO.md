@@ -19,6 +19,7 @@
 - **A2 测试报告查看**：由于 Qt Pdf 模块未安装，改用 A4 风格 QML 报告预览页（`ReportViewPage.qml`）+ 一键生成并用系统查看器打开 PDF
 - **C9 config.json 加载**：`ConfigManager`（`src/services/`）从 `config.json` 读设备名/厂商/序列号/日期，接入 `DeviceServiceAdapter::systemInfo()`（原为占位符）；构建后复制 `config.json` 到 exe 目录
 - **（修复）A3 确认框本地化**：泄压确认框文案改为中文操作指令（"泄压操作 / 请打开泄压阀…"），消除英文调试样弹窗观感
+- **B5 试验结果管理拆分**：`ResultManagementPage.qml` 改为双 Tab（测试结果管理 / 试验结果管理），对齐 WPF 两窗口列；`results()` 新增 `sampleModel`/`sampleSerial`
 
 ---
 
@@ -35,7 +36,7 @@
 | 项 | 说明 |
 |----|------|
 | 4. ~~**4 样品双轴曲线**~~（试验页） | 把 `RealTimeChart` 扩为双 Y 轴（压力 MPa / 变形量 g），试验页显示 1-4 号样品曲线，对齐 WPF `HydroStaticTestPage`/`SampleGridUserControl` | ✅ 已完成：多序列双轴图 + 4 样品曲线 |
-| 5. **试验结果管理拆分** | 对齐 WPF，将结果管理拆为"试验结果管理 + 统一试验结果管理"（或在一页内分区）|
+| 5. ~~**试验结果管理拆分**~~ | 对齐 WPF，将结果管理拆为"试验结果管理 + 统一试验结果管理"（或在一页内分区）| ✅ 已完成：双 Tab 分区（测试结果 / 试验结果）|
 
 ### C. 功能 / 数据接入
 | 项 | 说明 |

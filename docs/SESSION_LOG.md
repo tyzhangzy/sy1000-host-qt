@@ -5,6 +5,26 @@
 
 ---
 
+## 2026-08-19 · B5 试验结果管理拆分 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`docs/TODO.md` 待办第 5 项
+
+### 实现
+- `qml/ResultManagementPage.qml`：改为 **TabBar 双分区**，对齐 WPF 两个窗口
+  - **Tab 1 "测试结果管理"**（对应 `TestResultManagementWindow`）：测试者 / 测试时间 / 产品型号 / 产品编号 / 生产厂家 / 删除
+  - **Tab 2 "试验结果管理"**（对应 `UnifiedTestResultManagementWindow`）：生产厂商 / 气瓶编号 / 试验时间 / 试验人员 / 试验结果 / 查看详情
+- `src/services/resultservice.cpp`：`results()` 新增 `sampleModel`、`sampleSerial` 字段以支撑两 Tab 列
+
+### 验证
+- ✅ `services.lib` + `SY1000.exe` 编译通过；`testcore` SMOKE PASS
+- ✅ `ResultManagementPage.qml` qmllint 零错误；`SY1000.exe` 启动无回归
+
+### 备注
+- 未实现 WPF 的分页与"按厂商/日期"筛选（保留刷新/删除/详情），如需可后续补充。
+
+---
+
 ## 2026-08-19 · C9 config.json 加载 + 修复疑似"debug 弹窗" ✅
 
 - **提交**：`60ae155` `feat(services,core): config.json ConfigManager + localize release confirm dialog (C9)`
