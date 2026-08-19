@@ -139,12 +139,9 @@ Page {
                     Column {
                         spacing: 14
                         width: parent.width
-                        Row {
-                            spacing: 20
-                            CheckBox { id: intSmell; text: qsTr("Smell present") }
-                            Label { text: qsTr("Debris") + ":"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 16; color: "#333" }
-                            TextField { width: 300; height: 40; Material.background: "transparent"; id: intDebris }
-                        }
+                        CheckBox { id: intSmell; text: qsTr("Smell present") }
+                        FieldRow { label: qsTr("Debris") + ":"
+                            TextField { width: parent.width; height: 40; Material.background: "transparent"; id: intDebris } }
                         FieldRow { label: qsTr("Surface condition") + ":"
                             TextField { width: parent.width; height: 40; Material.background: "transparent"; id: intSurface } }
                         FieldRow { label: qsTr("Defect location") + ":"
@@ -167,13 +164,10 @@ Page {
                     Column {
                         spacing: 14
                         width: parent.width
-                        Row {
-                            spacing: 8
-                            Label { text: qsTr("Specification") + ":"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 16; color: "#333" }
-                            TextField { width: 240; height: 40; Material.background: "transparent"; id: thrSpec }
-                            Label { text: qsTr("Condition") + ":"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 16; color: "#333" }
-                            TextField { width: 240; height: 40; Material.background: "transparent"; id: thrCond }
-                        }
+                        FieldRow { label: qsTr("Specification") + ":"
+                            TextField { width: parent.width; height: 40; Material.background: "transparent"; id: thrSpec } }
+                        FieldRow { label: qsTr("Condition") + ":"
+                            TextField { width: parent.width; height: 40; Material.background: "transparent"; id: thrCond } }
                         FieldRow { label: qsTr("Evaluation") + ":"
                             TextField { width: parent.width; height: 40; Material.background: "transparent"; id: thrEval } }
                         FieldRow { label: qsTr("Other") + ":"
@@ -194,13 +188,10 @@ Page {
                     Column {
                         spacing: 14
                         width: parent.width
-                        Row {
-                            spacing: 8
-                            Label { text: qsTr("Valve No") + ":"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 16; color: "#333" }
-                            TextField { width: 240; height: 40; Material.background: "transparent"; id: valNo }
-                            Label { text: qsTr("Thread condition") + ":"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 16; color: "#333" }
-                            TextField { width: 240; height: 40; Material.background: "transparent"; id: valThreadCond }
-                        }
+                        FieldRow { label: qsTr("Valve No") + ":"
+                            TextField { width: parent.width; height: 40; Material.background: "transparent"; id: valNo } }
+                        FieldRow { label: qsTr("Thread condition") + ":"
+                            TextField { width: parent.width; height: 40; Material.background: "transparent"; id: valThreadCond } }
                         FieldRow { label: qsTr("Air tightness") + ":"
                             TextField { width: parent.width; height: 40; Material.background: "transparent"; id: valAirtight } }
                         CheckBox { id: valDiaphragm; text: qsTr("Diaphragm replaced") }
