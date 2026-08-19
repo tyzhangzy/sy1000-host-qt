@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 主菜单右下角按钮改为"返回主菜单" ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`6d25121` `feat(ui): main menu bottom-right button label = Return to Main Menu`
 - **范围**：主菜单右下角按钮文案由"退出登录"改为"返回主菜单"
 
 ### 实现
