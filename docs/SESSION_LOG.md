@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 准备页 5 卡黄色标题栏内容调整 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`f53f31b` `feat(ui): prep card amber titles show Test Standard / Cylinder Model`
 - **范围**：`qml/TestPreparationPage.qml` 右侧 5 卡的黄色标题栏
 
 ### 实现
