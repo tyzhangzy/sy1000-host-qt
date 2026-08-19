@@ -375,47 +375,47 @@
         <translation>内部检查</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="28"/>
+        <location filename="../qml/InspectionInternal.qml" line="30"/>
         <source>Smell present</source>
         <translation>有无气味</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="29"/>
+        <location filename="../qml/InspectionInternal.qml" line="31"/>
         <source>Debris</source>
         <translation>杂物的种类和数量</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="30"/>
+        <location filename="../qml/InspectionInternal.qml" line="47"/>
         <source>Surface condition</source>
         <translation>内表面状况描述</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="31"/>
+        <location filename="../qml/InspectionInternal.qml" line="48"/>
         <source>Defect location</source>
         <translation>缺陷位置描述</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="32"/>
+        <location filename="../qml/InspectionInternal.qml" line="49"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="35"/>
+        <location filename="../qml/InspectionInternal.qml" line="52"/>
         <source>Result</source>
         <translation>评定结果</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="36"/>
+        <location filename="../qml/InspectionInternal.qml" line="53"/>
         <source>Qualified</source>
         <translation>合格</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="37"/>
+        <location filename="../qml/InspectionInternal.qml" line="54"/>
         <source>To Repair</source>
         <translation>待修复</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="38"/>
+        <location filename="../qml/InspectionInternal.qml" line="55"/>
         <source>Scrapped</source>
         <translation>判废</translation>
     </message>

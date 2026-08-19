@@ -25,8 +25,25 @@ Rectangle {
                 color: "white"; font.pixelSize: 18; font.bold: true
             }
         }
-        CheckBox { id: intSmell; text: qsTr("Smell present") }
-        FieldRow { id: intDebris; label: qsTr("Debris") + ":" }
+        Row {
+            spacing: 12
+            CheckBox { id: intSmell; text: qsTr("Smell present"); anchors.verticalCenter: parent.verticalCenter }
+            Label { text: qsTr("Debris") + ":"; font.pixelSize: 16; color: "#333"; anchors.verticalCenter: parent.verticalCenter }
+            TextField {
+                id: intDebris
+                width: 340
+                height: 40
+                Material.background: "transparent"
+                Material.underlineColor: "transparent"
+                padding: 4
+                Rectangle {
+                    anchors.left: parent.left; anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    height: 1
+                    color: "#9E9E9E"
+                }
+            }
+        }
         FieldRow { id: intSurface; label: qsTr("Surface condition") + ":" }
         FieldRow { id: intDefect; label: qsTr("Defect location") + ":" }
         FieldRow { id: intOther; label: qsTr("Other") + ":" }

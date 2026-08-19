@@ -72,6 +72,7 @@ FIX = {
     "Please enter serial No.": "请输入产品编号。",
     "Please complete appearance inspection before saving.": "请完成外观检测评估后再保存。",
     "Other": "其他",
+    "Debris": "杂物的种类和数量",
     "Specification": "螺纹规格",
     "Condition": "螺纹状况描述",
     "Evaluation": "螺纹状况评估",

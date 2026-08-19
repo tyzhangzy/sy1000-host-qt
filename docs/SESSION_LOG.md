@@ -5,6 +5,15 @@
 
 ---
 
+## 2026-08-19 · 内部检查第一行对齐 WPF ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/InspectionInternal.qml`
+- **实现**：第一行改为 WPF 布局——`有无气味` CheckBox + `杂物的种类和数量:` 标签 + 长横线输入框（同一行）；其后为内表面状况/缺陷位置/其他（FieldRow）+ 评定结果 3 单选框
+- **验证**：✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 检查字段行改为"标签+长下划线"组件 ✅
 
 - **提交**：`f3cddd9` `feat(ui): FieldRow label+long-underline component for inspection fields`
