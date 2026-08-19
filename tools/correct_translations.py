@@ -71,6 +71,11 @@ FIX = {
     "Please enter user company.": "请输入使用单位。",
     "Please enter serial No.": "请输入产品编号。",
     "Please complete appearance inspection before saving.": "请完成外观检测评估后再保存。",
+    "Other": "其他",
+    "Specification": "螺纹规格",
+    "Condition": "螺纹状况描述",
+    "Evaluation": "螺纹状况评估",
+    "Defect location": "缺陷位置描述",
     # Hydrostatic test page (WPF MainTestWindow terminology).
     "Cylinder pressure": "气瓶压力",
     "Status: ": "状态：",

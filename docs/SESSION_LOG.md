@@ -5,6 +5,23 @@
 
 ---
 
+## 2026-08-19 · 外观检查改为页面（非对话框）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`AppearanceInspectionDialog.qml` → 新建 `AppearanceInspectionPage.qml`
+
+### 实现
+- "外观检测评估"由对话框改为**页面** `AppearanceInspectionPage.qml`，点击跳转（`stack.push`，传 sampleIndex/target）
+- 页面有深蓝标题栏，标题"复合气瓶外观检查评估表"
+- 四组（外部/内部/螺纹/阀）卡片：深蓝标题条 + 字段"标签:下划线输入框"底部对齐 + 评定结果 3 单选框（合格/待修复/判废）；外部 5 复选框水平均匀分布
+- 底部"保存并关闭/重置"
+- 删除旧 `AppearanceInspectionDialog.qml`，CMake 资源改为新页面
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 外观检查对话框重新布局（修复混乱）✅
 
 - **提交**：`be8f282` `feat(ui): redesign inspection dialog layout (wider, tidy rows)`

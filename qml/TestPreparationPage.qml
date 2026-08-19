@@ -279,7 +279,7 @@ Page {
                             spacing: 12
                             DarkButton {
                                 btnText: qsTr("Appearance Inspection")
-                                onClicked: { inspectDlg.sampleIndex = index; inspectDlg.target = sampleData[index]; inspectDlg.open() }
+                                onClicked: stack.push("AppearanceInspectionPage.qml", { sampleIndex: index, target: sampleData[index] })
                             }
                             DarkButton {
                                 btnText: qsTr("Confirm")
@@ -295,8 +295,7 @@ Page {
     }
     }
 
-    // Shared appearance inspection dialog (WPF AppearenceInspectionWindow).
-    AppearanceInspectionDialog { id: inspectDlg }
+    // Appearance inspection is now a page (AppearanceInspectionPage.qml).
 
     // Validation warning popup.
     Popup {
