@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 标准卡/样品卡黄色标题栏显示字段名（确认方案）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`24e96d8` `feat(ui): amber card titles show field names (confirmed)`
 - **范围**：`qml/TestPreparationPage.qml` 右侧 5 卡黄色标题栏
 - **实现**：黄色标题栏显示 `试验标准`（标准卡）/ `气瓶型号 N`（样品卡）；字段区第一个输入框不再单独显示标签
 - **验证**：✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
