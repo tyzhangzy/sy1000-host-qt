@@ -128,6 +128,7 @@ qt_add_resources(SY1000 "app"
     qml/UserManagementPage.qml
     qml/SystemMaintainPage.qml
     qml/AppearanceInspectionPage.qml
+    qml/FieldRow.qml
     qml/InspectionExternal.qml
     qml/InspectionInternal.qml
     qml/InspectionThread.qml

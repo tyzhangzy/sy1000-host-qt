@@ -26,26 +26,10 @@ Rectangle {
             }
         }
         CheckBox { id: intSmell; text: qsTr("Smell present") }
-        Row {
-            spacing: 8
-            Label { text: qsTr("Debris") + ":"; width: 160; font.pixelSize: 16; color: "#333"; anchors.bottom: parent.bottom; anchors.bottomMargin: 9 }
-            TextField { id: intDebris; width: parent.width - 168; height: 40; Material.background: "transparent" }
-        }
-        Row {
-            spacing: 8
-            Label { text: qsTr("Surface condition") + ":"; width: 160; font.pixelSize: 16; color: "#333"; anchors.bottom: parent.bottom; anchors.bottomMargin: 9 }
-            TextField { id: intSurface; width: parent.width - 168; height: 40; Material.background: "transparent" }
-        }
-        Row {
-            spacing: 8
-            Label { text: qsTr("Defect location") + ":"; width: 160; font.pixelSize: 16; color: "#333"; anchors.bottom: parent.bottom; anchors.bottomMargin: 9 }
-            TextField { id: intDefect; width: parent.width - 168; height: 40; Material.background: "transparent" }
-        }
-        Row {
-            spacing: 8
-            Label { text: qsTr("Other") + ":"; width: 160; font.pixelSize: 16; color: "#333"; anchors.bottom: parent.bottom; anchors.bottomMargin: 9 }
-            TextField { id: intOther; width: parent.width - 168; height: 40; Material.background: "transparent" }
-        }
+        FieldRow { id: intDebris; label: qsTr("Debris") + ":" }
+        FieldRow { id: intSurface; label: qsTr("Surface condition") + ":" }
+        FieldRow { id: intDefect; label: qsTr("Defect location") + ":" }
+        FieldRow { id: intOther; label: qsTr("Other") + ":" }
         Row {
             spacing: 20
             Label { text: qsTr("Result") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 16; color: "#333" }

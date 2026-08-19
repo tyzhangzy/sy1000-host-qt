@@ -25,26 +25,10 @@ Rectangle {
                 color: "white"; font.pixelSize: 18; font.bold: true
             }
         }
-        Row {
-            spacing: 8
-            Label { text: qsTr("Specification") + ":"; width: 160; font.pixelSize: 16; color: "#333"; anchors.bottom: parent.bottom; anchors.bottomMargin: 9 }
-            TextField { id: thrSpec; width: parent.width - 168; height: 40; Material.background: "transparent" }
-        }
-        Row {
-            spacing: 8
-            Label { text: qsTr("Condition") + ":"; width: 160; font.pixelSize: 16; color: "#333"; anchors.bottom: parent.bottom; anchors.bottomMargin: 9 }
-            TextField { id: thrCond; width: parent.width - 168; height: 40; Material.background: "transparent" }
-        }
-        Row {
-            spacing: 8
-            Label { text: qsTr("Evaluation") + ":"; width: 160; font.pixelSize: 16; color: "#333"; anchors.bottom: parent.bottom; anchors.bottomMargin: 9 }
-            TextField { id: thrEval; width: parent.width - 168; height: 40; Material.background: "transparent" }
-        }
-        Row {
-            spacing: 8
-            Label { text: qsTr("Other") + ":"; width: 160; font.pixelSize: 16; color: "#333"; anchors.bottom: parent.bottom; anchors.bottomMargin: 9 }
-            TextField { id: thrOther; width: parent.width - 168; height: 40; Material.background: "transparent" }
-        }
+        FieldRow { id: thrSpec; label: qsTr("Specification") + ":" }
+        FieldRow { id: thrCond; label: qsTr("Condition") + ":" }
+        FieldRow { id: thrEval; label: qsTr("Evaluation") + ":" }
+        FieldRow { id: thrOther; label: qsTr("Other") + ":" }
         Row {
             spacing: 20
             Label { text: qsTr("Result") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 16; color: "#333" }
