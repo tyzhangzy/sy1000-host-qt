@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 水压试验页布局对齐 WPF MainTestWindow ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`421c3ad` `feat(ui): hydrostatic test page matches WPF MainTestWindow`
 - **范围**：`qml/TestPage.qml` 重写 + hydroadapter 增加标准/样品信息接口
 
 ### 实现
