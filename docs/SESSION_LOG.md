@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录页制造商文本垂直居中修复 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`1a9ac32` `fix(ui): center manufacturer label horizontally on login page`
 - **范围**："北京德康时代科技有限公司" 偏左，未与 logo / 设备名垂直中心对齐
 
 ### 修复
