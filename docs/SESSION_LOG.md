@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 修复登录后主菜单标题栏不显示 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`6930f06` `fix(ui): show title bar after login (header visible based on isLoginPage)`
 - **范围**：登录后主菜单缺标题栏（header）——因 `stack.replace` 后 `depth===1`，header 的 `visible: stack.depth > 1` 恒为假
 
 ### 修复
