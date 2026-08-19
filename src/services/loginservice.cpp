@@ -29,6 +29,7 @@ bool LoginService::tryLogin(const QString &username, const QString &password)
     m_isAdmin = user.isAdmin != 0;
 
     emit loginSucceeded();
+    emit usernameChanged();
     return true;
 }
 

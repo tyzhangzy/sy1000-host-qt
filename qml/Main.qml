@@ -60,14 +60,20 @@ ApplicationWindow {
             font.bold: true
         }
 
-        // Right: logged-in user + quit button (WPF header QuitButton).
+        // Right: logged-in user (Account icon + name) + quit button (WPF header).
         Row {
             anchors.right: parent.right
             anchors.rightMargin: 20
             anchors.verticalCenter: parent.verticalCenter
             spacing: 14
             Label {
-                text: loginService.username() !== "" ? loginService.username() : ""
+                text: "👤"
+                color: "white"
+                font.pixelSize: 22
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Label {
+                text: loginService.username
                 color: "white"
                 font.pixelSize: 18
                 anchors.verticalCenter: parent.verticalCenter

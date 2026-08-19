@@ -9,6 +9,7 @@
 class LoginService : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString username READ username NOTIFY usernameChanged)
 public:
     explicit LoginService(QObject *parent = nullptr);
 
@@ -27,6 +28,7 @@ public:
 
 signals:
     void loginSucceeded();
+    void usernameChanged();
 
 private:
     QString m_error;

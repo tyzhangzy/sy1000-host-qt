@@ -5,6 +5,23 @@
 
 ---
 
+## 2026-08-19 · 补全主菜单右上角登录者信息（对齐 WPF）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：主菜单顶栏右上角缺少登录者信息（WPF 有 Account 图标 + 登录用户）
+
+### 根因
+- `LoginService::username()` 是 `Q_INVOKABLE` 方法，QML 绑定 `text: loginService.username()` 在登录前求值为空后**不自动更新**（无 NOTIFY）→ 登录后用户名不显示
+
+### 修复
+- `src/services/loginservice.h/.cpp`：`username` 改为 `Q_PROPERTY(... NOTIFY usernameChanged)`，登录成功 `emit usernameChanged()`
+- `qml/Main.qml`：header 右侧改为 **👤 图标 + `loginService.username`**（属性绑定自动更新），对齐 WPF Account 图标 + 登录用户
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 连接状态显示两 COM 口 + 右下角按钮加箭头 ✅
 
 - **提交**：`650dead` `feat(ui,services): conn status shows two COM ports + arrow on return button`
