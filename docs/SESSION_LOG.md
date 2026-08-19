@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 检查字段行改为"标签+长下划线"组件 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`f3cddd9` `feat(ui): FieldRow label+long-underline component for inspection fields`
 - **范围**：新建 `FieldRow.qml`（标签 + 一条长长的下划线横线，底部对齐），四个检查组件字段改用该组件
 - **说明**：修复 TextField 透明背景后下划线横线不显示的问题，外部/内部/螺纹/阀的"缺陷位置描述:"/"其他:"等标签行都有长横线
 - **验证**：✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
