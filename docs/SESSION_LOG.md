@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录卡加多层阴影（层次感）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`52ca56b` `feat(ui): layered shadow on login card for depth`
 - **范围**：用户登录框阴影增强，模拟 WPF Elevation Dp12
 
 ### 实现
