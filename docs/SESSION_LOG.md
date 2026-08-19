@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 主菜单卡片组件化（Repeater + 数据驱动）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`856ef9c` `refactor(ui): main menu cards via Repeater + reusable ShadowCard`
 - **范围**：主菜单功能卡片用 `ShadowCard` 组件 + `Repeater` + 数据模型序号化，避免重复代码
 
 ### 实现（`qml/MainMenuPage.qml`）
