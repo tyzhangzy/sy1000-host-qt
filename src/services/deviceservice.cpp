@@ -23,6 +23,16 @@ QString DeviceServiceAdapter::systemInfo() const
              ConfigManager::manufactureDate());
 }
 
+QString DeviceServiceAdapter::deviceName() const
+{
+    return ConfigManager::deviceName();
+}
+
+QString DeviceServiceAdapter::manufacturer() const
+{
+    return ConfigManager::manufacturer();
+}
+
 QString DeviceServiceAdapter::connectDevices()
 {
     auto &dm = DeviceManager::instance();

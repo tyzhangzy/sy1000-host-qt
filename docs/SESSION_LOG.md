@@ -5,6 +5,26 @@
 
 ---
 
+## 2026-08-19 · 登录页微调（对齐 WPF，布局不变）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：在保持登录页布局不变的前提下，对比 WPF `LoginWindow` 微调细节
+
+### 微调（布局结构不变）
+- **品牌区**：logo 宽 300→500（对齐 WPF）；标题由硬编码改为 **config 设备信息** `deviceService.deviceName()`(64px) / `manufacturer()`(36px)，对齐 WPF
+- **登录卡**：补 **Elevation 阴影**（Dp12 模拟，多层半透明圆角矩形）
+- **输入框**：用户名前补 👤、密码前补 🔒 图标（对齐 WPF Account / Lock 图标）；输入框 300→270（给图标留位）
+- **登录按钮**：高度 52→55（对齐 WPF）
+
+### 相关改动
+- `src/services/deviceservice.h/.cpp`：新增 `Q_INVOKABLE deviceName()` / `manufacturer()`（读 ConfigManager，供 QML 品牌区使用）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；运行 stderr 干净
+- ✅ `testlogin`/`testcore`/`testcontroller` 冒烟通过
+
+---
+
 ## 2026-08-19 · 修复登录后无法进入主菜单（Page title FINAL 冲突）✅
 
 - **提交**：`bc19b9c` `fix(ui,core): login could not enter main menu (Page title FINAL) + embed zh_CN qm + testlogin`

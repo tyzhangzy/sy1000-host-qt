@@ -24,30 +24,32 @@ Item {
 
         Column {
             anchors.centerIn: parent
-            spacing: 24
+            spacing: 30
 
             // Real product logo (from original WPF Resources/dklogo.png).
             Image {
                 id: logoImg
                 source: "qrc:/qml/assets/dklogo.png"
-                width: 300
-                height: 180
+                width: 500
+                height: 220
                 fillMode: Image.PreserveAspectFit
                 anchors.horizontalCenter: parent.horizontalCenter
                 smooth: true
             }
 
+            // Device name from config.json (matches WPF DeviceName, 64px).
             Label {
-                text: qsTr("SY1000 Hydrostatic Test System")
-                font.pixelSize: 56
+                text: deviceService.deviceName()
+                font.pixelSize: 64
                 font.bold: true
                 color: "#193660"
                 horizontalAlignment: Text.AlignHCenter
             }
 
+            // Manufacturer from config.json (matches WPF Manufacturer, 36px).
             Label {
-                text: qsTr("Quanshen")
-                font.pixelSize: 34
+                text: deviceService.manufacturer()
+                font.pixelSize: 36
                 font.bold: true
                 color: "#444"
                 horizontalAlignment: Text.AlignHCenter
@@ -61,7 +63,18 @@ Item {
         height: parent.height
         anchors.left: brandArea.right
 
+        // Elevation shadow (Dp12-like), layered translucent rounded rect.
         Rectangle {
+            id: cardShadow
+            radius: 16
+            color: "#1F000000"
+            anchors.fill: loginCard
+            anchors.leftMargin: 8
+            anchors.topMargin: 8
+        }
+        // Login card (matches WPF Card: 400 wide, radius 15, Elevation Dp12).
+        Rectangle {
+            id: loginCard
             width: 400
             height: 460
             radius: 15
@@ -81,28 +94,38 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
-                ComboBox {
-                    id: userBox
-                    width: 300
-                    height: 44
-                    model: loginService.usernames()
-                    font.pixelSize: 18
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 10
+                    Label { text: "👤"; font.pixelSize: 22; color: "#303F9F"; anchors.verticalCenter: parent.verticalCenter }
+                    ComboBox {
+                        id: userBox
+                        width: 270
+                        height: 44
+                        model: loginService.usernames()
+                        font.pixelSize: 18
+                    }
                 }
 
-                TextField {
-                    id: passwordField
-                    width: 300
-                    height: 44
-                    placeholderText: qsTr("Password")
-                    echoMode: TextInput.Password
-                    font.pixelSize: 18
-                    onAccepted: signInButton.clicked()
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 10
+                    Label { text: "🔒"; font.pixelSize: 22; color: "#303F9F"; anchors.verticalCenter: parent.verticalCenter }
+                    TextField {
+                        id: passwordField
+                        width: 270
+                        height: 44
+                        placeholderText: qsTr("Password")
+                        echoMode: TextInput.Password
+                        font.pixelSize: 18
+                        onAccepted: signInButton.clicked()
+                    }
                 }
 
                 Button {
                     id: signInButton
                     width: 320
-                    height: 52
+                    height: 55
                     text: qsTr("Login")
                     font.pixelSize: 22
                     font.bold: true
