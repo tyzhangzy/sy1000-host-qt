@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · C9 config.json 加载 + 修复疑似"debug 弹窗" ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`60ae155` `feat(services,core): config.json ConfigManager + localize release confirm dialog (C9)`
 - **范围**：`docs/TODO.md` 待办第 9 项；顺带修复用户反馈的"debug 弹窗"观感
 
 ### 修复疑似"debug 弹窗"
