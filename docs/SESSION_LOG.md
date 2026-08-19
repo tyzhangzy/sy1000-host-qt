@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 水压试验页顶栏/左右布局修复 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`4d9cac2` `fix(ui): prep page top bar center/right split + wrap in column`
 - **范围**：`qml/TestPreparationPage.qml` 顶栏与主体重叠、左右高度不一致、顶栏内容靠左显宽
 
 ### 修复
