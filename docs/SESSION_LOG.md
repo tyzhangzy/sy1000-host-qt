@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录卡布局调整（语言行移到登录按钮上方）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`e8a0104` `feat(ui): reorder login card - language row above login button, WPF-aligned spacing`
 - **范围**：用户登录框重排——语言行移到登录按钮上方、风格与用户名/密码一致、纵向间距合理
 
 ### 实现（`qml/LoginPage.qml`）
