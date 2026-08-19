@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 外观检查页全面核对 WPF，螺纹/阀并排 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`2c41a23` `fix(ui): thread/valve fields side-by-side per WPF`
 - **范围**：`qml/InspectionThread.qml` / `InspectionValve.qml`
 - **实现**：对照 WPF 完整源码——螺纹"螺纹规格:+输入框 / 螺纹状况描述:+输入框"并排一行；阀"气瓶阀编号:+输入框 / 连接螺纹状况描述:+输入框"并排一行；其余（评估/气密/爆破片/其他/评定）不变
 - **验证**：✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
