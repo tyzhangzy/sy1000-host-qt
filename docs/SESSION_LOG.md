@@ -5,6 +5,27 @@
 
 ---
 
+## 2026-08-19 · 按 WPF 源码核对修正中文翻译 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：读取 `sy1000-host-wpf` 源码中的中文文案（XAML Text/Content/Header + C#），逐条核对 `i18n/sy1000_zh_CN.ts` 翻译，按 WPF 用词修正不一致项
+
+### 修正要点（对齐 WPF 原文）
+- **外观检查 4 部分标题**：External→外部检查、Internal→内部检查、Thread→瓶口螺纹检查、Valve→气瓶阀检查
+- **检查项**：热损伤迹象 / 有无划伤 / 有无磨损 / 有无分层 / 有无异常变形 / 有无气味 / 缺陷位置描述 / 杂物的种类和数量 / 内表面状况描述 / 螺纹规格 / 螺纹状况描述 / 螺纹状况评估 / 气瓶阀编号 / 连接螺纹状况描述 / 气密状况描述 / 爆破片是否更换
+- **结果状态**：To Repair→待修复、To Replace→待更换、Scrapped→判废；评定结果
+- **按钮/菜单**：Start→开始试验、Stop→停止试验、Result Management→试验结果管理、Add→创建新用户
+- **详情/报告标签**：External:/Internal:/Thread:/Valve: → 外部检查：/内部检查：/瓶口螺纹检查：/气瓶阀检查：
+- 样品容积 Volume (L)→气瓶容积
+
+### 工具
+- 新增 `tools/correct_translations.py`：source→WPF 用词映射，覆盖已有翻译（可复用）
+
+### 验证
+- ✅ ts 0 unfinished；修正项全部生效；`lrelease` 重新生成 qm；`SY1000.exe` 启动无回归
+
+---
+
 ## 2026-08-19 · 中文翻译文件补全 + UI 遗漏补齐 ✅
 
 - **提交**：`f97fd9c` `feat(i18n,ui): complete zh_CN translations + WPF UI parity fixes`
