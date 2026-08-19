@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · FieldRow/检查输入框去掉边框，仅保留下划线 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`c9ce254` `feat(ui): field inputs borderless, underline only`
 - **范围**：`FieldRow / InspectionInternal / InspectionThread / InspectionValve.qml`
 - **实现**：TextField 用 `Material.variant: Material.Text` 去掉边框，仅保留底部 Rectangle 一条横线（下划线）
 - **验证**：✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
