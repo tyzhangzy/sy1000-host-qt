@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录页右上角电源式退出按钮 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`6d10986` `feat(ui): power-style quit button on login page top-right (WPF parity)`
 - **范围**：按 WPF `LoginWindow.xaml` 的 `QuitButton`（右上角 Power 图标）给 Qt 登录页补退出按钮
 
 ### 实现
