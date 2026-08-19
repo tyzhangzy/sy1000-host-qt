@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 用户管理卡片图标对齐 WPF ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`a6a62d0` `fix(ui): user-management card icon = account-multiple`
 - **范围**：`qml/MainMenuPage.qml` 用户管理卡片图标由 `☺` 改为 `👥`（多用户）—— 对齐 WPF `AccountMultiple`
 - **验证**：✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
 
