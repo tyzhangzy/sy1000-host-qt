@@ -1,5 +1,7 @@
 #include "core/states.h"
 
+#include <QCoreApplication>
+
 #include "core/controller.h"
 #include "core/subtask.h"
 #include "core/tasks.h"
@@ -22,7 +24,7 @@ void IdleState::enter(HydrostaticTestController &)
 
 void PreparingState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Test preparation"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Test preparation"));
     c.device()->setWaterJacketLock(1, true);
     c.transitionTo(HydroTestState::WaterJacketChecking);
 }
@@ -30,7 +32,7 @@ void PreparingState::enter(HydrostaticTestController &c)
 // ---------------- Checks ----------------
 void WaterJacketCheckingState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Checking water jacket"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Checking water jacket"));
     TaskParams p;
     p.countdownSec = c.options().checkCountdownSec;
     c.runTask(new WaitTask(c.device(), &c), p);
@@ -38,7 +40,7 @@ void WaterJacketCheckingState::enter(HydrostaticTestController &c)
 
 void CylinderCheckingState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Checking cylinder pressure"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Checking cylinder pressure"));
     TaskParams p;
     p.countdownSec = c.options().checkCountdownSec;
     c.runTask(new WaitTask(c.device(), &c), p);
@@ -57,7 +59,7 @@ void InitializingState::enter(HydrostaticTestController &c)
 // ---------------- Pressurize / Hold ----------------
 void PressurizingToWorkingState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Pressurizing to working pressure"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Pressurizing to working pressure"));
     TaskParams p;
     p.targetPressure = c.options().workingPressure;
     p.fastStopDelta = 0.0;
@@ -66,16 +68,30 @@ void PressurizingToWorkingState::enter(HydrostaticTestController &c)
     c.runTask(new PressurizeTask(c.device(), &c), p);
 }
 
-HydroTestState PressurizingToWorkingState::onTaskFinished(HydrostaticTestController &c, const TaskResult &r)
+HydroTestState PressurizingToWorkingState::onTaskFinished(HydrostaticTestController &, const TaskResult &)
 {
+    // The pressurize task result carries no T10/T30 samples (those fields were
+    // never filled and were stored as 0); the working-pressure samples are now
+    // captured by HoldingAtWorkingState::onTaskFinished (M9).
+    return HydroTestState::HoldingAtWorking;
+}
+
+HydroTestState HoldingAtWorkingState::onTaskFinished(HydrostaticTestController &c, const TaskResult &r)
+{
+    // Persist the T10/T30 working-pressure samples taken by the hold task so the
+    // archived result carries real values instead of zeros (M9).
     c.data().workingPressureT10 = r.pressureT10;
     c.data().workingPressureT30 = r.pressureT30;
-    return HydroTestState::HoldingAtWorking;
+    for (std::size_t i = 0; i < r.weightT10.size(); ++i) {
+        c.data().workingPressureWeightT10[i] = r.weightT10[i];
+        c.data().workingPressureWeightT30[i] = r.weightT30[i];
+    }
+    return HydroTestState::PressurizingToTesting;
 }
 
 void HoldingAtWorkingState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Holding at working pressure"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Holding at working pressure"));
     TaskParams p;
     p.holdSampleInterval1Sec = c.options().holdWorking1Sec;
     p.holdSampleInterval2Sec = c.options().holdWorking2Sec;
@@ -84,7 +100,7 @@ void HoldingAtWorkingState::enter(HydrostaticTestController &c)
 
 void PressurizingToTestingState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Pressurizing to test pressure"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Pressurizing to test pressure"));
     TaskParams p;
     p.targetPressure = c.options().testingPressure;
     p.fastStopDelta = c.options().fastStopDelta;
@@ -105,7 +121,7 @@ HydroTestState PressurizingToTestingState::onTaskFinished(HydrostaticTestControl
 
 void HoldingAtTestingState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Holding at test pressure"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Holding at test pressure"));
     TaskParams p;
     p.countdownSec = c.options().holdTestingSec;
     c.runTask(new WaitTask(c.device(), &c), p);
@@ -114,7 +130,7 @@ void HoldingAtTestingState::enter(HydrostaticTestController &c)
 // ---------------- Release / Stabilize / Result ----------------
 void ReleasingPressureState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Releasing pressure"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Releasing pressure"));
     TaskParams p;
     p.countdownSec = c.options().releaseSec;
     p.initialPressure = c.data().initialPressure;
@@ -123,7 +139,7 @@ void ReleasingPressureState::enter(HydrostaticTestController &c)
 
 void StabilizingState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Waiting for scales to stabilize"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Waiting for scales to stabilize"));
     TaskParams p;
     p.countdownSec = c.options().stabilizeSec;
     c.runTask(new StabilizeTask(c.device(), &c), p);
@@ -160,7 +176,7 @@ void CalculatingResultState::enter(HydrostaticTestController &c)
 
 void CompletedState::enter(HydrostaticTestController &c)
 {
-    c.voice(QStringLiteral("Test completed"));
+    c.voice(QCoreApplication::translate("sy1000_core", "Test completed"));
     c.safeShutdown();
     c.emitTestCompleted(true);
 }

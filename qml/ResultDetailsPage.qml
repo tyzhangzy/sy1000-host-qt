@@ -31,43 +31,43 @@ Page {
 
             Label { text: qsTr("Test"); font.bold: true; font.pixelSize: 14 }
             Row { spacing: 40
-                Column { Label{text: qsTr("Serial")}; Label{text:d.serial||"-"} }
-                Column { Label{text: qsTr("Date")}; Label{text:d.date||"-"} }
-                Column { Label{text: qsTr("Tester")}; Label{text:d.tester||"-"} }
-                Column { Label{text: qsTr("Company")}; Label{text:d.company||"-"} }
+                Column { Label{text: qsTr("Serial")} Label{text:d.serial||"-"} }
+                Column { Label{text: qsTr("Date")} Label{text:d.date||"-"} }
+                Column { Label{text: qsTr("Tester")} Label{text:d.tester||"-"} }
+                Column { Label{text: qsTr("Company")} Label{text:d.company||"-"} }
             }
 
             Label { text: qsTr("Sample"); font.bold: true; font.pixelSize: 14 }
             Row { spacing: 40
-                Column { Label{text: qsTr("Model")}; Label{text:d.sampleModel||"-"} }
-                Column { Label{text: qsTr("Manufacturer")}; Label{text:d.manufacturer||"-"} }
-                Column { Label{text: qsTr("SerialNo")}; Label{text:d.sampleSerial||"-"} }
-                Column { Label{text: qsTr("Volume")}; Label{text:d.volume||"-"} }
+                Column { Label{text: qsTr("Model")} Label{text:d.sampleModel||"-"} }
+                Column { Label{text: qsTr("Manufacturer")} Label{text:d.manufacturer||"-"} }
+                Column { Label{text: qsTr("SerialNo")} Label{text:d.sampleSerial||"-"} }
+                Column { Label{text: qsTr("Volume")} Label{text:d.volume||"-"} }
             }
 
             Label { text: qsTr("Standard"); font.bold: true; font.pixelSize: 14 }
             Row { spacing: 40
-                Column { Label{text: qsTr("Working MPa")}; Label{text:d.workPressure||"-"} }
-                Column { Label{text: qsTr("Test MPa")}; Label{text:d.testPressure||"-"} }
-                Column { Label{text: qsTr("Rate %")}; Label{text:d.rate!==undefined ? d.rate.toFixed(2) : "-"} }
+                Column { Label{text: qsTr("Working MPa")} Label{text:d.workPressure||"-"} }
+                Column { Label{text: qsTr("Test MPa")} Label{text:d.testPressure||"-"} }
+                Column { Label{text: qsTr("Rate %")} Label{text:d.rate!==undefined ? d.rate.toFixed(2) : "-"} }
             }
 
             Label { text: qsTr("Hydrostatic Data"); font.bold: true; font.pixelSize: 14 }
             Row { spacing: 40
-                Column { Label{text: qsTr("Initial W")}; Label{text:d.initialWeight||"-"} }
-                Column { Label{text: qsTr("Pressure W")}; Label{text:d.pressureWeight||"-"} }
-                Column { Label{text: qsTr("Final W")}; Label{text:d.finalWeight||"-"} }
-                Column { Label{text: qsTr("Full Def")}; Label{text:d.fullDeformation||"-"} }
-                Column { Label{text: qsTr("Resid Def")}; Label{text:d.residualDeformation||"-"} }
+                Column { Label{text: qsTr("Initial W")} Label{text:d.initialWeight||"-"} }
+                Column { Label{text: qsTr("Pressure W")} Label{text:d.pressureWeight||"-"} }
+                Column { Label{text: qsTr("Final W")} Label{text:d.finalWeight||"-"} }
+                Column { Label{text: qsTr("Full Def")} Label{text:d.fullDeformation||"-"} }
+                Column { Label{text: qsTr("Resid Def")} Label{text:d.residualDeformation||"-"} }
             }
 
             // Appearance inspection results (matches WPF UnifiedTestResultDetailsWindow).
             Label { text: qsTr("Appearance Inspection"); font.bold: true; font.pixelSize: 14 }
             Row { spacing: 40
-                Column { Label{text: qsTr("External")}; Label{text:detailPage.inspection(d.external)} }
-                Column { Label{text: qsTr("Internal")}; Label{text:detailPage.inspection(d.internal)} }
-                Column { Label{text: qsTr("Thread")}; Label{text:detailPage.inspection(d.thread)} }
-                Column { Label{text: qsTr("Valve")}; Label{text:detailPage.inspection(d.valve)} }
+                Column { Label{text: qsTr("External")} Label{text:detailPage.inspection(d.external)} }
+                Column { Label{text: qsTr("Internal")} Label{text:detailPage.inspection(d.internal)} }
+                Column { Label{text: qsTr("Thread")} Label{text:detailPage.inspection(d.thread)} }
+                Column { Label{text: qsTr("Valve")} Label{text:detailPage.inspection(d.valve)} }
             }
 
             Row {

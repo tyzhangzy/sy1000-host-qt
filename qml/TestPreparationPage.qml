@@ -87,7 +87,7 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 width: 340; height: 40; radius: 4; color: "white"
                 Label { anchors.fill: parent; anchors.margins: 6
-                    text: hydro.status === "" ? qsTr("Status: ") + hydro.state : hydro.status
+                    text: hydro.status === "" ? qsTr("Status: ") + hydro.stateName : hydro.status
                     color: "#333"; font.pixelSize: 16; font.bold: true; verticalAlignment: Text.AlignVCenter }
             }
             // Right: cylinder pressure label + value.
@@ -132,8 +132,22 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom; anchors.bottomMargin: 14
                 spacing: 10
-                DarkButton { btnText: qsTr("Save Test Result"); enabled: false }
-                DarkButton { btnText: qsTr("View Test Report"); enabled: false }
+                DarkButton {
+                    btnText: qsTr("Save Test Result")
+                    onClicked: {
+                        var id = hydro.saveCurrentResult()
+                        if (id > 0) warnPopup.msg(qsTr("Result saved (id=%1)").arg(id))
+                        else warnPopup.msg(qsTr("No completed test to save."))
+                    }
+                }
+                DarkButton {
+                    btnText: qsTr("View Test Report")
+                    onClicked: {
+                        if (hydro.lastResultId > 0)
+                            stack.push("ReportViewPage.qml", { resultId: hydro.lastResultId })
+                        else warnPopup.msg(qsTr("No saved result yet."))
+                    }
+                }
                 DarkButton { btnText: qsTr("Return to Main Menu"); onClicked: stack.pop() }
             }
         }

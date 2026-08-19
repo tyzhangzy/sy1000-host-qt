@@ -71,7 +71,7 @@ class HoldingAtWorkingState : public HydroStateBase
 {
 public:
     void enter(HydrostaticTestController &c) override;
-    HydroTestState onTaskFinished(HydrostaticTestController &, const TaskResult &) override { return HydroTestState::PressurizingToTesting; }
+    HydroTestState onTaskFinished(HydrostaticTestController &c, const TaskResult &r) override;
 };
 
 class PressurizingToTestingState : public HydroStateBase

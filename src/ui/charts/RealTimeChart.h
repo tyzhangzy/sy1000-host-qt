@@ -46,22 +46,23 @@ public:
     // QQuickPaintedItem 接口
     void paint(QPainter *painter) override;
     
-    // Getters
-    int maxPoints() const { return m_maxPoints; }
-    double yMin() const { return m_yMin; }
-    double yMax() const { return m_yMax; }
-    double rightYMin() const { return m_rightYMin; }
-    double rightYMax() const { return m_rightYMax; }
-    bool autoScale() const { return m_autoScale; }
-    QString title() const { return m_title; }
-    QString yAxisLabel() const { return m_yAxisLabel; }
-    QString rightYAxisLabel() const { return m_rightYAxisLabel; }
-    bool showGrid() const { return m_showGrid; }
-    int lineWidth() const { return m_lineWidth; }
-    QColor lineColor() const { return m_lineColor; }
-    QColor gridColor() const { return m_gridColor; }
-    bool isPaused() const { return m_isPaused; }
-    int seriesCount() const { return m_series.size(); }
+    // Getters (all shared state is read under m_dataMutex: paint() runs on the
+    // render thread while these may be called from the GUI thread, M10).
+    int maxPoints() const { QMutexLocker locker(&m_dataMutex); return m_maxPoints; }
+    double yMin() const { QMutexLocker locker(&m_dataMutex); return m_yMin; }
+    double yMax() const { QMutexLocker locker(&m_dataMutex); return m_yMax; }
+    double rightYMin() const { QMutexLocker locker(&m_dataMutex); return m_rightYMin; }
+    double rightYMax() const { QMutexLocker locker(&m_dataMutex); return m_rightYMax; }
+    bool autoScale() const { QMutexLocker locker(&m_dataMutex); return m_autoScale; }
+    QString title() const { QMutexLocker locker(&m_dataMutex); return m_title; }
+    QString yAxisLabel() const { QMutexLocker locker(&m_dataMutex); return m_yAxisLabel; }
+    QString rightYAxisLabel() const { QMutexLocker locker(&m_dataMutex); return m_rightYAxisLabel; }
+    bool showGrid() const { QMutexLocker locker(&m_dataMutex); return m_showGrid; }
+    int lineWidth() const { QMutexLocker locker(&m_dataMutex); return m_lineWidth; }
+    QColor lineColor() const { QMutexLocker locker(&m_dataMutex); return m_lineColor; }
+    QColor gridColor() const { QMutexLocker locker(&m_dataMutex); return m_gridColor; }
+    bool isPaused() const { QMutexLocker locker(&m_dataMutex); return m_isPaused; }
+    int seriesCount() const { QMutexLocker locker(&m_dataMutex); return m_series.size(); }
 
 public slots:
     // 添加数据点（序列 0，左轴）
@@ -154,7 +155,7 @@ private:
 
 private:
     QVector<Series> m_series;         // 多序列容器（序列 0 = 左轴压力）
-    QMutex m_dataMutex;               // 数据保护锁
+    mutable QMutex m_dataMutex;       // 保护所有共享状态（数据 + 配置 + 缓存）
 
     // 配置参数
     int m_maxPoints = 500;            // 每序列最大数据点数
@@ -181,13 +182,7 @@ private:
     static constexpr int MARGIN_TOP = 40;
     static constexpr int MARGIN_BOTTOM = 40;
 
-    // 绘制缓存（优化大数据量性能）
+    // 绘制缓存（优化大数据量性能）；只在 paint（渲染线程）内重建，
+    // clear() 在 GUI 线程重置时同样受 m_dataMutex 保护。
     QImage m_cachedImage;             // 缓存图像
-    bool m_cacheValid = false;        // 缓存是否有效
-    int m_lastDrawnIndex = -1;        // 上次绘制的数据点索引
-    double m_cachedYMin = 0.0;        // 缓存时的左Y轴范围
-    double m_cachedYMax = 0.0;
-    double m_cachedRightYMin = 0.0;   // 缓存时的右Y轴范围
-    double m_cachedRightYMax = 0.0;
-    qint64 m_cachedTimeRange = 0;     // 缓存时的时间范围
 };

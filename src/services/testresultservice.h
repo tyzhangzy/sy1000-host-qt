@@ -26,6 +26,7 @@ sy1000::TestResultStatus determineOverallResult(
 int save(const sy1000::UnifiedTestResult &r);                          // returns id
 std::vector<sy1000::UnifiedTestResult> getLatest(int count = 10);
 sy1000::UnifiedTestResult findBySerialNo(const std::string &serialNo);
+sy1000::UnifiedTestResult findById(int id);
 std::vector<sy1000::UnifiedTestResult> findAll();
 
 } // namespace TestResultService

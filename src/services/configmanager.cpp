@@ -67,4 +67,14 @@ QString ConfigManager::manufactureDate()
     return value(QStringLiteral("manufactureDate"), QStringLiteral("2026-01-01"));
 }
 
+QString ConfigManager::tasPort()
+{
+    return value(QStringLiteral("tasPort"), QStringLiteral("COM1"));
+}
+
+QString ConfigManager::scalePort()
+{
+    return value(QStringLiteral("scalePort"), QStringLiteral("COM2"));
+}
+
 } // namespace sy1000

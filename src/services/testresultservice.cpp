@@ -96,6 +96,11 @@ UnifiedTestResult findBySerialNo(const std::string &serialNo)
     return TestResultDao::findBySerialNo(serialNo);
 }
 
+UnifiedTestResult findById(int id)
+{
+    return TestResultDao::findById(id);
+}
+
 std::vector<UnifiedTestResult> findAll()
 {
     return TestResultDao::findAll();

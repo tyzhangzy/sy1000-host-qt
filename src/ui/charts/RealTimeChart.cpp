@@ -22,6 +22,11 @@ void RealTimeChart::paint(QPainter *painter)
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setRenderHint(QPainter::TextAntialiasing, true);
 
+    // With the FramebufferObject render target paint() executes on the render
+    // thread, so all shared state (series data, config, cache image) is guarded
+    // by m_dataMutex for the whole paint pass (M10).
+    QMutexLocker locker(&m_dataMutex);
+
     painter->fillRect(boundingRect(), Qt::white);
 
     QRectF plotRect(
@@ -37,11 +42,8 @@ void RealTimeChart::paint(QPainter *painter)
     drawAxes(painter, plotRect);
 
     int total = 0;
-    {
-        QMutexLocker locker(&m_dataMutex);
-        for (const auto &s : m_series)
-            total += s.points.size();
-    }
+    for (const auto &s : m_series)
+        total += s.points.size();
     if (total > 200) {
         drawCurveOptimized(painter, plotRect);
     } else {
@@ -128,15 +130,12 @@ void RealTimeChart::drawAxes(QPainter* painter, const QRectF& rect)
         painter->restore();
     }
 
-    // X轴时间标签
+    // X轴时间标签（m_series 已在 paint() 的 m_dataMutex 保护下访问，M10）
     qint64 startTime = 0, endTime = 0;
-    {
-        QMutexLocker locker(&m_dataMutex);
-        if (m_series.isEmpty() || m_series[0].points.isEmpty())
-            return;
-        startTime = m_series[0].points.first().timestamp;
-        endTime = m_series[0].points.last().timestamp;
-    }
+    if (m_series.isEmpty() || m_series[0].points.isEmpty())
+        return;
+    startTime = m_series[0].points.first().timestamp;
+    endTime = m_series[0].points.last().timestamp;
     qint64 timeRange = qMax(m_timeRangeMs, endTime - startTime);
 
     painter->setFont(QFont("Microsoft YaHei", 8));
@@ -152,8 +151,7 @@ void RealTimeChart::drawAxes(QPainter* painter, const QRectF& rect)
 
 void RealTimeChart::drawCurve(QPainter* painter, const QRectF& rect)
 {
-    QMutexLocker locker(&m_dataMutex);
-
+    // Lock is already held by paint() (M10).
     if (m_autoScale)
         calculateYRange();
 
@@ -286,26 +284,16 @@ void RealTimeChart::calculateYRange()
     if (leftHas) {
         double range = leftMax - leftMin;
         if (range < 0.001) range = 1.0;
-        double newMin = leftMin - range * 0.1;
-        double newMax = leftMax + range * 0.1;
-        if (newMin != m_yMin || newMax != m_yMax) {
-            m_yMin = newMin;
-            m_yMax = newMax;
-            emit yRangeChanged();
-        }
+        m_yMin = leftMin - range * 0.1;
+        m_yMax = leftMax + range * 0.1;
     }
 
     // 右轴范围
     if (rightHas) {
         double range = rightMax - rightMin;
         if (range < 0.001) range = 1.0;
-        double newMin = rightMin - range * 0.1;
-        double newMax = rightMax + range * 0.1;
-        if (newMin != m_rightYMin || newMax != m_rightYMax) {
-            m_rightYMin = newMin;
-            m_rightYMax = newMax;
-            emit rightYRangeChanged();
-        }
+        m_rightYMin = rightMin - range * 0.1;
+        m_rightYMax = rightMax + range * 0.1;
     }
 }
 
@@ -345,17 +333,16 @@ void RealTimeChart::addSeriesValue(int series, double value)
 
 void RealTimeChart::addSeriesValueAt(int series, double value, qint64 timestamp)
 {
-    if (m_isPaused) return;
-
     {
         QMutexLocker locker(&m_dataMutex);
+        if (m_isPaused)
+            return;
         ensureSeries(series);
         m_series[series].points.enqueue({timestamp, value});
         while (m_series[series].points.size() > m_maxPoints)
             m_series[series].points.dequeue();
     }
 
-    m_cacheValid = false;
     emit dataAdded(value);
     update();
 }
@@ -394,7 +381,6 @@ void RealTimeChart::clearSeries(int series)
             return;
         m_series[series].points.clear();
     }
-    m_cacheValid = false;
     update();
 }
 
@@ -404,41 +390,45 @@ void RealTimeChart::clear()
         QMutexLocker locker(&m_dataMutex);
         for (auto &s : m_series)
             s.points.clear();
+        m_cachedImage = QImage(); // 缓存与数据同锁重置（M10）
     }
-
-    // 重置缓存
-    m_cacheValid = false;
-    m_lastDrawnIndex = -1;
-    m_cachedImage = QImage();
-
     update();
 }
 
 void RealTimeChart::setMaxPoints(int maxPoints)
 {
-    if (maxPoints < 10) maxPoints = 10;
-    if (maxPoints > 10000) maxPoints = 10000;
-    
-    if (m_maxPoints != maxPoints) {
-        m_maxPoints = maxPoints;
-        emit maxPointsChanged();
-
-        // 清理多余数据（每序列）
+    bool changed = false;
+    {
         QMutexLocker locker(&m_dataMutex);
-        for (auto &s : m_series)
-            while (s.points.size() > m_maxPoints)
-                s.points.dequeue();
-        locker.unlock();
+        if (maxPoints < 10) maxPoints = 10;
+        if (maxPoints > 10000) maxPoints = 10000;
 
+        if (m_maxPoints != maxPoints) {
+            m_maxPoints = maxPoints;
+            changed = true;
+            // 清理多余数据（每序列）
+            for (auto &s : m_series)
+                while (s.points.size() > m_maxPoints)
+                    s.points.dequeue();
+        }
+    }
+
+    if (changed) {
+        emit maxPointsChanged();
         update();
     }
 }
 
 void RealTimeChart::setYMin(double yMin)
 {
-    if (!qFuzzyCompare(m_yMin, yMin)) {
-        m_yMin = yMin;
-        m_cacheValid = false; // 缓存无效
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = !qFuzzyCompare(m_yMin, yMin);
+        if (changed)
+            m_yMin = yMin;
+    }
+    if (changed) {
         emit yRangeChanged();
         update();
     }
@@ -446,9 +436,14 @@ void RealTimeChart::setYMin(double yMin)
 
 void RealTimeChart::setYMax(double yMax)
 {
-    if (!qFuzzyCompare(m_yMax, yMax)) {
-        m_yMax = yMax;
-        m_cacheValid = false; // 缓存无效
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = !qFuzzyCompare(m_yMax, yMax);
+        if (changed)
+            m_yMax = yMax;
+    }
+    if (changed) {
         emit yRangeChanged();
         update();
     }
@@ -456,9 +451,14 @@ void RealTimeChart::setYMax(double yMax)
 
 void RealTimeChart::setRightYMin(double yMin)
 {
-    if (!qFuzzyCompare(m_rightYMin, yMin)) {
-        m_rightYMin = yMin;
-        m_cacheValid = false;
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = !qFuzzyCompare(m_rightYMin, yMin);
+        if (changed)
+            m_rightYMin = yMin;
+    }
+    if (changed) {
         emit rightYRangeChanged();
         update();
     }
@@ -466,9 +466,14 @@ void RealTimeChart::setRightYMin(double yMin)
 
 void RealTimeChart::setRightYMax(double yMax)
 {
-    if (!qFuzzyCompare(m_rightYMax, yMax)) {
-        m_rightYMax = yMax;
-        m_cacheValid = false;
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = !qFuzzyCompare(m_rightYMax, yMax);
+        if (changed)
+            m_rightYMax = yMax;
+    }
+    if (changed) {
         emit rightYRangeChanged();
         update();
     }
@@ -476,9 +481,14 @@ void RealTimeChart::setRightYMax(double yMax)
 
 void RealTimeChart::setAutoScale(bool autoScale)
 {
-    if (m_autoScale != autoScale) {
-        m_autoScale = autoScale;
-        m_cacheValid = false; // 缓存无效
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = (m_autoScale != autoScale);
+        if (changed)
+            m_autoScale = autoScale;
+    }
+    if (changed) {
         emit autoScaleChanged();
         update();
     }
@@ -486,8 +496,14 @@ void RealTimeChart::setAutoScale(bool autoScale)
 
 void RealTimeChart::setTitle(const QString& title)
 {
-    if (m_title != title) {
-        m_title = title;
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = (m_title != title);
+        if (changed)
+            m_title = title;
+    }
+    if (changed) {
         emit titleChanged();
         update();
     }
@@ -495,8 +511,14 @@ void RealTimeChart::setTitle(const QString& title)
 
 void RealTimeChart::setYAxisLabel(const QString& label)
 {
-    if (m_yAxisLabel != label) {
-        m_yAxisLabel = label;
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = (m_yAxisLabel != label);
+        if (changed)
+            m_yAxisLabel = label;
+    }
+    if (changed) {
         emit yAxisLabelChanged();
         update();
     }
@@ -504,8 +526,14 @@ void RealTimeChart::setYAxisLabel(const QString& label)
 
 void RealTimeChart::setRightYAxisLabel(const QString& label)
 {
-    if (m_rightYAxisLabel != label) {
-        m_rightYAxisLabel = label;
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = (m_rightYAxisLabel != label);
+        if (changed)
+            m_rightYAxisLabel = label;
+    }
+    if (changed) {
         emit rightYAxisLabelChanged();
         update();
     }
@@ -513,8 +541,14 @@ void RealTimeChart::setRightYAxisLabel(const QString& label)
 
 void RealTimeChart::setShowGrid(bool show)
 {
-    if (m_showGrid != show) {
-        m_showGrid = show;
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = (m_showGrid != show);
+        if (changed)
+            m_showGrid = show;
+    }
+    if (changed) {
         emit showGridChanged();
         update();
     }
@@ -524,9 +558,15 @@ void RealTimeChart::setLineWidth(int width)
 {
     if (width < 1) width = 1;
     if (width > 10) width = 10;
-    
-    if (m_lineWidth != width) {
-        m_lineWidth = width;
+
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = (m_lineWidth != width);
+        if (changed)
+            m_lineWidth = width;
+    }
+    if (changed) {
         emit lineWidthChanged();
         update();
     }
@@ -534,8 +574,14 @@ void RealTimeChart::setLineWidth(int width)
 
 void RealTimeChart::setLineColor(const QColor& color)
 {
-    if (m_lineColor != color) {
-        m_lineColor = color;
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = (m_lineColor != color);
+        if (changed)
+            m_lineColor = color;
+    }
+    if (changed) {
         emit lineColorChanged();
         update();
     }
@@ -543,8 +589,14 @@ void RealTimeChart::setLineColor(const QColor& color)
 
 void RealTimeChart::setGridColor(const QColor& color)
 {
-    if (m_gridColor != color) {
-        m_gridColor = color;
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = (m_gridColor != color);
+        if (changed)
+            m_gridColor = color;
+    }
+    if (changed) {
         emit gridColorChanged();
         update();
     }
@@ -552,124 +604,65 @@ void RealTimeChart::setGridColor(const QColor& color)
 
 void RealTimeChart::setIsPaused(bool paused)
 {
-    if (m_isPaused != paused) {
-        m_isPaused = paused;
-        emit isPausedChanged();
+    bool changed = false;
+    {
+        QMutexLocker locker(&m_dataMutex);
+        changed = (m_isPaused != paused);
+        if (changed)
+            m_isPaused = paused;
     }
+    if (changed)
+        emit isPausedChanged();
 }
 
 void RealTimeChart::setTimeRange(qint64 rangeMs)
 {
-    if (rangeMs > 0) {
-        m_timeRangeMs = rangeMs;
-    } else {
-        m_timeRangeMs = 60000;  // 默认60秒
+    {
+        QMutexLocker locker(&m_dataMutex);
+        m_timeRangeMs = (rangeMs > 0) ? rangeMs : 60000; // 默认60秒
     }
-    m_cacheValid = false; // 时间范围变化，缓存无效
     update();
 }
 
 void RealTimeChart::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     QQuickPaintedItem::geometryChange(newGeometry, oldGeometry);
-    m_cacheValid = false; // 尺寸变化，缓存无效
+    // 尺寸变化：缓存图像大小与 width()/height() 不匹配时会在下一次
+    // updateCachedImage() 自动重建，无需额外标志（M10）。
     update();
 }
 
-// 优化的绘制函数 - 使用缓存减少重绘开销
+// 优化的绘制函数 - 使用缓存减少重绘开销（M10）。
+// 单序列的"增量绘制"分支已删除：它因每次 addSeriesValueAt() 使缓存失效而
+// 永远不会被走到（死代码），且包含陈旧像素未清除的潜在 bug。现在无论序列
+// 数量一律重建缓存图并一次性贴出，正确且简单。
 void RealTimeChart::drawCurveOptimized(QPainter* painter, const QRectF& rect)
 {
-    QMutexLocker locker(&m_dataMutex);
-
+    // Lock is already held by paint().
     if (m_autoScale)
         calculateYRange();
 
-    // 多序列：始终全量重绘（简单且正确）。
-    if (m_series.size() != 1) {
-        updateCachedImage(rect);
-        painter->drawImage(0, 0, m_cachedImage);
-
-        qint64 maxEnd = 0;
-        for (const auto &s : m_series)
-            if (!s.points.isEmpty() && s.points.last().timestamp > maxEnd)
-                maxEnd = s.points.last().timestamp;
-        if (maxEnd == 0)
-            return;
-        qint64 timeRange = qMax(m_timeRangeMs, maxEnd);
-        qint64 minVisibleTime = qMax(qint64(0), maxEnd - timeRange);
-        for (const auto &series : m_series)
-            if (series.points.size() >= 2)
-                drawSeriesInto(painter, series, rect, timeRange, minVisibleTime, true);
-        return;
-    }
-
-    // 单序列增量路径（序列 0）。
-    if (m_series.isEmpty() || m_series[0].points.size() < 2)
-        return;
-
-    const auto &pts = m_series[0].points;
-    bool needFullRedraw = !m_cacheValid ||
-                          m_cachedImage.isNull() ||
-                          m_cachedImage.size() != QSize(static_cast<int>(width()), static_cast<int>(height())) ||
-                          qFuzzyCompare(m_cachedYMin, m_yMin) == false ||
-                          qFuzzyCompare(m_cachedYMax, m_yMax) == false ||
-                          m_cachedTimeRange != m_timeRangeMs ||
-                          m_lastDrawnIndex < 0 ||
-                          m_lastDrawnIndex >= pts.size() - 1;
-
-    if (needFullRedraw) {
-        updateCachedImage(rect);
-    } else {
-        // 增量绘制：只绘制新增的点
-        QPainter cachePainter(&m_cachedImage);
-        cachePainter.setRenderHint(QPainter::Antialiasing, true);
-
-        qint64 endTime = pts.last().timestamp;
-        qint64 timeRange = qMax(m_timeRangeMs, endTime);
-        qint64 minVisibleTime = qMax(qint64(0), endTime - timeRange);
-
-        for (int i = m_lastDrawnIndex; i < pts.size() - 1; ++i) {
-            const auto& p1 = pts[i];
-            const auto& p2 = pts[i + 1];
-            if (p1.timestamp < minVisibleTime) continue;
-            qint64 r1 = p1.timestamp - minVisibleTime;
-            qint64 r2 = p2.timestamp - minVisibleTime;
-            QPointF s1 = dataToScreen(rect, r1, p1.value, timeRange, false);
-            QPointF s2 = dataToScreen(rect, r2, p2.value, timeRange, false);
-            cachePainter.setPen(QPen(m_lineColor, m_lineWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-            cachePainter.drawLine(s1, s2);
-        }
-        m_lastDrawnIndex = pts.size() - 1;
-    }
-
+    updateCachedImage(rect);
     painter->drawImage(0, 0, m_cachedImage);
 
-    // 最新点（高亮 + 当前值）
-    if (!pts.isEmpty()) {
-        qint64 endTime = pts.last().timestamp;
-        qint64 timeRange = qMax(m_timeRangeMs, endTime);
-        qint64 minVisibleTime = qMax(qint64(0), endTime - timeRange);
-        const auto& lp = pts.last();
-        qint64 rel = lp.timestamp - minVisibleTime;
-        QPointF sp = dataToScreen(rect, rel, lp.value, timeRange, false);
+    qint64 maxEnd = 0;
+    for (const auto &s : m_series)
+        if (!s.points.isEmpty() && s.points.last().timestamp > maxEnd)
+            maxEnd = s.points.last().timestamp;
+    if (maxEnd == 0)
+        return;
+    qint64 timeRange = qMax(m_timeRangeMs, maxEnd);
+    qint64 minVisibleTime = qMax(qint64(0), maxEnd - timeRange);
 
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(m_lineColor);
-        painter->drawEllipse(sp, 5, 5);
-        painter->setBrush(Qt::white);
-        painter->drawEllipse(sp, 3, 3);
-
-        painter->setPen(Qt::black);
-        painter->setFont(QFont("Microsoft YaHei", 10, QFont::Bold));
-        QString valueStr = QString::number(lp.value, 'f', 2);
-        QRectF textRect(sp.x() + 10, sp.y() - 20, 100, 20);
-        painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, valueStr);
-    }
+    // Decorate each visible series (latest-point highlight + value label).
+    for (const auto &series : m_series)
+        if (series.points.size() >= 2)
+            drawSeriesInto(painter, series, rect, timeRange, minVisibleTime, true);
 }
 
 void RealTimeChart::updateCachedImage(const QRectF& rect)
 {
-    // 创建或重置缓存图像
+    // 创建或重置缓存图像（在 paint() 的 m_dataMutex 保护下执行）
     int w = static_cast<int>(width());
     int h = static_cast<int>(height());
 
@@ -686,10 +679,8 @@ void RealTimeChart::updateCachedImage(const QRectF& rect)
     for (const auto &s : m_series)
         if (!s.points.isEmpty() && s.points.last().timestamp > maxEnd)
             maxEnd = s.points.last().timestamp;
-    if (maxEnd == 0) {
-        m_cacheValid = true;
+    if (maxEnd == 0)
         return;
-    }
     qint64 timeRange = qMax(m_timeRangeMs, maxEnd);
     qint64 minVisibleTime = qMax(qint64(0), maxEnd - timeRange);
 
@@ -699,13 +690,4 @@ void RealTimeChart::updateCachedImage(const QRectF& rect)
             continue;
         drawSeriesInto(&cachePainter, series, rect, timeRange, minVisibleTime, false);
     }
-
-    // 更新缓存状态
-    m_cacheValid = true;
-    m_lastDrawnIndex = m_series.isEmpty() ? -1 : static_cast<int>(m_series[0].points.size()) - 1;
-    m_cachedYMin = m_yMin;
-    m_cachedYMax = m_yMax;
-    m_cachedRightYMin = m_rightYMin;
-    m_cachedRightYMax = m_rightYMax;
-    m_cachedTimeRange = m_timeRangeMs;
 }

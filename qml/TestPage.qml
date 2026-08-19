@@ -53,7 +53,7 @@ Page {
                 width: 340; height: 40; radius: 4; color: "white"
                 Label {
                     anchors.fill: parent; anchors.margins: 6
-                    text: hydro.status === "" ? qsTr("Status: ") + hydro.state : hydro.status
+                    text: hydro.status === "" ? qsTr("Status: ") + hydro.stateName : hydro.status
                     color: "#333"; font.pixelSize: 16; font.bold: true; verticalAlignment: Text.AlignVCenter
                 }
             }
@@ -108,8 +108,22 @@ Page {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.bottom; anchors.bottomMargin: 14
                     spacing: 10
-                    DarkBtn { btnText: qsTr("Save Test Result") }
-                    DarkBtn { btnText: qsTr("View Test Report") }
+                    DarkBtn {
+                        btnText: qsTr("Save Test Result")
+                        onClicked: {
+                            var id = hydro.saveCurrentResult()
+                            resultLabel.text = (id > 0) ? qsTr("Result saved (id=%1)").arg(id) : qsTr("No completed test to save.")
+                        }
+                    }
+                    DarkBtn {
+                        btnText: qsTr("View Test Report")
+                        onClicked: {
+                            if (hydro.lastResultId > 0)
+                                stack.push("ReportViewPage.qml", { resultId: hydro.lastResultId })
+                            else
+                                resultLabel.text = qsTr("No saved result yet.")
+                        }
+                    }
                     DarkBtn { btnText: qsTr("Return to Main Menu"); onClicked: stack.pop() }
                 }
             }
@@ -170,6 +184,9 @@ Page {
         function onPressureSample(value) { pressureChart.addValue(value) }
         function onWeightSample(index, value) { pressureChart.addSeriesValue(index, value) }
         function onConfirmRequested(title, message) { messageDlg.showRequest(title, message) }
+        // Close the operator dialog when the test stops/completes so a leftover
+        // dialog cannot wake a stopped sub-task (M1).
+        function onRunningChanged() { if (!hydro.running) messageDlg.close() }
     }
 
     // Operator instruction/confirmation dialog.

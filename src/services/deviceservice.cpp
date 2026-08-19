@@ -1,5 +1,7 @@
 #include "services/deviceservice.h"
 
+#include <QSerialPortInfo>
+
 #include "devices/devicemanager.h"
 #include "services/configmanager.h"
 
@@ -36,16 +38,30 @@ QString DeviceServiceAdapter::manufacturer() const
 QString DeviceServiceAdapter::connectDevices()
 {
     auto &dm = DeviceManager::instance();
-    // Report the software + two COM ports (TasIO / PrecisaScale) status.
-    const QString tasPort = QStringLiteral("COM1");
-    const QString scalePort = QStringLiteral("COM2");
+    // Ports come from config.json ("tasPort"/"scalePort") instead of being
+    // hard-coded COM1/COM2, which is not portable to Kylin/UOS (ttyS0/ttyUSB0).
+    const QString tasPort = ConfigManager::tasPort();
+    const QString scalePort = ConfigManager::scalePort();
     const bool tasOk = dm.tasIO().connect(tasPort);
     const bool scaleOk = dm.precisa().connect(scalePort);
     const QString okS = QStringLiteral("已连接");
     const QString noS = QStringLiteral("未连接");
-    return QStringLiteral("%1\nTasIO (%2): %3\n天平 (%4): %5")
+    const QString ports = availablePorts().isEmpty()
+                              ? QStringLiteral("无可用串口")
+                              : availablePorts().join(QStringLiteral(", "));
+    return QStringLiteral("%1\nTasIO (%2): %3\n天平 (%4): %5\n可用串口: %6")
         .arg(ConfigManager::deviceName(), tasPort, tasOk ? okS : noS,
-             scalePort, scaleOk ? okS : noS);
+             scalePort, scaleOk ? okS : noS, ports);
+}
+
+QStringList DeviceServiceAdapter::availablePorts() const
+{
+    QStringList names;
+    const auto infos = QSerialPortInfo::availablePorts();
+    names.reserve(infos.size());
+    for (const auto &info : infos)
+        names << info.portName();
+    return names;
 }
 
 void DeviceServiceAdapter::setWaterInlet(bool on)

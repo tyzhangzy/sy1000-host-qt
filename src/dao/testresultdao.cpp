@@ -22,7 +22,19 @@ UnifiedTestResult rowToResult(const QSqlQuery &q)
     r.testerCompany = q.value(4).toString().toStdString();
     r.sample.manufacturer = q.value(5).toString().toStdString();
     r.sample.overallResult = static_cast<TestResultStatus>(q.value(6).toInt(0));
-    r = serial::unifiedTestResultFromJson(q.value(7).toString());
+
+    // The JSON payload is the authoritative full record; the columns are kept
+    // only as index/query fields. Fall back to the columns when the payload is
+    // absent or cannot be parsed so column data is never silently overwritten
+    // by a partial parse (M3).
+    const QString payload = q.value(7).toString();
+    if (!payload.trimmed().isEmpty()) {
+        UnifiedTestResult p = serial::unifiedTestResultFromJson(payload);
+        if (!p.testSerialNo.empty() || p.id != 0) {
+            p.id = r.id; // primary key always comes from the row
+            return p;
+        }
+    }
     return r;
 }
 
@@ -79,6 +91,18 @@ UnifiedTestResult TestResultDao::findBySerialNo(const std::string &serialNo)
                              " manufacturer, overall_result, payload FROM unified_test_results"
                              " WHERE test_serial_no=?"));
     q.addBindValue(QString::fromStdString(serialNo));
+    if (q.exec() && q.next())
+        return rowToResult(q);
+    return {};
+}
+
+UnifiedTestResult TestResultDao::findById(int id)
+{
+    QSqlQuery q;
+    q.prepare(QStringLiteral("SELECT id, test_serial_no, test_date, tester_name, tester_company,"
+                             " manufacturer, overall_result, payload FROM unified_test_results"
+                             " WHERE id=?"));
+    q.addBindValue(id);
     if (q.exec() && q.next())
         return rowToResult(q);
     return {};

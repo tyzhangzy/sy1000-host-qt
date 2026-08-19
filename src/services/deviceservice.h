@@ -17,6 +17,8 @@ public:
     Q_INVOKABLE QString deviceName() const;
     Q_INVOKABLE QString manufacturer() const;
     Q_INVOKABLE QString connectDevices();   // returns status text
+    // Names of serial ports currently available on this machine (M8).
+    Q_INVOKABLE QStringList availablePorts() const;
     Q_INVOKABLE void setWaterInlet(bool on);
     Q_INVOKABLE void setFastPump(bool on);
     Q_INVOKABLE void setSlowPump(bool on);

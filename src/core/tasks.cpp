@@ -1,5 +1,6 @@
 #include "core/tasks.h"
 
+#include <QCoreApplication>
 #include <QDateTime>
 #include <cmath>
 
@@ -14,7 +15,7 @@ void PressurizeTask::run()
 
     m_device->setWaterInlet(true);
     m_device->setFastPump(true);
-    emit statusChanged(QStringLiteral("Pressurizing (fast)..."));
+    emit statusChanged(QCoreApplication::translate("sy1000_core", "Pressurizing (fast)..."));
 
     m_timer.setInterval(200);
     QObject::connect(&m_timer, &QTimer::timeout, this, &PressurizeTask::checkFastStage);
@@ -33,7 +34,7 @@ void PressurizeTask::checkFastStage()
             m_slowTarget = m_params.targetPressure - m_params.slowStopDelta;
             m_slowDeadline = QDateTime::currentDateTime().addSecs(m_params.slowTimeoutMinutes * 60);
             m_device->setSlowPump(true);
-            emit statusChanged(QStringLiteral("Pressurizing (slow)..."));
+            emit statusChanged(QCoreApplication::translate("sy1000_core", "Pressurizing (slow)..."));
             QObject::disconnect(&m_timer, &QTimer::timeout, this, &PressurizeTask::checkFastStage);
             QObject::connect(&m_timer, &QTimer::timeout, this, &PressurizeTask::checkSlowStage);
             return;
@@ -86,7 +87,7 @@ void WaitTask::run()
         finish(true, HydroTestError::None);
         return;
     }
-    emit statusChanged(QString("Holding, %1 s").arg(m_remaining));
+    emit statusChanged(QCoreApplication::translate("sy1000_core", "Holding, %1 s").arg(m_remaining));
     m_timer.setInterval(1000);
     QObject::connect(&m_timer, &QTimer::timeout, this, &WaitTask::tick);
     m_timer.start();
@@ -101,14 +102,14 @@ void WaitTask::tick()
         m_timer.stop();
         finish(true, HydroTestError::None);
     } else {
-        emit statusChanged(QString("Holding, %1 s").arg(m_remaining));
+        emit statusChanged(QCoreApplication::translate("sy1000_core", "Holding, %1 s").arg(m_remaining));
     }
 }
 
 // ---------------- HoldTask ----------------
 void HoldTask::run()
 {
-    emit statusChanged(QStringLiteral("Hold sampling (T10)..."));
+    emit statusChanged(QCoreApplication::translate("sy1000_core", "Hold sampling (T10)..."));
     delay(m_params.holdSampleInterval1Sec * 1000, [this]() { sampleFirst(); });
 }
 
@@ -121,7 +122,7 @@ void HoldTask::sampleFirst()
         m_w10[i] = w[i];
     m_p10 = m_device->currentPressure();
 
-    emit statusChanged(QStringLiteral("Hold sampling (T30)..."));
+    emit statusChanged(QCoreApplication::translate("sy1000_core", "Hold sampling (T30)..."));
     delay(m_params.holdSampleInterval2Sec * 1000, [this]() { sampleSecond(); });
 }
 
@@ -158,16 +159,18 @@ void HoldTask::finishWithResult()
 void ReleaseTask::run()
 {
     // Ask the operator to open the release valve before starting the countdown.
-    emit statusChanged(QStringLiteral("等待操作员打开泄压阀..."));
-    requestConfirmation(QStringLiteral("泄压操作"),
-                        QStringLiteral("请打开泄压阀，然后点击\"确认\"开始泄压。"),
+    emit statusChanged(QCoreApplication::translate("sy1000_core",
+                                                   "Waiting for operator to open the release valve..."));
+    requestConfirmation(QCoreApplication::translate("sy1000_core", "Release operation"),
+                        QCoreApplication::translate("sy1000_core",
+                                                    "Please open the release valve, then click \"OK\" to start releasing pressure."),
                         [this](bool accepted) {
                             if (!accepted) {
                                 finish(false, HydroTestError::Cancelled);
                                 return;
                             }
                             m_remaining = m_params.countdownSec > 0 ? m_params.countdownSec : 10;
-                            emit statusChanged(QStringLiteral("泄压中，剩余 %1 秒").arg(m_remaining));
+                            emit statusChanged(QCoreApplication::translate("sy1000_core", "Releasing pressure, %1 s remaining").arg(m_remaining));
                             m_timer.setInterval(1000);
                             QObject::connect(&m_timer, &QTimer::timeout, this, &ReleaseTask::tick);
                             m_timer.start();
@@ -183,7 +186,7 @@ void ReleaseTask::tick()
         m_timer.stop();
         finish(true, HydroTestError::None);
     } else {
-        emit statusChanged(QStringLiteral("泄压中，剩余 %1 秒").arg(m_remaining));
+        emit statusChanged(QCoreApplication::translate("sy1000_core", "Releasing pressure, %1 s remaining").arg(m_remaining));
     }
 }
 
@@ -191,7 +194,7 @@ void ReleaseTask::tick()
 void StabilizeTask::run()
 {
     m_remaining = m_params.countdownSec > 0 ? m_params.countdownSec : 5;
-    emit statusChanged(QString("Stabilizing, %1 s").arg(m_remaining));
+    emit statusChanged(QCoreApplication::translate("sy1000_core", "Stabilizing, %1 s").arg(m_remaining));
     m_timer.setInterval(1000);
     QObject::connect(&m_timer, &QTimer::timeout, this, &StabilizeTask::tick);
     m_timer.start();
@@ -206,7 +209,7 @@ void StabilizeTask::tick()
         m_timer.stop();
         finish(true, HydroTestError::None);
     } else {
-        emit statusChanged(QString("Stabilizing, %1 s").arg(m_remaining));
+        emit statusChanged(QCoreApplication::translate("sy1000_core", "Stabilizing, %1 s").arg(m_remaining));
     }
 }
 

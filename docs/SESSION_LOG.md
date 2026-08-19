@@ -5,7 +5,57 @@
 
 ---
 
-## 2026-08-19 · FieldRow/检查输入框去掉边框，仅保留下划线 ✅
+## 2026-08-20 · 修复中优先级问题 M1-M10（代码审查 08-20） ✅
+
+- **依据**：`docs/CODE_REVIEW_20260820.md`（中优先级问题全部处理）
+- **状态**：待提交（构建 ✅ / 6 个 headless 冒烟测试全绿 ✅ / qmllint 0 Error ✅ / `SY1000.exe` 启动无回归、stderr 干净 ✅）
+
+### M1 stopTest 脆弱守卫 + 确认弹窗残留
+- `core/controller.cpp`：`stopTest()` 先摘除 `m_currentTask`、清空 `m_pendingConfirm` 再 `stop()`，消除同步 `finished(Cancelled)` 重入 + 二次 `transitionTo(Aborted)` 依赖守卫兜底；`runTask()` 启动新任务时清空旧挂起确认
+- `core/subtask.cpp`：`finish()` 清空 `m_confirmCallback`，事后点击"确定"不再唤醒已停止任务的回调
+- `qml/TestPage.qml`：`onRunningChanged` 非运行态自动关闭 `HydroTestMessageDialog`
+
+### M2 设备写操作失败静默
+- `devices/tasio.cpp/.h`：`setWaterInlet/setFastPump/setSlowPump/setWaterJacketLock` 改为返回 bool 并 `qWarning` 记录 `writeSingleCoil` 失败
+- `core/controller.cpp`：`safeShutdown()` 解锁 1~4 号全部水套（原只解锁 1 号）
+
+### M3 rowToResult 列与 payload 双写
+- `dao/testresultdao.cpp`：payload 为权威记录，解析失败才回退列字段，避免部分解析覆盖列数据
+
+### M4 按 id 查询全表扫描
+- `dao/testresultdao.h/.cpp`、`services/testresultservice.h/.cpp`：新增 `findById(int)` 主键查询
+- `services/resultservice.cpp`：`details()/reportData()/generatePdf()` 改用 `findById`，去掉 `findAll()` 全表扫描 + 全量 JSON 解析
+
+### M5 死按钮
+- `services/hydroadapter.h/.cpp`：新增 `lastResultId`（Q_PROPERTY + NOTIFY）与 `saveCurrentResult()`（每轮至多保存一次，防重复落库）
+- `qml/TestPage.qml`、`qml/TestPreparationPage.qml`："保存试验结果 / 查看试验报告"接通 → 保存或 `stack.push("ReportViewPage.qml", {resultId})`
+
+### M6 i18n C++ 状态文本
+- `tasks.cpp / states.cpp / controller.cpp / hydroadapter.cpp`：所有 C++ 状态/提示文本改走 `QCoreApplication::translate("sy1000_core", ...)`（统一 context）
+- `i18n/sy1000_zh_CN.ts`：新增 `sy1000_core` context（36 条）及 `TestPage/TestPreparationPage` 2 条提示，lrelease 302 条全完成
+
+### M7 状态栏显示原始枚举整数
+- `services/hydroadapter.h/.cpp`：新增 `Q_PROPERTY(QString stateName READ stateName NOTIFY stateChanged)`（14 个状态中文映射）
+- `qml/TestPage.qml:56`、`qml/TestPreparationPage.qml:90`：`hydro.state` → `hydro.stateName`
+
+### M8 串口 COM1/COM2 硬编码
+- `services/configmanager.h/.cpp`：新增 `tasPort()/scalePort()`（config.json keys）
+- `config.json`：新增 `"tasPort"/"scalePort"`
+- `services/deviceservice.h/.cpp`：连接改读配置端口；新增 `availablePorts()`（`QSerialPortInfo` 枚举），状态文本附可用串口列表
+
+### M9 加压结果字段无意义 + 曲线点无上限
+- `core/states.h/.cpp`：`PressurizingToWorkingState::onTaskFinished` 不再读 `PressurizeTask` 永不填充的 T10/T30（存 0 的假数据）；新增 `HoldingAtWorkingState::onTaskFinished` 捕获 HoldTask 的 `workingPressureT10/T30` 与 `workingPressureWeightT10/T30`
+- `services/hydroadapter.cpp`：`m_curvePoints` 上限 20000 点，超限裁掉最旧点
+
+### M10 RealTimeChart 线程安全 + 缓存死代码
+- `ui/charts/RealTimeChart.h/.cpp`：`paint()`（FramebufferObject 渲染线程）全程持 `m_dataMutex`；所有 setter/getter 读写共享状态均加锁；`m_isPaused` 判定移入锁内；`calculateYRange` 不再在渲染线程发信号
+- 删除单序列"增量绘制"死代码分支（`addSeriesValueAt` 每次都使缓存失效、永远走不到且含陈旧像素 bug），改为统一重建缓存图；删除 `m_cacheValid/m_lastDrawnIndex/缓存范围` 成员
+
+### 附带修复（预先存在的问题）
+- `qml/ResultDetailsPage.qml`：`Column { Label{}; Label{} }` 中非法 `;` 分隔 QML 子对象导致 qmllint 报错、configure 非零退出 → 移除分号，qmllint 恢复 0 Error
+
+---
+
 
 - **提交**：`c9ce254` `feat(ui): field inputs borderless, underline only`
 - **范围**：`FieldRow / InspectionInternal / InspectionThread / InspectionValve.qml`

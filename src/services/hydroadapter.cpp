@@ -1,7 +1,9 @@
 #include "services/hydroadapter.h"
 
 #include <algorithm>
+#include <cstddef>
 
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QVariantMap>
 
@@ -86,8 +88,11 @@ HydroTestControllerAdapter::HydroTestControllerAdapter(IHydroDeviceProvider *dev
     QObject::connect(&m_controller, &HydrostaticTestController::testCompleted,
                      this, [this](bool ok) {
                          if (ok) {
-                             const int id = TestResultService::save(buildResult());
-                             m_status = QStringLiteral("Result saved (id=%1)").arg(id);
+                             m_lastResultId = TestResultService::save(buildResult());
+                             m_resultSaved = true;
+                             emit lastResultIdChanged();
+                             m_status = QCoreApplication::translate("sy1000_core", "Result saved (id=%1)")
+                                           .arg(m_lastResultId);
                              emit statusChanged();
                          }
                          emit testFinished(ok, countPassed(), countFailed());
@@ -124,6 +129,14 @@ HydroTestControllerAdapter::HydroTestControllerAdapter(IHydroDeviceProvider *dev
             if (!w.empty())
                 pt.weight = w[std::min<std::size_t>(1, w.size() - 1)];
             m_curvePoints.push_back(pt);
+
+            // Cap the persisted curve so a long test does not keep growing the
+            // JSON payload without bound (M9): keep the most recent samples.
+            constexpr std::size_t kMaxCurvePoints = 20000;
+            if (m_curvePoints.size() > kMaxCurvePoints) {
+                const auto excess = static_cast<std::ptrdiff_t>(m_curvePoints.size() - kMaxCurvePoints);
+                m_curvePoints.erase(m_curvePoints.begin(), m_curvePoints.begin() + excess);
+            }
         }
     });
     m_sampleTimer.start();
@@ -132,6 +145,7 @@ HydroTestControllerAdapter::HydroTestControllerAdapter(IHydroDeviceProvider *dev
 void HydroTestControllerAdapter::startTest()
 {
     m_curvePoints.clear();
+    m_resultSaved = false;
     m_controller.startTest();
     updateRunning();
 }
@@ -140,6 +154,17 @@ void HydroTestControllerAdapter::stopTest()
 {
     m_controller.stopTest();
     updateRunning();
+}
+
+int HydroTestControllerAdapter::saveCurrentResult()
+{
+    // Save at most once per test run: later calls return the stored id (M5).
+    if (!m_resultSaved) {
+        m_lastResultId = TestResultService::save(buildResult());
+        m_resultSaved = true;
+        emit lastResultIdChanged();
+    }
+    return m_lastResultId;
 }
 
 void HydroTestControllerAdapter::setWorkingPressure(double p)
@@ -216,6 +241,28 @@ QString HydroTestControllerAdapter::sampleInfo(int index) const
 int HydroTestControllerAdapter::state() const
 {
     return static_cast<int>(m_controller.state());
+}
+
+QString HydroTestControllerAdapter::stateName() const
+{
+    // Localized state names so the UI shows text instead of a raw enum int (M7).
+    switch (m_controller.state()) {
+    case HydroTestState::Idle: return QCoreApplication::translate("sy1000_core", "Idle");
+    case HydroTestState::Preparing: return QCoreApplication::translate("sy1000_core", "Preparing");
+    case HydroTestState::WaterJacketChecking: return QCoreApplication::translate("sy1000_core", "WaterJacketChecking");
+    case HydroTestState::CylinderChecking: return QCoreApplication::translate("sy1000_core", "CylinderChecking");
+    case HydroTestState::Initializing: return QCoreApplication::translate("sy1000_core", "Initializing");
+    case HydroTestState::PressurizingToWorking: return QCoreApplication::translate("sy1000_core", "PressurizingToWorking");
+    case HydroTestState::HoldingAtWorking: return QCoreApplication::translate("sy1000_core", "HoldingAtWorking");
+    case HydroTestState::PressurizingToTesting: return QCoreApplication::translate("sy1000_core", "PressurizingToTesting");
+    case HydroTestState::HoldingAtTesting: return QCoreApplication::translate("sy1000_core", "HoldingAtTesting");
+    case HydroTestState::ReleasingPressure: return QCoreApplication::translate("sy1000_core", "ReleasingPressure");
+    case HydroTestState::Stabilizing: return QCoreApplication::translate("sy1000_core", "Stabilizing");
+    case HydroTestState::CalculatingResult: return QCoreApplication::translate("sy1000_core", "CalculatingResult");
+    case HydroTestState::Completed: return QCoreApplication::translate("sy1000_core", "Completed");
+    case HydroTestState::Aborted: return QCoreApplication::translate("sy1000_core", "Aborted");
+    }
+    return QString();
 }
 
 bool HydroTestControllerAdapter::running() const

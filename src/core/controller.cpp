@@ -1,5 +1,7 @@
 #include "core/controller.h"
 
+#include <QCoreApplication>
+
 #include "core/states.h"
 #include "core/subtask.h"
 
@@ -20,11 +22,22 @@ void HydrostaticTestController::startTest()
 
 void HydrostaticTestController::stopTest()
 {
-    if (m_currentTask)
-        m_currentTask->stop();
+    // Detach the running task and any pending confirmation *before* stopping it:
+    // HydroSubTask::stop() synchronously emits finished(Cancelled) which would
+    // otherwise re-enter onSubTaskFinished -> transitionTo(Aborted) and leave a
+    // stale confirm callback that a leftover dialog could still wake (M1).
+    if (m_currentTask) {
+        HydroSubTask *task = m_currentTask;
+        m_currentTask = nullptr;
+        if (m_pendingConfirm == task)
+            m_pendingConfirm = nullptr;
+        task->stop();
+    } else {
+        m_pendingConfirm = nullptr;
+    }
     safeShutdown();
     transitionTo(HydroTestState::Aborted);
-    emit statusChanged(QStringLiteral("Test stopped manually"));
+    emit statusChanged(QCoreApplication::translate("sy1000_core", "Test stopped manually"));
 }
 
 void HydrostaticTestController::reset()
@@ -94,6 +107,8 @@ void HydrostaticTestController::runTask(HydroSubTask *task, const TaskParams &pa
     if (m_currentTask)
         m_currentTask->deleteLater();
     m_currentTask = task;
+    // A new task invalidates any confirmation still pending from a replaced one.
+    m_pendingConfirm = nullptr;
     QObject::connect(task, &HydroSubTask::finished, this, &HydrostaticTestController::onSubTaskFinished);
     QObject::connect(task, &HydroSubTask::statusChanged, this,
                      [this](const QString &s) { emit statusChanged(s); });
@@ -119,7 +134,10 @@ void HydrostaticTestController::safeShutdown()
     m_device->setFastPump(false);
     m_device->setSlowPump(false);
     m_device->setWaterInlet(false);
-    m_device->setWaterJacketLock(1, false);
+    // Release all four water jacket locks (M2): the previous code only unlocked
+    // jacket 1 and left jackets 2..4 closed after an aborted/completed test.
+    for (unsigned index = 1; index <= 4; ++index)
+        m_device->setWaterJacketLock(index, false);
 }
 
 } // namespace sy1000

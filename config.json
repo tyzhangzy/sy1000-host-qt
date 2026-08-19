@@ -2,5 +2,7 @@
   "deviceName": "DKSY-I 气瓶水压检测装置",
   "manufacturer": "北京德康时代科技有限公司",
   "serialNo": "2511B01",
-  "manufactureDate": "2025-11-10"
+  "manufactureDate": "2025-11-10",
+  "tasPort": "COM1",
+  "scalePort": "COM2"
 }

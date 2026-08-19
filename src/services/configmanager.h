@@ -23,6 +23,11 @@ public:
     static QString serialNo();
     static QString manufactureDate();
 
+    // Serial ports used by the device layer (config.json keys "tasPort"/"scalePort").
+    // On Linux hosts (Kylin/UOS) these would be e.g. ttyS0 / ttyUSB0 (M8).
+    static QString tasPort();
+    static QString scalePort();
+
 private:
     static QVariantMap s_config;
 };

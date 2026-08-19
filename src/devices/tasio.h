@@ -24,10 +24,12 @@ public:
     void disconnect();
     bool isConnected() const;
 
-    void setWaterInlet(bool on);
-    void setFastPump(bool on);
-    void setSlowPump(bool on);
-    void setWaterJacketLock(quint16 index, bool on);
+    // All write operations report success/failure so callers (state machine,
+    // UI) can react when the serial link is down instead of silently continuing.
+    bool setWaterInlet(bool on);
+    bool setFastPump(bool on);
+    bool setSlowPump(bool on);
+    bool setWaterJacketLock(quint16 index, bool on);
 
     double currentPressure() const { return m_currentPressure; }
 

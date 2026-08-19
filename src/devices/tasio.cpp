@@ -2,6 +2,8 @@
 
 #include <QDebug>
 
+#include <cstring>
+
 TasIO::TasIO(QObject *parent)
     : QObject(parent)
 {
@@ -41,29 +43,51 @@ bool TasIO::isConnected() const
     return m_client.isConnected();
 }
 
-void TasIO::setWaterInlet(bool on)
+bool TasIO::setWaterInlet(bool on)
 {
-    if (isConnected())
-        m_client.writeSingleCoil(TAS_IO_SLAVE_ID, 5, on);
+    if (!isConnected())
+        return false;
+    if (!m_client.writeSingleCoil(TAS_IO_SLAVE_ID, 5, on)) {
+        qWarning() << "[tasio] writeSingleCoil failed: waterInlet" << on;
+        return false;
+    }
+    return true;
 }
 
-void TasIO::setFastPump(bool on)
+bool TasIO::setFastPump(bool on)
 {
-    if (isConnected())
-        m_client.writeSingleCoil(TAS_IO_SLAVE_ID, 6, on);
+    if (!isConnected())
+        return false;
+    if (!m_client.writeSingleCoil(TAS_IO_SLAVE_ID, 6, on)) {
+        qWarning() << "[tasio] writeSingleCoil failed: fastPump" << on;
+        return false;
+    }
+    return true;
 }
 
-void TasIO::setSlowPump(bool on)
+bool TasIO::setSlowPump(bool on)
 {
-    if (isConnected())
-        m_client.writeSingleCoil(TAS_IO_SLAVE_ID, 7, on);
+    if (!isConnected())
+        return false;
+    if (!m_client.writeSingleCoil(TAS_IO_SLAVE_ID, 7, on)) {
+        qWarning() << "[tasio] writeSingleCoil failed: slowPump" << on;
+        return false;
+    }
+    return true;
 }
 
-void TasIO::setWaterJacketLock(quint16 index, bool on)
+bool TasIO::setWaterJacketLock(quint16 index, bool on)
 {
     // coil addresses 0..3 for locks 1..4
-    if (isConnected() && index >= 1 && index <= 4)
-        m_client.writeSingleCoil(TAS_IO_SLAVE_ID, index - 1, on);
+    if (index < 1 || index > 4)
+        return false;
+    if (!isConnected())
+        return false;
+    if (!m_client.writeSingleCoil(TAS_IO_SLAVE_ID, index - 1, on)) {
+        qWarning() << "[tasio] writeSingleCoil failed: waterJacketLock" << index << on;
+        return false;
+    }
+    return true;
 }
 
 void TasIO::readPressureOnce()

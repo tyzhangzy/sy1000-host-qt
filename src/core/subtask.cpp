@@ -72,6 +72,10 @@ void HydroSubTask::finish(bool success, HydroTestError error, const TaskResult &
     if (m_finished)
         return;
     m_finished = true;
+    // Once the task is finished/stopped a pending operator confirmation is no
+    // longer actionable; dropping it here guarantees a late dialog response
+    // (e.g. after stopTest) is ignored instead of waking a dead task (M1).
+    m_confirmCallback = nullptr;
     emit finished(success, error, result);
 }
 

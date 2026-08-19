@@ -1480,4 +1480,173 @@
         <translation>新密码</translation>
     </message>
 </context>
+<context>
+    <name>sy1000_core</name>
+    <message>
+        <source>Pressurizing (fast)...</source>
+        <translation>快速加压中...</translation>
+    </message>
+    <message>
+        <source>Pressurizing (slow)...</source>
+        <translation>慢速加压中...</translation>
+    </message>
+    <message>
+        <source>Holding, %1 s</source>
+        <translation>保压中，剩余 %1 秒</translation>
+    </message>
+    <message>
+        <source>Hold sampling (T10)...</source>
+        <translation>保压取样 (T10)...</translation>
+    </message>
+    <message>
+        <source>Hold sampling (T30)...</source>
+        <translation>保压取样 (T30)...</translation>
+    </message>
+    <message>
+        <source>Waiting for operator to open the release valve...</source>
+        <translation>等待操作员打开泄压阀...</translation>
+    </message>
+    <message>
+        <source>Release operation</source>
+        <translation>泄压操作</translation>
+    </message>
+    <message>
+        <source>Please open the release valve, then click "OK" to start releasing pressure.</source>
+        <translation>请打开泄压阀，然后点击"确认"开始泄压。</translation>
+    </message>
+    <message>
+        <source>Releasing pressure, %1 s remaining</source>
+        <translation>泄压中，剩余 %1 秒</translation>
+    </message>
+    <message>
+        <source>Stabilizing, %1 s</source>
+        <translation>压力稳定中，剩余 %1 秒</translation>
+    </message>
+    <message>
+        <source>Test preparation</source>
+        <translation>试验准备</translation>
+    </message>
+    <message>
+        <source>Checking water jacket</source>
+        <translation>检查水套</translation>
+    </message>
+    <message>
+        <source>Checking cylinder pressure</source>
+        <translation>检查气瓶压力</translation>
+    </message>
+    <message>
+        <source>Pressurizing to working pressure</source>
+        <translation>加压至工作压力</translation>
+    </message>
+    <message>
+        <source>Holding at working pressure</source>
+        <translation>工作压力保压</translation>
+    </message>
+    <message>
+        <source>Pressurizing to test pressure</source>
+        <translation>加压至试验压力</translation>
+    </message>
+    <message>
+        <source>Holding at test pressure</source>
+        <translation>试验压力保压</translation>
+    </message>
+    <message>
+        <source>Releasing pressure</source>
+        <translation>泄压中</translation>
+    </message>
+    <message>
+        <source>Waiting for scales to stabilize</source>
+        <translation>等待天平稳定</translation>
+    </message>
+    <message>
+        <source>Test completed</source>
+        <translation>试验完成</translation>
+    </message>
+    <message>
+        <source>Test stopped manually</source>
+        <translation>试验已手动停止</translation>
+    </message>
+    <message>
+        <source>Result saved (id=%1)</source>
+        <translation>结果已保存 (id=%1)</translation>
+    </message>
+    <message>
+        <source>Idle</source>
+        <translation>待机</translation>
+    </message>
+    <message>
+        <source>Preparing</source>
+        <translation>准备中</translation>
+    </message>
+    <message>
+        <source>WaterJacketChecking</source>
+        <translation>水套检查中</translation>
+    </message>
+    <message>
+        <source>CylinderChecking</source>
+        <translation>气瓶检查中</translation>
+    </message>
+    <message>
+        <source>Initializing</source>
+        <translation>初始化中</translation>
+    </message>
+    <message>
+        <source>PressurizingToWorking</source>
+        <translation>加压至工作压力</translation>
+    </message>
+    <message>
+        <source>HoldingAtWorking</source>
+        <translation>工作压力保压中</translation>
+    </message>
+    <message>
+        <source>PressurizingToTesting</source>
+        <translation>加压至试验压力</translation>
+    </message>
+    <message>
+        <source>HoldingAtTesting</source>
+        <translation>试验压力保压中</translation>
+    </message>
+    <message>
+        <source>ReleasingPressure</source>
+        <translation>泄压中</translation>
+    </message>
+    <message>
+        <source>Stabilizing</source>
+        <translation>稳定中</translation>
+    </message>
+    <message>
+        <source>CalculatingResult</source>
+        <translation>计算结果中</translation>
+    </message>
+    <message>
+        <source>Completed</source>
+        <translation>已完成</translation>
+    </message>
+    <message>
+        <source>Aborted</source>
+        <translation>已中止</translation>
+    </message>
+</context>
+<context>
+    <name>TestPage</name>
+    <message>
+        <source>No completed test to save.</source>
+        <translation>暂无已完成的试验可保存。</translation>
+    </message>
+    <message>
+        <source>No saved result yet.</source>
+        <translation>暂无已保存的试验结果。</translation>
+    </message>
+</context>
+<context>
+    <name>TestPreparationPage</name>
+    <message>
+        <source>No completed test to save.</source>
+        <translation>暂无已完成的试验可保存。</translation>
+    </message>
+    <message>
+        <source>No saved result yet.</source>
+        <translation>暂无已保存的试验结果。</translation>
+    </message>
+</context>
 </TS>
