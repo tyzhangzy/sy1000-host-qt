@@ -5,6 +5,19 @@
 
 ---
 
+## 2026-08-19 · 对齐退出按钮与标题标签底部 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：按用户要求，将电源式退出按钮的**底部**与 header 左上角标题标签（"| Login"）的**底部**对齐
+
+### 实现
+- `qml/Main.qml`：标题 Label 加 `id: titleLabel`；退出按钮由 `anchors.verticalCenter` 改为 `anchors.bottom: titleLabel.bottom`（保留右侧锚定）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；应用启动无回归
+
+---
+
 ## 2026-08-19 · 修正登录页退出按钮位置（移到窗口右上角）✅
 
 - **提交**：`481d82e` `fix(ui): move quit button to window top-right header (login page only)`

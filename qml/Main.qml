@@ -26,6 +26,7 @@ ApplicationWindow {
                 font.bold: true
             }
             Label {
+                id: titleLabel
                 text: "  |  " + stack.currentItem.title
                 color: "#EEEEEE"
                 font.pixelSize: 20
@@ -50,7 +51,8 @@ ApplicationWindow {
             visible: stack.depth === 1
             anchors.right: parent.right
             anchors.rightMargin: 16
-            anchors.verticalCenter: parent.verticalCenter
+            // Align the button's bottom with the title label's bottom (top-left).
+            anchors.bottom: titleLabel.bottom
             onClicked: Qt.quit()
 
             contentItem: Label {
