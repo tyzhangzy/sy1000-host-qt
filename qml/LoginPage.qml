@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 
 /**
  * Login page, matched to the original WPF LoginWindow layout:
@@ -129,6 +130,12 @@ Item {
                     text: qsTr("Login")
                     font.pixelSize: 22
                     font.bold: true
+                    // Raised Material button in the WPF PrimaryHueDark (#303F9F).
+                    Material.background: "#303F9F"
+                    Material.foreground: "white"
+                    Material.elevation: 2
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Click to sign in and enter the main menu")
                     onClicked: {
                         if (loginService.tryLogin(userBox.currentText, passwordField.text)) {
                             statusLabel.color = "#2e7d32"

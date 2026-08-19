@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-08-19 · 登录按钮风格对齐 WPF ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：登录按钮改为 WPF `MaterialDesignRaisedButton` 风格
+
+### 实现（`qml/LoginPage.qml`）
+- `import QtQuick.Controls.Material`
+- `signInButton` 设置：
+  - `Material.background: "#303F9F"`（WPF PrimaryHueDark 深 Indigo）
+  - `Material.foreground: "white"`（白色粗体文字）
+  - `Material.elevation: 2`（raised 阴影）
+  - `ToolTip`（"点击登录进入主菜单"，对齐 WPF ToolTip）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 登录页左侧设备信息对齐 WPF ✅
 
 - **提交**：`194b9c4` `fix(config): login brand info match WPF (DKSY-I / Beijing Dekang)`
