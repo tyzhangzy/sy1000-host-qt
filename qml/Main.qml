@@ -4,6 +4,8 @@ import QtQuick.Controls
 ApplicationWindow {
     id: root
     title: qsTr("SY1000 - Hydrostatic Test System")
+    // Frameless, maximized window to match the WPF LoginWindow (WindowStyle=None).
+    flags: Qt.Window | Qt.FramelessWindowHint
     width: 1920
     height: 1080
     visibility: Window.Maximized

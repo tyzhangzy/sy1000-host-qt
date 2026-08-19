@@ -5,6 +5,23 @@
 
 ---
 
+## 2026-08-19 · 启动界面无边框（对齐 WPF）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：登录页去掉系统标题栏，对齐 WPF `LoginWindow`（`WindowStyle=None` 无边框、最大化）
+
+### 实现
+- `qml/Main.qml`：`ApplicationWindow` 加 `flags: Qt.Window | Qt.FramelessWindowHint`（无边框窗口）
+- 结合此前改动：登录页无 header、最大化全屏浅灰、左上角留空、右上角电源退出按钮 —— 与 WPF 启动界面一致
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+### 备注
+- 无边框窗口在非登录页由自定义深蓝 header 充当标题栏；窗口最大化固定（对齐 WPF）。
+
+---
+
 ## 2026-08-19 · 登录页隐藏顶部 header，左上角留空 ✅
 
 - **提交**：`ea4da75` `feat(ui): hide header on login page (frameless look) + quit button on login page`
