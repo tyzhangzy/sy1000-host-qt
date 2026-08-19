@@ -17,6 +17,8 @@
 - **A3 水压试验消息对话框**：`HydroSubTask` 支持阻塞式确认请求（`requestConfirmation`/`confirmResponse`），`ReleaseTask` 泄压前弹窗"打开泄压阀并确认"；`HydroTestMessageDialog.qml` 接通 `hydro.respondConfirm()`
 - **C7 PDF 报告生成**：`TestReportGenerator`（`src/report/`）用 `QTextDocument + QPrinter` 生成试验报告 PDF（标题/表单/内嵌压力曲线图），输出到 `Documents/水压测试结果/{mfg}_{serial}_{时间戳}/`
 - **A2 测试报告查看**：由于 Qt Pdf 模块未安装，改用 A4 风格 QML 报告预览页（`ReportViewPage.qml`）+ 一键生成并用系统查看器打开 PDF
+- **C9 config.json 加载**：`ConfigManager`（`src/services/`）从 `config.json` 读设备名/厂商/序列号/日期，接入 `DeviceServiceAdapter::systemInfo()`（原为占位符）；构建后复制 `config.json` 到 exe 目录
+- **（修复）A3 确认框本地化**：泄压确认框文案改为中文操作指令（"泄压操作 / 请打开泄压阀…"），消除英文调试样弹窗观感
 
 ---
 
@@ -41,7 +43,7 @@
 | 6. ~~**外观检查接入结果保存**~~ | 把外观检查结果传给 `HydroTestControllerAdapter.buildResult()`，试验完成入库时带上检查数据 | ✅ 已完成：`setSampleInspection()` → `buildResult()` 写入 `sample.appearanceInspection` |
 | 7. ~~**PDF 报告生成**~~ | 用 `QTextDocument`/`QPrinter` 生成试验报告（标题/表单/曲线图），对齐 WPF `TestReportGenerator` | ✅ 已完成：`TestReportGenerator` + 内嵌曲线图 + `testreport` 测试 |
 | 8. **真实 DeviceManager 接入** | 把 `main.cpp` 的 `SimulatedDeviceProvider` 换成真实 `DeviceManager`（需真机 COM 口），并做 COM 口自动识别 |
-| 9. **config.json 加载** | 建 `ConfigManager`，从 `config.json` 读设备名/厂商/序列号，登录页与系统维护页显示真实信息 |
+| 9. ~~**config.json 加载**~~ | 建 `ConfigManager`，从 `config.json` 读设备名/厂商/序列号，登录页与系统维护页显示真实信息 | ✅ 已完成：`ConfigManager` + 系统维护页接入 + `config.json` 样例 + `testconfig` 测试 |
 | 10. **数据库迁移工具** | LiteDB → SQLite 数据迁移（历史用户/试验结果导入 `sy1000_qt.db`）|
 
 ### D. 细节微调（布局/样式对齐 WPF）

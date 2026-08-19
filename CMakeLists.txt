@@ -67,6 +67,12 @@ qt_add_executable(testreport
 )
 target_link_libraries(testreport PRIVATE report models Qt6::Core Qt6::Gui Qt6::PrintSupport)
 
+# Headless smoke test for ConfigManager (config.json loading)
+qt_add_executable(testconfig
+  src/tests/testconfig.cpp
+)
+target_link_libraries(testconfig PRIVATE services Qt6::Core)
+
 # Services layer (Qt bridge: login + result + hydro adapter), depends on dao + models + core
 add_library(services STATIC
   src/services/loginservice.cpp
@@ -75,6 +81,7 @@ add_library(services STATIC
   src/services/resultservice.cpp
   src/services/userservice.cpp
   src/services/deviceservice.cpp
+  src/services/configmanager.cpp
 )
 target_include_directories(services PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(services PUBLIC dao models core devices report Qt6::Core Qt6::Sql Qt6::Gui Qt6::PrintSupport)
@@ -126,5 +133,10 @@ set(TS_FILES
 qt_add_lrelease(SY1000 TS_FILES ${TS_FILES})
 
 target_link_libraries(SY1000 PRIVATE core services models dao devices charts Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
+
+# Ship config.json next to the executable (ConfigManager loads it at startup).
+add_custom_command(TARGET SY1000 POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+          ${CMAKE_CURRENT_SOURCE_DIR}/config.json $<TARGET_FILE_DIR:SY1000>/config.json)
 
 

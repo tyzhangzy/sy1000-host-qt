@@ -5,6 +5,32 @@
 
 ---
 
+## 2026-08-19 · C9 config.json 加载 + 修复疑似"debug 弹窗" ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`docs/TODO.md` 待办第 9 项；顺带修复用户反馈的"debug 弹窗"观感
+
+### 修复疑似"debug 弹窗"
+- 定位：项目源码无任何 `QMessageBox`，最可能来源为 **A3 试验中途以英文弹出的泄压确认框**（"Release Pressure / Please open the release valve..."），在中文界面中观感似调试信息。
+- 改动：`src/core/tasks.cpp` 泄压确认框文案本地化为中文操作指令——标题"泄压操作"、消息"请打开泄压阀，然后点击"确认"开始泄压。"、状态"泄压中，剩余 %1 秒"。
+
+### C9 config.json 加载
+- 新增 `src/services/configmanager.h/.cpp`：`ConfigManager`
+  - `load(path)`：从 `config.json` 读取（path 为空时搜索 exe 目录/当前目录）
+  - `value(key, default)` 泛型访问 + `deviceName()/manufacturer()/serialNo()/manufactureDate()` 便捷访问；文件/键缺失回退默认值
+- `src/services/deviceservice.cpp`：`systemInfo()` 改为读取 `ConfigManager`（原为占位符）
+- 新增 `config.json`（项目根 + 构建后复制到 exe 目录）；`src/main.cpp` 启动时 `ConfigManager::load()`
+- `CMakeLists.txt`：`configmanager.cpp` 加入 services；新增 `testconfig` 测试；SY1000 POST_BUILD 复制 config.json
+
+### 验证
+- ✅ 全目标编译通过；5 个 headless 冒烟测试全绿（新增 `testconfig`：CONFIG SMOKE PASS，正确读取/回退默认）
+- ✅ `SY1000.exe` 启动无回归，`config.json` 已复制到输出目录
+
+### 备注
+- 若用户反馈的"debug 弹窗"并非泄压确认框（如 MSVC 断言窗口），请补充具体弹窗文本以便进一步定位。
+
+---
+
 ## 2026-08-19 · C7 PDF 报告生成 + A2 报告查看 ✅
 
 - **提交**：`3473e9c` `feat(report,ui): PDF test report generation + report view page (C7, A2)`

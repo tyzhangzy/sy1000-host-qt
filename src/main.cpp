@@ -8,6 +8,7 @@
 #include "core/simdevice.h"
 #include "dao/database.h"
 #include "languagehelper.h"
+#include "services/configmanager.h"
 #include "services/deviceservice.h"
 #include "services/hydroadapter.h"
 #include "services/loginservice.h"
@@ -33,6 +34,9 @@ int main(int argc, char *argv[])
     if (!Database::initialize()) {
         qWarning("SY1000: database initialization failed");
     }
+
+    // Load device/system configuration from config.json (fall back to defaults).
+    sy1000::ConfigManager::load();
 
     QQmlApplicationEngine engine;
     QObject::connect(

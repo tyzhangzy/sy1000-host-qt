@@ -1,6 +1,7 @@
 #include "services/deviceservice.h"
 
 #include "devices/devicemanager.h"
+#include "services/configmanager.h"
 
 namespace sy1000 {
 
@@ -11,11 +12,15 @@ DeviceServiceAdapter::DeviceServiceAdapter(QObject *parent)
 
 QString DeviceServiceAdapter::systemInfo() const
 {
-    // Placeholder system info (could be loaded from config.json later).
-    return QStringLiteral("Device Name: SY1000\n"
-                          "Manufacturer: Quanshen\n"
-                          "Serial No: SY1000-0001\n"
-                          "Manufacture Date: 2026-01-01");
+    // Loaded from config.json (ConfigManager), with defaults when absent.
+    return QStringLiteral("Device Name: %1\n"
+                          "Manufacturer: %2\n"
+                          "Serial No: %3\n"
+                          "Manufacture Date: %4")
+        .arg(ConfigManager::deviceName(),
+             ConfigManager::manufacturer(),
+             ConfigManager::serialNo(),
+             ConfigManager::manufactureDate());
 }
 
 QString DeviceServiceAdapter::connectDevices()
