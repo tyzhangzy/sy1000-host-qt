@@ -1,1 +1,0 @@
-Failed to load zh_CN translation: :/i18n/sy1000_zh_CN.qm
