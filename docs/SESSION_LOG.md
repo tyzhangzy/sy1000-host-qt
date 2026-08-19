@@ -5,6 +5,19 @@
 
 ---
 
+## 2026-08-19 · 登录页制造商文本垂直居中修复 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**："北京德康时代科技有限公司" 偏左，未与 logo / 设备名垂直中心对齐
+
+### 修复
+- `manufacturer`（及 `deviceName`）Label 补 `width: parent.width` + `horizontalAlignment: AlignHCenter`，使其在 Column 内水平居中（此前 Label 宽度=文本宽且无水平锚定，靠左）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 登录页左侧三项纵向间距对齐 WPF ✅
 
 - **提交**：`38fd033` `fix(ui): login brand vertical spacing 50px match WPF`

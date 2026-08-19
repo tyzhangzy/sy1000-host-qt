@@ -42,6 +42,7 @@ Item {
             // Device name from config.json (matches WPF DeviceName, 64px).
             Label {
                 text: deviceService.deviceName()
+                width: parent.width
                 font.pixelSize: 64
                 font.bold: true
                 color: "#193660"
@@ -51,6 +52,7 @@ Item {
             // Manufacturer from config.json (matches WPF Manufacturer, 36px).
             Label {
                 text: deviceService.manufacturer()
+                width: parent.width
                 font.pixelSize: 36
                 font.bold: true
                 color: "#444"
