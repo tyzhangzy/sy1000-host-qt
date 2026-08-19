@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录页微调（对齐 WPF，布局不变）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`8c1e416` `feat(ui): tune login page details to match WPF (layout unchanged)`
 - **范围**：在保持登录页布局不变的前提下，对比 WPF `LoginWindow` 微调细节
 
 ### 微调（布局结构不变）
