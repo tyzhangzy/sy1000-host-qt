@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录页隐藏顶部 header，左上角留空 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`ea4da75` `feat(ui): hide header on login page (frameless look) + quit button on login page`
 - **范围**：启动界面左上角无控件（对齐 WPF 无边框登录窗口），仅右上角电源按钮
 
 ### 实现
