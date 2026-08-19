@@ -84,12 +84,17 @@ Page {
             function onPressureSample(value) {
                 pressureChart.addValue(value)
             }
+            function onWeightSample(index, value) {
+                pressureChart.addSeriesValue(index, value)
+            }
         }
 
-        // Realtime pressure chart (reused QQuickPaintedItem component).
+        // Realtime dual-axis chart: left = pressure (MPa), right = 4 sample
+        // weights/deformation (g). Series 0 is the pressure curve; series 1..4
+        // are the per-sample weight curves on the right Y axis.
         Rectangle {
             width: parent.width
-            height: 220
+            height: 320
             color: "#fafafa"
             border.color: "#ddd"
             radius: 6
@@ -98,11 +103,49 @@ Page {
                 id: pressureChart
                 anchors.fill: parent
                 anchors.margins: 6
-                title: qsTr("Pressure (MPa)")
-                yAxisLabel: qsTr("MPa")
+                title: qsTr("Pressure / Deformation")
+                yAxisLabel: qsTr("Pressure (MPa)")
+                rightYAxisLabel: qsTr("Weight (g)")
+                lineColor: "#3f51b5"
                 yMax: 60
+                rightYMin: 0
+                rightYMax: 2000
                 maxPoints: 600
                 showGrid: true
+
+                // Register the 4 sample weight series once (right axis).
+                Component.onCompleted: {
+                    addSeries(qsTr("Sample 1"), "#e57373", true)
+                    addSeries(qsTr("Sample 2"), "#81c784", true)
+                    addSeries(qsTr("Sample 3"), "#ffb74d", true)
+                    addSeries(qsTr("Sample 4"), "#64b5f6", true)
+                }
+            }
+
+            // Legend.
+            Row {
+                anchors.top: parent.top
+                anchors.topMargin: 8
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 14
+                Repeater {
+                    model: [
+                        { c: "#3f51b5", t: qsTr("Pressure") },
+                        { c: "#e57373", t: qsTr("S1") },
+                        { c: "#81c784", t: qsTr("S2") },
+                        { c: "#ffb74d", t: qsTr("S3") },
+                        { c: "#64b5f6", t: qsTr("S4") }
+                    ]
+                    Row {
+                        spacing: 4
+                        Rectangle {
+                            width: 12; height: 12; radius: 3
+                            color: modelData.c
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Label { text: modelData.t; anchors.verticalCenter: parent.verticalCenter }
+                    }
+                }
             }
         }
 

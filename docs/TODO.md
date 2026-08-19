@@ -13,6 +13,7 @@
 - 3 个 headless 冒烟测试全绿；已全部同步 GitHub
 - **A1 外观检查补全**：`AppearanceInspectionDialog.qml` 已重写为四部分完整表单（检验员信息 + External/Internal/Thread/Valve 逐项检查、缺陷位置、其他备注）
 - **C6 外观检查接入结果保存**：`HydroTestControllerAdapter::setSampleInspection()` 接收 QML 检查对象，`buildResult()` 写入 `sample.appearanceInspection` 持久化
+- **B4 4 样品双轴曲线**：`RealTimeChart` 扩为多序列 + 双 Y 轴（左轴压力 MPa、右轴重量 g），试验页显示压力曲线 + 1-4 号样品曲线（`addSeries`/`addSeriesValue`/`weightSample` 信号）
 
 ---
 
@@ -28,7 +29,7 @@
 ### B. 页面增强
 | 项 | 说明 |
 |----|------|
-| 4. **4 样品双轴曲线**（试验页） | 把 `RealTimeChart` 扩为双 Y 轴（压力 MPa / 变形量 g），试验页显示 1-4 号样品曲线，对齐 WPF `HydroStaticTestPage`/`SampleGridUserControl` |
+| 4. ~~**4 样品双轴曲线**~~（试验页） | 把 `RealTimeChart` 扩为双 Y 轴（压力 MPa / 变形量 g），试验页显示 1-4 号样品曲线，对齐 WPF `HydroStaticTestPage`/`SampleGridUserControl` | ✅ 已完成：多序列双轴图 + 4 样品曲线 |
 | 5. **试验结果管理拆分** | 对齐 WPF，将结果管理拆为"试验结果管理 + 统一试验结果管理"（或在一页内分区）|
 
 ### C. 功能 / 数据接入

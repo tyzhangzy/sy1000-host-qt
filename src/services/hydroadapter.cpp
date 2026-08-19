@@ -95,10 +95,13 @@ HydroTestControllerAdapter::HydroTestControllerAdapter(IHydroDeviceProvider *dev
                          updateRunning();
                      });
 
-    // Sample pressure periodically for the realtime chart.
+    // Sample pressure + per-sample weights periodically for the realtime chart.
     m_sampleTimer.setInterval(100);
     QObject::connect(&m_sampleTimer, &QTimer::timeout, this, [this]() {
         emit pressureSample(m_controller.device()->currentPressure());
+        const auto w = m_controller.device()->currentWeights();
+        for (int i = 1; i <= 4 && i < static_cast<int>(w.size()); ++i)
+            emit weightSample(i, w[i]);
     });
     m_sampleTimer.start();
 }

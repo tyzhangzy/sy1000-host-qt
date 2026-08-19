@@ -50,6 +50,8 @@ signals:
     void runningChanged();
     void testFinished(bool ok, int passed, int failed);
     void pressureSample(double value);
+    // Per-sample weight/deformation sample (index 1..4) for the right Y axis.
+    void weightSample(int index, double value);
 
 private:
     struct SampleInfo {
