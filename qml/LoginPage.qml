@@ -70,10 +70,11 @@ Item {
         // Simulate WPF MaterialDesign Elevation Dp12: a soft, mostly-downward
         // shadow (DropShadowEffect Direction 270). Qt has no DropShadowEffect, so
         // layered translucent rounded rects approximate the soft downward blur.
-        Rectangle { radius: 16; color: "#0F000000"; anchors.fill: loginCard; anchors.leftMargin: 1; anchors.rightMargin: 1; anchors.topMargin: 2 }
-        Rectangle { radius: 16; color: "#18000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 5 }
-        Rectangle { radius: 16; color: "#20000000"; anchors.fill: loginCard; anchors.leftMargin: 3; anchors.rightMargin: 3; anchors.topMargin: 9 }
-        Rectangle { radius: 16; color: "#26000000"; anchors.fill: loginCard; anchors.leftMargin: 4; anchors.rightMargin: 4; anchors.topMargin: 13 }
+        // bottomMargin is negative so the shadow extends below the card.
+        Rectangle { radius: 16; color: "#33000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 2; anchors.bottomMargin: -22 }
+        Rectangle { radius: 16; color: "#2A000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 2; anchors.bottomMargin: -15 }
+        Rectangle { radius: 16; color: "#20000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 2; anchors.bottomMargin: -9 }
+        Rectangle { radius: 16; color: "#14000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 2; anchors.bottomMargin: -4 }
         // Login card (matches WPF Card: 400 wide, radius 15, Elevation Dp12).
         Rectangle {
             id: loginCard
