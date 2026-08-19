@@ -7,6 +7,9 @@ import QtQuick.Controls.Material
 Page {
     id: prepPage
     title: qsTr("Test Preparation")
+    // This page draws its own top bar (WPF MainTestWindow), so the app-wide
+    // header (device/user/quit) is hidden. Top bar height 80 == Main.qml header.
+    readonly property bool hideGlobalHeader: true
 
     // 4 sample records (model/manufacturer/volume/company/serial + inspection result).
     property var sampleData: [
@@ -59,10 +62,25 @@ Page {
         // Top status bar (WPF MainTestWindow ColorZone header): left / center / right.
         Rectangle {
             id: topBar
-            width: parent.width; height: 64; color: "#303F9F"
-            // Left: title.
-            Label { anchors.left: parent.left; anchors.leftMargin: 24; anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("Hydrostatic Test"); color: "white"; font.pixelSize: 22; font.bold: true }
+            width: parent.width; height: 80; color: "#303F9F"
+            // Left: title + connection status box.
+            Row {
+                anchors.left: parent.left; anchors.leftMargin: 24
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 20
+                Label { text: qsTr("Hydrostatic Test"); color: "white"; font.pixelSize: 22; font.bold: true; anchors.verticalCenter: parent.verticalCenter }
+                Rectangle {
+                    width: 300; height: 40; radius: 4; color: "white"
+                    Label {
+                        id: connLabel
+                        anchors.fill: parent; anchors.margins: 6
+                        text: deviceService.connectDevices()
+                        color: "#333"; font.pixelSize: 16; font.bold: true; verticalAlignment: Text.AlignVCenter
+                    }
+                    MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                        onClicked: connLabel.text = deviceService.connectDevices() }
+                }
+            }
             // Center: test status box.
             Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -86,7 +104,7 @@ Page {
         }
 
         Row {
-            width: parent.width; height: parent.height - 64
+            width: parent.width; height: parent.height - 80
 
         // Left column (WPF MainTestWindow left column).
         Rectangle {

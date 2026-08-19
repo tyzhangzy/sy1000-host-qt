@@ -9,6 +9,9 @@ import SyCharts 1.0
 Page {
     id: testPage
     title: qsTr("Hydrostatic Test")
+    // This page draws its own top bar (WPF MainTestWindow), so the app-wide
+    // header (device/user/quit) is hidden. Top bar height 80 == Main.qml header.
+    readonly property bool hideGlobalHeader: true
 
     component DarkBtn: Button {
         property alias btnText: _t.text
@@ -21,24 +24,44 @@ Page {
     Column {
         anchors.fill: parent
 
-        // Top status bar (WPF MainTestWindow ColorZone header).
+        // Top status bar (WPF MainTestWindow ColorZone header): left / center / right.
         Rectangle {
-            width: parent.width; height: 64; color: "#303F9F"
+            id: topBar
+            width: parent.width; height: 80; color: "#303F9F"
+            // Left: title + connection status box.
             Row {
-                anchors.left: parent.left; anchors.leftMargin: 20
+                anchors.left: parent.left; anchors.leftMargin: 24
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 18
+                spacing: 20
                 Label { text: qsTr("Hydrostatic Test"); color: "white"; font.pixelSize: 22; font.bold: true; anchors.verticalCenter: parent.verticalCenter }
-                // Test status display box (WPF StatusButton).
                 Rectangle {
-                    width: 340; height: 40; radius: 4; color: "white"
+                    width: 300; height: 40; radius: 4; color: "white"
                     Label {
+                        id: connLabel
                         anchors.fill: parent; anchors.margins: 6
-                        text: hydro.status === "" ? qsTr("Status: ") + hydro.state : hydro.status
+                        text: deviceService.connectDevices()
                         color: "#333"; font.pixelSize: 16; font.bold: true; verticalAlignment: Text.AlignVCenter
                     }
+                    MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                        onClicked: connLabel.text = deviceService.connectDevices() }
                 }
-                // Cylinder pressure label + value edit box (WPF HPTextBox).
+            }
+            // Center: test status box (WPF StatusButton).
+            Rectangle {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                width: 340; height: 40; radius: 4; color: "white"
+                Label {
+                    anchors.fill: parent; anchors.margins: 6
+                    text: hydro.status === "" ? qsTr("Status: ") + hydro.state : hydro.status
+                    color: "#333"; font.pixelSize: 16; font.bold: true; verticalAlignment: Text.AlignVCenter
+                }
+            }
+            // Right: cylinder pressure label + value edit box (WPF HPTextBox).
+            Row {
+                anchors.right: parent.right; anchors.rightMargin: 24
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 10
                 Label { text: qsTr("Cylinder pressure"); color: "white"; font.pixelSize: 20; font.bold: true; anchors.verticalCenter: parent.verticalCenter }
                 Rectangle {
                     width: 170; height: 40; radius: 4; color: "white"
@@ -53,7 +76,7 @@ Page {
         }
 
         Row {
-            width: parent.width; height: parent.height - 64
+            width: parent.width; height: parent.height - 80
 
             // Left column: standard + 1..4 cylinders + start (top); menu buttons (bottom).
             Rectangle {

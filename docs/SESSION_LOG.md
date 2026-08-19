@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-08-19 · 水压试验页顶栏独立 + 高度统一 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：水压试验页（准备页 + 执行页）顶栏独立，不混入主菜单 header 内容；所有页面标题栏高度一致（80）
+
+### 实现
+- `TestPreparationPage.qml` / `TestPage.qml`：加 `hideGlobalHeader: true`，隐藏 Main.qml 全局 header（设备名/用户/退出等主菜单内容）
+- `Main.qml`：header 条件改为 `!isLoginPage && !hideGlobalHeader`
+- 两页自绘顶栏 80 高（== Main.qml header 高度），内容左/中/右：
+  - 左：水压试验 + **连接状态显示框**（`deviceService.connectDevices()`，可点击刷新）
+  - 中：**测试状态显示框**
+  - 右：气瓶压力标签 + 气瓶压力值显示框
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 水压试验页顶栏/左右布局修复 ✅
 
 - **提交**：`4d9cac2` `fix(ui): prep page top bar center/right split + wrap in column`
