@@ -5,6 +5,20 @@
 
 ---
 
+## 2026-08-19 · 水压试验页顶栏/左右布局修复 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/TestPreparationPage.qml` 顶栏与主体重叠、左右高度不一致、顶栏内容靠左显宽
+
+### 修复
+- 用 `Column` 包裹顶栏 + 主体 `Row`，消除重叠，左右高度一致
+- 顶栏改为 **左/中/右三区分布**（对齐 WPF MainTestWindow）：左=标题，中=测试状态，右=气瓶压力+值
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 测试准备页补 MainTestWindow 布局（修正）✅
 
 - **提交**：`726b535` `feat(ui): prep page gets MainTestWindow top bar + left column`

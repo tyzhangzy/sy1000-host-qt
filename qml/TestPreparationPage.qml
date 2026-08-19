@@ -53,29 +53,40 @@ Page {
         }
     }
 
-    // Top status bar (WPF MainTestWindow ColorZone header).
-    Rectangle {
-        id: topBar
-        width: parent.width; height: 64; color: "#303F9F"
-        Row {
-            anchors.left: parent.left; anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
-            spacing: 18
-            Label { text: qsTr("Hydrostatic Test"); color: "white"; font.pixelSize: 22; font.bold: true; anchors.verticalCenter: parent.verticalCenter }
-            Rectangle { width: 340; height: 40; radius: 4; color: "white"
+    Column {
+        anchors.fill: parent
+
+        // Top status bar (WPF MainTestWindow ColorZone header): left / center / right.
+        Rectangle {
+            id: topBar
+            width: parent.width; height: 64; color: "#303F9F"
+            // Left: title.
+            Label { anchors.left: parent.left; anchors.leftMargin: 24; anchors.verticalCenter: parent.verticalCenter
+                text: qsTr("Hydrostatic Test"); color: "white"; font.pixelSize: 22; font.bold: true }
+            // Center: test status box.
+            Rectangle {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                width: 340; height: 40; radius: 4; color: "white"
                 Label { anchors.fill: parent; anchors.margins: 6
                     text: hydro.status === "" ? qsTr("Status: ") + hydro.state : hydro.status
-                    color: "#333"; font.pixelSize: 16; font.bold: true; verticalAlignment: Text.AlignVCenter } }
-            Label { text: qsTr("Cylinder pressure"); color: "white"; font.pixelSize: 20; font.bold: true; anchors.verticalCenter: parent.verticalCenter }
-            Rectangle { width: 170; height: 40; radius: 4; color: "white"
-                TextField { anchors.fill: parent; anchors.margins: 2; readOnly: true; horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: 20; font.bold: true; color: "#333"
-                    text: isNaN(hydro.currentPressure) ? "N/A" : hydro.currentPressure.toFixed(2) + " MPa" } }
+                    color: "#333"; font.pixelSize: 16; font.bold: true; verticalAlignment: Text.AlignVCenter }
+            }
+            // Right: cylinder pressure label + value.
+            Row {
+                anchors.right: parent.right; anchors.rightMargin: 24
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 10
+                Label { text: qsTr("Cylinder pressure"); color: "white"; font.pixelSize: 20; font.bold: true; anchors.verticalCenter: parent.verticalCenter }
+                Rectangle { width: 170; height: 40; radius: 4; color: "white"
+                    TextField { anchors.fill: parent; anchors.margins: 2; readOnly: true; horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: 20; font.bold: true; color: "#333"
+                        text: isNaN(hydro.currentPressure) ? "N/A" : hydro.currentPressure.toFixed(2) + " MPa" } }
+            }
         }
-    }
 
-    Row {
-        width: parent.width; height: parent.height - topBar.height
+        Row {
+            width: parent.width; height: parent.height - 64
 
         // Left column (WPF MainTestWindow left column).
         Rectangle {
@@ -268,6 +279,7 @@ Page {
 
             }
         }
+    }
     }
 
     // Shared appearance inspection dialog (WPF AppearenceInspectionWindow).
