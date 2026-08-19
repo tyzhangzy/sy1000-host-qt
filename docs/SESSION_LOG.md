@@ -5,6 +5,23 @@
 
 ---
 
+## 2026-08-19 · 按规范文档实现主菜单（补汉堡按钮 + 侧边导航）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：新建 `docs/MAIN_MENU_WPF.md`（WPF 登录后页面内容与布局规范），并按其补全 Qt 实现
+
+### 新增文档
+- `docs/MAIN_MENU_WPF.md`：记录 WPF `MenuWindow` 的窗口/顶栏/测试功能/管理系统/退出登录/按钮行为，及 Qt 对照清单
+
+### 补全实现
+- **顶栏汉堡按钮**（WPF HamburgerToggleButton）：header 最左加 "☰" 按钮
+- **侧边导航 Drawer**：汉堡按钮打开，列出主菜单功能（开始试验/结果管理/用户管理/系统维护/退出登录），点击 `stack.push` 跳转
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 补全主菜单顶栏（DeviceName + 连接状态 + 退出按钮）✅
 
 - **提交**：`0a0f339` `feat(ui): complete main-menu header (deviceName + conn status + quit button)`

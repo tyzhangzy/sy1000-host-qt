@@ -26,6 +26,14 @@ ApplicationWindow {
             anchors.leftMargin: 20
             anchors.verticalCenter: parent.verticalCenter
             spacing: 16
+            // Hamburger button (WPF MaterialDesignHamburgerToggleButton).
+            Button {
+                text: "☰"
+                font.pixelSize: 26
+                font.bold: true
+                onClicked: drawer.open()
+                background: Rectangle { color: "transparent"; radius: 4 }
+            }
             Label {
                 text: deviceService.deviceName()
                 color: "white"
@@ -97,6 +105,49 @@ ApplicationWindow {
         target: loginService
         function onLoginSucceeded() {
             stack.replace("MainMenuPage.qml")
+        }
+    }
+
+    // Side navigation drawer, opened by the header hamburger button
+    // (WPF MaterialDesignHamburgerToggleButton).
+    Drawer {
+        id: drawer
+        width: 280
+        edge: Qt.LeftEdge
+        modal: false
+        Column {
+            anchors.fill: parent
+            anchors.margins: 12
+            spacing: 6
+            Label {
+                text: deviceService.deviceName()
+                font.pixelSize: 18
+                font.bold: true
+                color: "#303F9F"
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            Rectangle { width: parent.width; height: 1; color: "#CCCCCC" }
+            Repeater {
+                model: [
+                    { icon: "▶", text: qsTr("Start Hydrostatic Test"), page: "TestPreparationPage.qml" },
+                    { icon: "≡", text: qsTr("Result Management"), page: "ResultManagementPage.qml" },
+                    { icon: "☺", text: qsTr("User Management"), page: "UserManagementPage.qml" },
+                    { icon: "⚙", text: qsTr("System Maintain"), page: "SystemMaintainPage.qml" }
+                ]
+                delegate: Button {
+                    width: parent.width
+                    text: modelData.icon + "  " + modelData.text
+                    font.pixelSize: 16
+                    onClicked: { stack.push(modelData.page); drawer.close() }
+                }
+            }
+            Item { width: 1; height: 16 }
+            Button {
+                width: parent.width
+                text: "⏻  " + qsTr("Log out")
+                font.pixelSize: 16
+                onClicked: { stack.replace("LoginPage.qml"); drawer.close() }
+            }
         }
     }
 }
