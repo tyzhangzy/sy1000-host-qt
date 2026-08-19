@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录卡阴影参照 WPF Elevation Dp12 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`e37d469` `feat(ui): login card shadow mimics WPF Elevation Dp12 (downward soft)`
 - **范围**：按 WPF 登录卡阴影（`ElevationAssist.Elevation="Dp12"` 的 `DropShadowEffect`）调整 Qt 阴影
 
 ### 核对
