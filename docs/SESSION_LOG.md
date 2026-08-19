@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 修正电源按钮外圈/内圈 y 坐标不一致 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`46dcfbb` `fix(ui): align power glyph center with outer circle on quit button`
 - **范围**：登录页右上角电源按钮，外圈（背景圆）与内圈（⏻ 图标）垂直中心错位（外圈偏上、内圈偏下）
 
 ### 修复
