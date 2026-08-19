@@ -1,9 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-// Appearance inspection dialog (full WPF-style form).
-// `target.inspection` is the sample's inspection object (all fields written back
-// on accept). Result values are stored as int matching InspectionResult enum:
+// Appearance inspection dialog, matched to WPF AppearenceInspectionWindow.xaml
+// ("复合气瓶外观检查评估表"). Result int values match InspectionResult enum:
 // 0=Qualified, 1=ToRepair, 2=ToReplace, 3=Scrapped.
 Dialog {
     id: dlg
@@ -13,8 +12,8 @@ Dialog {
     title: qsTr("Appearance Inspection")
     modal: true
     anchors.centerIn: parent
-    width: 640
-    height: Math.min(parent.height - 60, 780)
+    width: 860
+    height: Math.min(parent.height - 40, 820)
 
     property var resultLabels: [qsTr("Qualified"), qsTr("To Repair"), qsTr("Scrapped")]
 
@@ -45,24 +44,22 @@ Dialog {
 
     ScrollView {
         anchors.fill: parent
-        anchors.leftMargin: 12
-        anchors.rightMargin: 12
-        anchors.topMargin: 12
+        anchors.margins: 12
         clip: true
         contentWidth: availableWidth
 
         Column {
-            spacing: 12
+            spacing: 14
             width: parent.width
 
-            // ============ External (appearance) ============
+            // ===== External (外部检查) =====
             SectionBox {
                 title: qsTr("External")
                 Column {
-                    spacing: 8
+                    spacing: 10
                     width: parent.width
                     Row {
-                        spacing: 14
+                        spacing: 20
                         CheckBox { id: extThermal; text: qsTr("Thermal damage") }
                         CheckBox { id: extScratch; text: qsTr("Scratch") }
                         CheckBox { id: extWear; text: qsTr("Wear") }
@@ -71,17 +68,17 @@ Dialog {
                     }
                     Row {
                         spacing: 8
-                        Label { text: qsTr("Defect location") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: extDefect; width: parent.width - 130 }
+                        Label { text: qsTr("Defect location") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: extDefect; width: parent.width - 160 }
                     }
                     Row {
                         spacing: 8
-                        Label { text: qsTr("Other") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: extOther; width: parent.width - 130 }
+                        Label { text: qsTr("Other") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: extOther; width: parent.width - 160 }
                     }
                     Row {
-                        spacing: 12
-                        Label { text: qsTr("Result") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        spacing: 20
+                        Label { text: qsTr("Result") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: extR0; text: dlg.resultLabels[0] }
                         RadioButton { id: extR1; text: dlg.resultLabels[1] }
                         RadioButton { id: extR2; text: dlg.resultLabels[2] }
@@ -89,36 +86,36 @@ Dialog {
                 }
             }
 
-            // ============ Internal ============
+            // ===== Internal (内部检查) =====
             SectionBox {
                 title: qsTr("Internal")
                 Column {
-                    spacing: 8
+                    spacing: 10
                     width: parent.width
                     Row {
-                        spacing: 12
+                        spacing: 20
                         CheckBox { id: intSmell; text: qsTr("Smell present") }
                         Label { text: qsTr("Debris") + ":"; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: intDebris; width: parent.width - 220 }
+                        TextField { id: intDebris; width: 320 }
                     }
                     Row {
                         spacing: 8
-                        Label { text: qsTr("Surface condition") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: intSurface; width: parent.width - 130 }
+                        Label { text: qsTr("Surface condition") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: intSurface; width: parent.width - 160 }
                     }
                     Row {
                         spacing: 8
-                        Label { text: qsTr("Defect location") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: intDefect; width: parent.width - 130 }
+                        Label { text: qsTr("Defect location") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: intDefect; width: parent.width - 160 }
                     }
                     Row {
                         spacing: 8
-                        Label { text: qsTr("Other") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: intOther; width: parent.width - 130 }
+                        Label { text: qsTr("Other") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: intOther; width: parent.width - 160 }
                     }
                     Row {
-                        spacing: 12
-                        Label { text: qsTr("Result") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        spacing: 20
+                        Label { text: qsTr("Result") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: intR0; text: dlg.resultLabels[0] }
                         RadioButton { id: intR1; text: dlg.resultLabels[1] }
                         RadioButton { id: intR2; text: dlg.resultLabels[2] }
@@ -126,32 +123,32 @@ Dialog {
                 }
             }
 
-            // ============ Thread ============
+            // ===== Thread (瓶口螺纹检查) =====
             SectionBox {
                 title: qsTr("Thread")
                 Column {
-                    spacing: 8
+                    spacing: 10
                     width: parent.width
                     Row {
                         spacing: 8
                         Label { text: qsTr("Specification") + ":"; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: thrSpec; width: 160 }
+                        TextField { id: thrSpec; width: 220 }
                         Label { text: qsTr("Condition") + ":"; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: thrCond; width: 160 }
+                        TextField { id: thrCond; width: 220 }
                     }
                     Row {
                         spacing: 8
-                        Label { text: qsTr("Evaluation") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: thrEval; width: parent.width - 130 }
+                        Label { text: qsTr("Evaluation") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: thrEval; width: parent.width - 160 }
                     }
                     Row {
                         spacing: 8
-                        Label { text: qsTr("Other") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: thrOther; width: parent.width - 130 }
+                        Label { text: qsTr("Other") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: thrOther; width: parent.width - 160 }
                     }
                     Row {
-                        spacing: 12
-                        Label { text: qsTr("Result") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        spacing: 20
+                        Label { text: qsTr("Result") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: thrR0; text: dlg.resultLabels[0] }
                         RadioButton { id: thrR1; text: dlg.resultLabels[1] }
                         RadioButton { id: thrR2; text: dlg.resultLabels[2] }
@@ -159,40 +156,39 @@ Dialog {
                 }
             }
 
-            // ============ Valve ============
+            // ===== Valve (气瓶阀检查) =====
             SectionBox {
                 title: qsTr("Valve")
                 Column {
-                    spacing: 8
+                    spacing: 10
                     width: parent.width
-                    Row {
-                        spacing: 12
-                        Label { text: qsTr("Result"); width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        RadioButton { id: valR0; text: dlg.resultLabels[0] }
-                        RadioButton { id: valR1; text: dlg.resultLabels[1] }
-                        RadioButton { id: valR2; text: dlg.resultLabels[2] }
-                    }
                     Row {
                         spacing: 8
                         Label { text: qsTr("Valve No") + ":"; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: valNo; width: 160 }
+                        TextField { id: valNo; width: 220 }
                         Label { text: qsTr("Thread condition") + ":"; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: valThreadCond; width: 160 }
+                        TextField { id: valThreadCond; width: 220 }
                     }
                     Row {
                         spacing: 8
-                        Label { text: qsTr("Air tightness") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: valAirtight; width: parent.width - 130 }
+                        Label { text: qsTr("Air tightness") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: valAirtight; width: parent.width - 160 }
                     }
                     CheckBox { id: valDiaphragm; text: qsTr("Diaphragm replaced") }
                     Row {
                         spacing: 8
-                        Label { text: qsTr("Other") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
-                        TextField { id: valOther; width: parent.width - 130 }
+                        Label { text: qsTr("Other") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: valOther; width: parent.width - 160 }
+                    }
+                    Row {
+                        spacing: 20
+                        Label { text: qsTr("Result") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter }
+                        RadioButton { id: valR0; text: dlg.resultLabels[0] }
+                        RadioButton { id: valR1; text: dlg.resultLabels[1] }
+                        RadioButton { id: valR2; text: dlg.resultLabels[2] }
                     }
                 }
             }
-
         }
     }
 
@@ -262,8 +258,7 @@ Dialog {
         it.inspectionCompleted = true
     }
 
-    // Reusable titled section container. Children provided by the caller are
-    // appended to the inner Column (below the title) via the default alias.
+    // Reusable titled section container (WPF GroupBox).
     component SectionBox: Rectangle {
         id: sectionRoot
         property string title
@@ -287,5 +282,3 @@ Dialog {
         }
     }
 }
-
-
