@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-08-19 · 登录卡布局调整（语言行移到登录按钮上方）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：用户登录框重排——语言行移到登录按钮上方、风格与用户名/密码一致、纵向间距合理
+
+### 实现（`qml/LoginPage.qml`）
+- 顺序调整为：标题 → 用户名 → 密码 → **语言行** → 登录按钮 → 状态
+- **语言行风格与用户名/密码一致**：🌐 图标 + 270×44 ComboBox（原来是无图标的 "Language:" 标签 + 150 ComboBox）
+- **间距参照 WPF**：标题下方 spacer 20（WPF Margin bottom 25）、按钮上方 spacer 22（WPF Margin top 40）
+- 登录卡高度 460→545 以容纳内容
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 登录卡阴影四周可见（补左侧）✅
 
 - **提交**：`e57b649` `feat(ui): login card shadow visible on all sides (incl. left)`

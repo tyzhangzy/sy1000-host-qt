@@ -79,7 +79,7 @@ Item {
         Rectangle {
             id: loginCard
             width: 400
-            height: 460
+            height: 545
             radius: 15
             color: "white"
             border.color: "#DDDDDD"
@@ -96,6 +96,8 @@ Item {
                     color: "#303F9F"
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
+                // Title bottom spacing (WPF Margin bottom 25).
+                Item { width: 1; height: 20 }
 
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -124,6 +126,23 @@ Item {
                         onAccepted: signInButton.clicked()
                     }
                 }
+
+                // Language row, above the login button, styled like the
+                // username/password rows (icon + control).
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 10
+                    Label { text: "🌐"; font.pixelSize: 22; color: "#303F9F"; anchors.verticalCenter: parent.verticalCenter }
+                    ComboBox {
+                        width: 270
+                        height: 44
+                        model: ["English", "中文"]
+                        currentIndex: lang.current() === "zh_CN" ? 1 : 0
+                        onActivated: (index) => lang.setLanguage(index === 0 ? "en" : "zh_CN")
+                    }
+                }
+                // Spacing above the login button (WPF Margin top 40).
+                Item { width: 1; height: 22 }
 
                 Button {
                     id: signInButton
@@ -158,21 +177,6 @@ Item {
                     font.pixelSize: 14
                     color: "#c62828"
                     text: ""
-                }
-
-                Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 8
-                    Label {
-                        text: qsTr("Language:")
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                    ComboBox {
-                        width: 150
-                        model: ["English", "中文"]
-                        currentIndex: lang.current() === "zh_CN" ? 1 : 0
-                        onActivated: (index) => lang.setLanguage(index === 0 ? "en" : "zh_CN")
-                    }
                 }
             }
         }
