@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 补全主菜单右上角登录者信息（对齐 WPF）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`0902d96` `feat(ui): show logged-in user in header top-right (Q_PROPERTY NOTIFY + Account icon)`
 - **范围**：主菜单顶栏右上角缺少登录者信息（WPF 有 Account 图标 + 登录用户）
 
 ### 根因
