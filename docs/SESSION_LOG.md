@@ -5,6 +5,25 @@
 
 ---
 
+## 2026-08-19 · 主菜单对齐 WPF MenuWindow（分区 + 布局）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：对照 WPF `MenuWindow` 重写 Qt `MainMenuPage` 的控件内容与布局
+
+### 实现（`qml/MainMenuPage.qml`）
+- 由单一 2×2 Grid 改为 **两个分区**（对照 WPF）：
+  - **测试功能**：标题 + 分隔线 + "开始水压试验"卡片（对应 WPF StartTestButton）
+  - **管理系统**：标题 + 分隔线 + "试验结果管理 / 用户管理 / 系统维护"3 卡片一行（对应 WPF 3 列管理卡）
+- 右下角：退出登录（WPF LogoutButton）+ 连接状态按钮（WPF ConnectionStatusButton）
+
+### 翻译
+- 新增 `Test Functions`→测试功能、`Management System`→管理系统、`Click to sign in...`→点击登录进入主菜单
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`MainMenuPage.qml` qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 登录卡高度调小 ✅
 
 - **提交**：`3f24331` `feat(ui): reduce login card height to 500`

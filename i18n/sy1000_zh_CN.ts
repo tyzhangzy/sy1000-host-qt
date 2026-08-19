@@ -230,40 +230,42 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../qml/LoginPage.qml" line="11"/>
-        <location filename="../qml/LoginPage.qml" line="111"/>
+        <location filename="../qml/LoginPage.qml" line="12"/>
+        <location filename="../qml/LoginPage.qml" line="151"/>
         <source>Login</source>
         <translation>登录</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="46"/>
         <source>SY1000 Hydrostatic Test System</source>
-        <translation>SY1000 水压试验系统</translation>
+        <translation type="vanished">SY1000 水压试验系统</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="54"/>
         <source>Quanshen</source>
-        <translation>Quanshen</translation>
+        <translation type="vanished">Quanshen</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="82"/>
+        <location filename="../qml/LoginPage.qml" line="93"/>
         <source>User Login</source>
         <translation>用户登录</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="117"/>
+        <location filename="../qml/LoginPage.qml" line="159"/>
+        <source>Click to sign in and enter the main menu</source>
+        <translation>点击登录进入主菜单</translation>
+    </message>
+    <message>
+        <location filename="../qml/LoginPage.qml" line="163"/>
         <source>Welcome, </source>
         <translation>欢迎，</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="118"/>
+        <location filename="../qml/LoginPage.qml" line="164"/>
         <source> (admin)</source>
         <translation>（管理员）</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="140"/>
         <source>Language:</source>
-        <translation>语言：</translation>
+        <translation type="vanished">语言：</translation>
     </message>
     <message>
         <source>Please sign in to continue</source>
@@ -274,7 +276,7 @@
         <translation type="vanished">用户名</translation>
     </message>
     <message>
-        <location filename="../qml/LoginPage.qml" line="101"/>
+        <location filename="../qml/LoginPage.qml" line="123"/>
         <source>Password</source>
         <translation>密码</translation>
     </message>
@@ -303,7 +305,7 @@
         <translation>SY1000 - 水压试验系统</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="23"/>
+        <location filename="../qml/Main.qml" line="27"/>
         <source>SY1000</source>
         <translation>SY1000</translation>
     </message>
@@ -324,32 +326,42 @@
         <translation>主菜单</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="24"/>
+        <location filename="../qml/MainMenuPage.qml" line="33"/>
+        <source>Test Functions</source>
+        <translation>测试功能</translation>
+    </message>
+    <message>
+        <location filename="../qml/MainMenuPage.qml" line="40"/>
         <source>Start Hydrostatic Test</source>
         <translation>开始水压试验</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="45"/>
+        <location filename="../qml/MainMenuPage.qml" line="58"/>
+        <source>Management System</source>
+        <translation>管理系统</translation>
+    </message>
+    <message>
+        <location filename="../qml/MainMenuPage.qml" line="67"/>
         <source>Result Management</source>
         <translation>试验结果管理</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="66"/>
+        <location filename="../qml/MainMenuPage.qml" line="72"/>
         <source>User Management</source>
         <translation>用户管理</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="87"/>
+        <location filename="../qml/MainMenuPage.qml" line="77"/>
         <source>System Maintain</source>
         <translation>系统维护</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="102"/>
+        <location filename="../qml/MainMenuPage.qml" line="100"/>
         <source>Connection Status</source>
         <translation>连接状态</translation>
     </message>
     <message>
-        <location filename="../qml/MainMenuPage.qml" line="111"/>
+        <location filename="../qml/MainMenuPage.qml" line="90"/>
         <source>Log out</source>
         <translation>退出登录</translation>
     </message>
