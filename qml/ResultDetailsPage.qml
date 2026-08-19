@@ -7,6 +7,11 @@ Page {
     property int resultId: 0
     property var d: ({})
 
+    function inspection(i) {
+        var labels = [qsTr("Qualified"), qsTr("To Repair"), qsTr("To Replace"), qsTr("Scrapped")]
+        return (i === undefined || i < 0 || i >= labels.length) ? "-" : labels[i]
+    }
+
     Flickable {
         anchors.fill: parent
         contentHeight: col.implicitHeight + 24
@@ -22,15 +27,6 @@ Page {
                 text: qsTr("Result Detail") + "  #" + d.id
                 font.pixelSize: 18
                 font.bold: true
-            }
-
-            Grid {
-                columns: 2
-                spacing: 6
-                function row(label, value) {
-                    Label { text: label + ":"; width: 170; color: "#666" }
-                    Label { text: value === undefined ? "-" : value }
-                }
             }
 
             Label { text: qsTr("Test"); font.bold: true; font.pixelSize: 14 }
@@ -63,6 +59,15 @@ Page {
                 Column { Label{text: qsTr("Final W")}; Label{text:d.finalWeight||"-"} }
                 Column { Label{text: qsTr("Full Def")}; Label{text:d.fullDeformation||"-"} }
                 Column { Label{text: qsTr("Resid Def")}; Label{text:d.residualDeformation||"-"} }
+            }
+
+            // Appearance inspection results (matches WPF UnifiedTestResultDetailsWindow).
+            Label { text: qsTr("Appearance Inspection"); font.bold: true; font.pixelSize: 14 }
+            Row { spacing: 40
+                Column { Label{text: qsTr("External")}; Label{text:detailPage.inspection(d.external)} }
+                Column { Label{text: qsTr("Internal")}; Label{text:detailPage.inspection(d.internal)} }
+                Column { Label{text: qsTr("Thread")}; Label{text:detailPage.inspection(d.thread)} }
+                Column { Label{text: qsTr("Valve")}; Label{text:detailPage.inspection(d.valve)} }
             }
 
             Row {

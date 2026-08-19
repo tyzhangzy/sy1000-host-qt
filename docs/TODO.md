@@ -21,6 +21,8 @@
 - **（修复）A3 确认框本地化**：泄压确认框文案改为中文操作指令（"泄压操作 / 请打开泄压阀…"），消除英文调试样弹窗观感
 - **B5 试验结果管理拆分**：`ResultManagementPage.qml` 改为双 Tab（测试结果管理 / 试验结果管理），对齐 WPF 两窗口列；`results()` 新增 `sampleModel`/`sampleSerial`
 - **试验数据闭环补全（WPF 未实现部分）**：试验保存时采集 `pressureWeightData` 曲线点（报告真实带曲线）+ 采集保存 `TestEnvironmentData`（室温/湿度/设备ID/型号，JSON 补全序列化）
+- **UI 遗漏补齐（WPF↔Qt 核对）**：样品卡补"使用单位(UserCompany)"字段；结果详情页补外观检查4项结果显示；主菜单补"连接状态"按钮；修复 `ResultDetailsPage.qml` 预存的 `function row()` 语法错误
+- **中文翻译文件补全**：用 `lupdate` 从 QML 源重新生成 `i18n/sy1000_zh_CN.ts`（178 个 qsTr），全部填中文（脚本 `tools/fill_translations.py`），0 unfinished，lrelease 生成 qm 嵌入
 
 ---
 

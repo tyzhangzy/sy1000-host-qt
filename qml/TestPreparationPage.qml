@@ -7,10 +7,10 @@ Page {
     property string title: qsTr("Test Preparation")
 
     property var sampleData: [
-        { model: "", manufacturer: "", serialNo: "", volume: 6.8, inspection: {} },
-        { model: "", manufacturer: "", serialNo: "", volume: 6.8, inspection: {} },
-        { model: "", manufacturer: "", serialNo: "", volume: 6.8, inspection: {} },
-        { model: "", manufacturer: "", serialNo: "", volume: 6.8, inspection: {} }
+        { model: "", manufacturer: "", userCompany: "", serialNo: "", volume: 6.8, inspection: {} },
+        { model: "", manufacturer: "", userCompany: "", serialNo: "", volume: 6.8, inspection: {} },
+        { model: "", manufacturer: "", userCompany: "", serialNo: "", volume: 6.8, inspection: {} },
+        { model: "", manufacturer: "", userCompany: "", serialNo: "", volume: 6.8, inspection: {} }
     ]
 
     Flickable {
@@ -70,6 +70,9 @@ Page {
                             TextField { width: parent.width; placeholderText: qsTr("Manufacturer")
                                 text: sampleData[index].manufacturer
                                 onTextChanged: sampleData[index].manufacturer = text }
+                            TextField { width: parent.width; placeholderText: qsTr("User Company")
+                                text: sampleData[index].userCompany
+                                onTextChanged: sampleData[index].userCompany = text }
                             TextField { width: parent.width; placeholderText: qsTr("Serial No")
                                 text: sampleData[index].serialNo
                                 onTextChanged: sampleData[index].serialNo = text }
@@ -117,6 +120,7 @@ Page {
                         for (var i = 0; i < 4; i++) {
                             var d = sampleData[i]
                             hydro.setSample(i + 1, d.model, d.manufacturer, d.serialNo, d.volume)
+                            d.inspection.userCompany = d.userCompany
                             hydro.setSampleInspection(i + 1, d.inspection)
                         }
                         stack.push("TestPage.qml")

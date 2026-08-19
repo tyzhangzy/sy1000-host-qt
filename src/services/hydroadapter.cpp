@@ -27,6 +27,7 @@ void fillInspection(SampleInspectionData &out, const QVariantMap &m)
 
     out.inspectorName = str("inspectorName");
     out.inspectorCertNo = str("inspectorCertNo");
+    out.userCompany = str("userCompany");
     out.inspectionCompleted = boolean("inspectionCompleted");
 
     out.externalResult = result("external");

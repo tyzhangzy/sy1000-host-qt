@@ -2,53 +2,994 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN" sourcelanguage="en">
 <context>
+    <name>AppearanceInspectionDialog</name>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="13"/>
+        <source>Appearance Inspection - Sample %1</source>
+        <translation>外观检测 - 样品 %1</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="19"/>
+        <source>Qualified</source>
+        <translation>合格</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="19"/>
+        <source>To Repair</source>
+        <translation>待维修</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="19"/>
+        <source>To Replace</source>
+        <translation>待更换</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="19"/>
+        <source>Scrapped</source>
+        <translation>报废</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="48"/>
+        <source>Inspector</source>
+        <translation>检验员</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="53"/>
+        <source>Name</source>
+        <translation>姓名</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="54"/>
+        <source>Inspector name</source>
+        <translation>检验员姓名</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="55"/>
+        <source>Cert No</source>
+        <translation>证书号</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="56"/>
+        <source>Certificate No</source>
+        <translation>证书号</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="57"/>
+        <source>Date</source>
+        <translation>日期</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="63"/>
+        <source>External</source>
+        <translation>外观</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="69"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="98"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="121"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="143"/>
+        <source>Result</source>
+        <translation>结果</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="74"/>
+        <source>Thermal damage</source>
+        <translation>热损伤</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="75"/>
+        <source>Scratch</source>
+        <translation>划痕</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="76"/>
+        <source>Wear</source>
+        <translation>磨损</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="80"/>
+        <source>Delamination</source>
+        <translation>分层</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="81"/>
+        <source>Deformation</source>
+        <translation>变形</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="83"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="84"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="106"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="107"/>
+        <source>Defect location</source>
+        <translation>缺陷位置</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="85"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="108"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="130"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="153"/>
+        <source>Other</source>
+        <translation>其他</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="86"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="109"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="131"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="154"/>
+        <source>Other notes</source>
+        <translation>其他备注</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="92"/>
+        <source>Internal</source>
+        <translation>内部</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="101"/>
+        <source>Smell present</source>
+        <translation>有异味</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="102"/>
+        <source>Debris</source>
+        <translation>杂物</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="103"/>
+        <source>Debris description</source>
+        <translation>杂物描述</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="104"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="105"/>
+        <source>Surface condition</source>
+        <translation>表面状况</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="115"/>
+        <source>Thread</source>
+        <translation>螺纹</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="124"/>
+        <source>Specification</source>
+        <translation>规格</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="125"/>
+        <source>Thread specification</source>
+        <translation>螺纹规格</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="126"/>
+        <source>Condition</source>
+        <translation>状况</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="127"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="148"/>
+        <source>Thread condition</source>
+        <translation>螺纹状况</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="128"/>
+        <source>Evaluation</source>
+        <translation>评定</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="129"/>
+        <source>Thread evaluation</source>
+        <translation>螺纹评定</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="137"/>
+        <source>Valve</source>
+        <translation>瓶阀</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="146"/>
+        <source>Valve No</source>
+        <translation>阀号</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="147"/>
+        <source>Valve number</source>
+        <translation>阀号</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="149"/>
+        <source>Valve thread condition</source>
+        <translation>阀螺纹状况</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="150"/>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="151"/>
+        <source>Air tightness</source>
+        <translation>气密性</translation>
+    </message>
+    <message>
+        <location filename="../qml/AppearanceInspectionDialog.qml" line="152"/>
+        <source>Diaphragm replaced</source>
+        <translation>隔膜已更换</translation>
+    </message>
+</context>
+<context>
+    <name>HydroTestMessageDialog</name>
+    <message>
+        <location filename="../qml/HydroTestMessageDialog.qml" line="9"/>
+        <source>Operation</source>
+        <translation>操作</translation>
+    </message>
+    <message>
+        <location filename="../qml/HydroTestMessageDialog.qml" line="10"/>
+        <source></source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>LoginPage</name>
     <message>
+        <location filename="../qml/LoginPage.qml" line="11"/>
+        <location filename="../qml/LoginPage.qml" line="111"/>
+        <source>Login</source>
+        <translation>登录</translation>
+    </message>
+    <message>
+        <location filename="../qml/LoginPage.qml" line="46"/>
         <source>SY1000 Hydrostatic Test System</source>
         <translation>SY1000 水压试验系统</translation>
     </message>
     <message>
+        <location filename="../qml/LoginPage.qml" line="54"/>
+        <source>Quanshen</source>
+        <translation>Quanshen</translation>
+    </message>
+    <message>
+        <location filename="../qml/LoginPage.qml" line="82"/>
+        <source>User Login</source>
+        <translation>用户登录</translation>
+    </message>
+    <message>
+        <location filename="../qml/LoginPage.qml" line="117"/>
+        <source>Welcome, </source>
+        <translation>欢迎，</translation>
+    </message>
+    <message>
+        <location filename="../qml/LoginPage.qml" line="118"/>
+        <source> (admin)</source>
+        <translation>（管理员）</translation>
+    </message>
+    <message>
+        <location filename="../qml/LoginPage.qml" line="140"/>
+        <source>Language:</source>
+        <translation>语言：</translation>
+    </message>
+    <message>
         <source>Please sign in to continue</source>
-        <translation>请登录以继续</translation>
+        <translation type="vanished">请登录以继续</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation>用户名</translation>
+        <translation type="vanished">用户名</translation>
     </message>
     <message>
+        <location filename="../qml/LoginPage.qml" line="101"/>
         <source>Password</source>
         <translation>密码</translation>
     </message>
     <message>
         <source>Sign In</source>
-        <translation>登录</translation>
+        <translation type="vanished">登录</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation>语言</translation>
+        <translation type="vanished">语言</translation>
     </message>
     <message>
         <source>English</source>
-        <translation>English</translation>
+        <translation type="vanished">English</translation>
     </message>
     <message>
         <source>中文</source>
-        <translation>中文</translation>
+        <translation type="vanished">中文</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
+        <location filename="../qml/Main.qml" line="6"/>
         <source>SY1000 - Hydrostatic Test System</source>
         <translation>SY1000 - 水压试验系统</translation>
     </message>
     <message>
+        <location filename="../qml/Main.qml" line="23"/>
+        <source>SY1000</source>
+        <translation>SY1000</translation>
+    </message>
+    <message>
         <source>SY1000 Hydrostatic Test System</source>
-        <translation>SY1000 水压试验系统</translation>
+        <translation type="vanished">SY1000 水压试验系统</translation>
     </message>
     <message>
         <source>core / devices / dao / report / ui</source>
-        <translation>core / devices / dao / report / ui</translation>
+        <translation type="vanished">core / devices / dao / report / ui</translation>
+    </message>
+</context>
+<context>
+    <name>MainMenuPage</name>
+    <message>
+        <location filename="../qml/MainMenuPage.qml" line="6"/>
+        <source>Main Menu</source>
+        <translation>主菜单</translation>
+    </message>
+    <message>
+        <location filename="../qml/MainMenuPage.qml" line="24"/>
+        <source>Start Hydrostatic Test</source>
+        <translation>开始水压试验</translation>
+    </message>
+    <message>
+        <location filename="../qml/MainMenuPage.qml" line="45"/>
+        <source>Result Management</source>
+        <translation>结果管理</translation>
+    </message>
+    <message>
+        <location filename="../qml/MainMenuPage.qml" line="66"/>
+        <source>User Management</source>
+        <translation>用户管理</translation>
+    </message>
+    <message>
+        <location filename="../qml/MainMenuPage.qml" line="87"/>
+        <source>System Maintain</source>
+        <translation>系统维护</translation>
+    </message>
+    <message>
+        <location filename="../qml/MainMenuPage.qml" line="102"/>
+        <source>Connection Status</source>
+        <translation>连接状态</translation>
+    </message>
+    <message>
+        <location filename="../qml/MainMenuPage.qml" line="111"/>
+        <source>Log out</source>
+        <translation>退出登录</translation>
+    </message>
+</context>
+<context>
+    <name>ReportViewPage</name>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="9"/>
+        <location filename="../qml/ReportViewPage.qml" line="33"/>
+        <source>Test Report</source>
+        <translation>测试报告</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="18"/>
+        <location filename="../qml/ReportViewPage.qml" line="23"/>
+        <source>Qualified</source>
+        <translation>合格</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="18"/>
+        <location filename="../qml/ReportViewPage.qml" line="23"/>
+        <source>To Repair</source>
+        <translation>待维修</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="18"/>
+        <location filename="../qml/ReportViewPage.qml" line="23"/>
+        <source>To Replace</source>
+        <translation>待更换</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="18"/>
+        <location filename="../qml/ReportViewPage.qml" line="23"/>
+        <source>Scrapped</source>
+        <translation>报废</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="22"/>
+        <source>Not Tested</source>
+        <translation>未测试</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="22"/>
+        <source>In Progress</source>
+        <translation>进行中</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="22"/>
+        <source>Passed</source>
+        <translation>合格</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="22"/>
+        <source>Failed</source>
+        <translation>不合格</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="60"/>
+        <source>Hydrostatic Test Report</source>
+        <translation>水压测试报告</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="67"/>
+        <source>Serial: %1</source>
+        <translation>流水号：%1</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="73"/>
+        <source>Tester: %1    Company: %2    Date: %3</source>
+        <translation>测试者：%1    单位：%2    日期：%3</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="77"/>
+        <source>Test Standard</source>
+        <translation>试验标准</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="79"/>
+        <source>Name:</source>
+        <translation>名称：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="81"/>
+        <source>Working (MPa):</source>
+        <translation>工作压力 (MPa)：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="83"/>
+        <source>Test (MPa):</source>
+        <translation>试验压力 (MPa)：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="85"/>
+        <source>Rate limit (%):</source>
+        <translation>残余变形率限值 (%)：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="90"/>
+        <source>Sample</source>
+        <translation>样品</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="92"/>
+        <source>Model:</source>
+        <translation>型号：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="94"/>
+        <source>Manufacturer:</source>
+        <translation>制造厂商：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="96"/>
+        <source>Serial No:</source>
+        <translation>产品编号：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="98"/>
+        <source>Volume (L):</source>
+        <translation>容积 (L)：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="103"/>
+        <source>Hydrostatic Data</source>
+        <translation>水压试验数据</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="105"/>
+        <source>Initial W</source>
+        <translation>初始重量</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="106"/>
+        <source>Pressure W</source>
+        <translation>试验重量</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="107"/>
+        <source>Final W</source>
+        <translation>泄压重量</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="111"/>
+        <source>Full Def</source>
+        <translation>全变形量</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="112"/>
+        <source>Resid Def</source>
+        <translation>残余变形量</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="113"/>
+        <source>Rate (%)</source>
+        <translation>残余变形率 (%)</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="120"/>
+        <source>Appearance Inspection</source>
+        <translation>外观检查</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="122"/>
+        <source>External:</source>
+        <translation>外观：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="124"/>
+        <source>Internal:</source>
+        <translation>内部：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="126"/>
+        <source>Thread:</source>
+        <translation>螺纹：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="128"/>
+        <source>Valve:</source>
+        <translation>瓶阀：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="134"/>
+        <source>Overall Result: </source>
+        <translation>总体结果：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="146"/>
+        <source>Generate &amp; Open PDF</source>
+        <translation>生成并打开 PDF</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="150"/>
+        <source>Generate failed</source>
+        <translation>生成失败</translation>
+    </message>
+    <message>
+        <location filename="../qml/ReportViewPage.qml" line="154"/>
+        <source>Back</source>
+        <translation>返回</translation>
+    </message>
+</context>
+<context>
+    <name>ResultManagementPage</name>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="9"/>
+        <location filename="../qml/ResultManagementPage.qml" line="25"/>
+        <source>Result Management</source>
+        <translation>结果管理</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="14"/>
+        <source>Not Tested</source>
+        <translation>未测试</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="14"/>
+        <source>In Progress</source>
+        <translation>进行中</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="14"/>
+        <source>Passed</source>
+        <translation>合格</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="14"/>
+        <source>Failed</source>
+        <translation>不合格</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="15"/>
+        <source>Qualified</source>
+        <translation>合格</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="15"/>
+        <source>To Repair</source>
+        <translation>待维修</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="15"/>
+        <source>To Replace</source>
+        <translation>待更换</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="15"/>
+        <source>Scrapped</source>
+        <translation>报废</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="33"/>
+        <source>Test Results</source>
+        <translation>测试结果管理</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="34"/>
+        <source>Unified Results</source>
+        <translation>试验结果管理</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="50"/>
+        <location filename="../qml/ResultManagementPage.qml" line="92"/>
+        <source>Tester</source>
+        <translation>测试者</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="51"/>
+        <location filename="../qml/ResultManagementPage.qml" line="91"/>
+        <source>Date</source>
+        <translation>日期</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="52"/>
+        <source>Model</source>
+        <translation>产品型号</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="53"/>
+        <source>Serial No</source>
+        <translation>产品编号</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="54"/>
+        <location filename="../qml/ResultManagementPage.qml" line="89"/>
+        <source>Manufacturer</source>
+        <translation>生产厂家</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="70"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="90"/>
+        <source>Cylinder No</source>
+        <translation>气瓶编号</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="93"/>
+        <source>Result</source>
+        <translation>结果</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="109"/>
+        <source>Details</source>
+        <translation>查看详情</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="122"/>
+        <source>Refresh</source>
+        <translation>刷新</translation>
+    </message>
+    <message>
+        <location filename="../qml/ResultManagementPage.qml" line="123"/>
+        <source>Back</source>
+        <translation>返回</translation>
+    </message>
+</context>
+<context>
+    <name>SystemMaintainPage</name>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="9"/>
+        <location filename="../qml/SystemMaintainPage.qml" line="29"/>
+        <source>System Maintain</source>
+        <translation>系统维护</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="22"/>
+        <source>Back</source>
+        <translation>返回</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="60"/>
+        <source>Device Controls</source>
+        <translation>设备控制</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="69"/>
+        <source>Connect Devices</source>
+        <translation>连接设备</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="81"/>
+        <source>Water Jacket Locks</source>
+        <translation>水套锁</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="89"/>
+        <source>Lock %1</source>
+        <translation>锁 %1</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="98"/>
+        <source>Pumps</source>
+        <translation>水泵</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="103"/>
+        <source>Water Inlet</source>
+        <translation>进水</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="108"/>
+        <source>Fast Pump</source>
+        <translation>快泵</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="113"/>
+        <source>Slow Pump</source>
+        <translation>慢泵</translation>
+    </message>
+    <message>
+        <location filename="../qml/SystemMaintainPage.qml" line="133"/>
+        <source>System Information</source>
+        <translation>系统信息</translation>
+    </message>
+</context>
+<context>
+    <name>TestPage</name>
+    <message>
+        <location filename="../qml/TestPage.qml" line="7"/>
+        <location filename="../qml/TestPage.qml" line="15"/>
+        <source>Hydrostatic Test</source>
+        <translation>水压试验</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="24"/>
+        <source>Working pressure (MPa)</source>
+        <translation>工作压力 (MPa)</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="34"/>
+        <source>Test pressure (MPa)</source>
+        <translation>试验压力 (MPa)</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="46"/>
+        <source>Start</source>
+        <translation>开始</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="51"/>
+        <source>Stop</source>
+        <translation>停止</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="58"/>
+        <source>State: </source>
+        <translation>状态：</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="82"/>
+        <source>Finished ok=%1, passed=%2, failed=%3</source>
+        <translation>完成 ok=%1，合格=%2，不合格=%3</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="109"/>
+        <source>Pressure / Deformation</source>
+        <translation>压力 / 变形</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="110"/>
+        <source>Pressure (MPa)</source>
+        <translation>压力 (MPa)</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="111"/>
+        <source>Weight (g)</source>
+        <translation>重量 (g)</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="121"/>
+        <source>Sample 1</source>
+        <translation>样品 1</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="122"/>
+        <source>Sample 2</source>
+        <translation>样品 2</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="123"/>
+        <source>Sample 3</source>
+        <translation>样品 3</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="124"/>
+        <source>Sample 4</source>
+        <translation>样品 4</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="136"/>
+        <source>Pressure</source>
+        <translation>压力</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="137"/>
+        <source>S1</source>
+        <translation>S1</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="138"/>
+        <source>S2</source>
+        <translation>S2</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="139"/>
+        <source>S3</source>
+        <translation>S3</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="140"/>
+        <source>S4</source>
+        <translation>S4</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="156"/>
+        <source>Clear chart</source>
+        <translation>清空曲线</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPage.qml" line="162"/>
+        <source>Back to menu</source>
+        <translation>返回菜单</translation>
+    </message>
+</context>
+<context>
+    <name>TestPreparationPage</name>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="7"/>
+        <source>Test Preparation</source>
+        <translation>试验准备</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="44"/>
+        <source>Test Standard</source>
+        <translation>试验标准</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="45"/>
+        <source>Name</source>
+        <translation>姓名</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="46"/>
+        <source>Working MPa</source>
+        <translation>工作压力 (MPa)</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="47"/>
+        <source>Test MPa</source>
+        <translation>试验压力 (MPa)</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="48"/>
+        <source>Hold (s)</source>
+        <translation>保压 (秒)</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="49"/>
+        <source>Rate limit %</source>
+        <translation>速率限值 %</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="66"/>
+        <source>Sample %1</source>
+        <translation>样品 %1</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="67"/>
+        <source>Model</source>
+        <translation>产品型号</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="70"/>
+        <source>Manufacturer</source>
+        <translation>生产厂家</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="73"/>
+        <source>User Company</source>
+        <translation>使用单位</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="76"/>
+        <source>Serial No</source>
+        <translation>产品编号</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="87"/>
+        <source>Inspect</source>
+        <translation>外观检测</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="95"/>
+        <source>Done</source>
+        <translation>已完成</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="95"/>
+        <source>Not inspected</source>
+        <translation>未检测</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="115"/>
+        <source>Save &amp; Start Test</source>
+        <translation>保存并开始试验</translation>
+    </message>
+    <message>
+        <location filename="../qml/TestPreparationPage.qml" line="129"/>
+        <source>Back</source>
+        <translation>返回</translation>
+    </message>
+</context>
+<context>
+    <name>UserManagementPage</name>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="6"/>
+        <location filename="../qml/UserManagementPage.qml" line="17"/>
+        <source>User Management</source>
+        <translation>用户管理</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="22"/>
+        <location filename="../qml/UserManagementPage.qml" line="48"/>
+        <source>Username</source>
+        <translation>用户名</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="23"/>
+        <location filename="../qml/UserManagementPage.qml" line="49"/>
+        <source>Company</source>
+        <translation>单位</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="24"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="25"/>
+        <location filename="../qml/UserManagementPage.qml" line="50"/>
+        <source>Admin</source>
+        <translation>管理员</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="27"/>
+        <source>Add</source>
+        <translation>添加</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="47"/>
+        <source>ID</source>
+        <translation>编号</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="63"/>
+        <source>Reset Pwd</source>
+        <translation>重置密码</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="77"/>
+        <source>Refresh</source>
+        <translation>刷新</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="78"/>
+        <source>Back</source>
+        <translation>返回</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="86"/>
+        <source>Reset Password</source>
+        <translation>重置密码</translation>
+    </message>
+    <message>
+        <location filename="../qml/UserManagementPage.qml" line="90"/>
+        <source>New password</source>
+        <translation>新密码</translation>
     </message>
 </context>
 </TS>

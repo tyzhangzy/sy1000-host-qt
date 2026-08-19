@@ -5,6 +5,34 @@
 
 ---
 
+## 2026-08-19 · 中文翻译文件补全 + UI 遗漏补齐 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：① 补全中英 i18n 翻译文件；② 按 WPF↔Qt 核对补齐 UI 遗漏
+
+### 中文翻译文件补全
+- 原 `i18n/sy1000_zh_CN.ts` 仅 11 条翻译，严重不完整
+- 用 `lupdate` 从 `qml/`+`src/` 重新生成 ts（178 个 qsTr 源文本）
+- 新建 `tools/fill_translations.py`：内嵌 source→中文 映射，批量填充全部 178 条（含 `&amp;` 转义、带尾随空格 key）
+- 结果：0 unfinished、179 条 finished；`qt_add_lrelease` 生成 `sy1000_zh_CN.qm`（11.7KB）嵌入 `:/i18n/`，LanguageHelper 切换 zh_CN 生效
+- 保留脚本 `tools/fill_translations.py` 便于日后更新翻译
+
+### UI 遗漏补齐（WPF↔Qt 核对）
+- 样品卡补"使用单位(UserCompany)"字段（WPF 必填项）→ 传入 inspection 并写入结果
+- 结果详情页补外观检查 4 项结果显示；`details()` 返回 `external/internal/thread/valve`
+- 主菜单补"连接状态"按钮（调 `deviceService.connectDevices()`）
+- 修复 `ResultDetailsPage.qml` **预先存在**的 `function row(){ Label{} }` QML 语法错误（曾致运行时渲染问题）
+
+### 验证
+- ✅ 全目标编译通过；5 个 headless 冒烟测试全绿
+- ✅ `lrelease` 生成 179 finished / 0 unfinished；`SY1000.exe` 启动无回归
+- ✅ 修正 3 处遗漏翻译（Username/Password 同文本启发式、空 qsTr("")）
+
+### 已知限制
+- 报告查看多 PDF 翻页：因 Qt Pdf 模块未安装（QPdfView 不可用），未实现（记录在案）。
+
+---
+
 ## 2026-08-19 · 试验数据闭环补全（曲线点 + 环境数据）✅
 
 - **提交**：`b9e46b0` `feat(services,dao): persist curve points + environment data in test result`

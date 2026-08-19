@@ -96,8 +96,18 @@ Page {
         }
     }
 
-    // Bottom-right: log out button (matches WPF).
+    // Bottom-right: connection status + log out buttons (matches WPF MenuWindow).
     Button {
+        id: connBtn
+        text: qsTr("Connection Status")
+        width: 200; height: 60
+        anchors.right: logoutBtn.left; anchors.rightMargin: 20
+        anchors.bottom: parent.bottom; anchors.bottomMargin: 50
+        font.pixelSize: 18; font.bold: true
+        onClicked: menuStatus.text = deviceService.connectDevices()
+    }
+    Button {
+        id: logoutBtn
         text: qsTr("Log out")
         width: 200; height: 60
         anchors.right: parent.right; anchors.bottom: parent.bottom

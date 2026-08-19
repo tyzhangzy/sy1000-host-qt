@@ -60,6 +60,10 @@ QVariantMap ResultServiceAdapter::details(int id) const
         m[QStringLiteral("finalWeight")] = r.sample.hydroStaticTest.finalWeight;
         m[QStringLiteral("fullDeformation")] = r.sample.hydroStaticTest.fullDeformation;
         m[QStringLiteral("residualDeformation")] = r.sample.hydroStaticTest.residualDeformation;
+        m[QStringLiteral("external")] = static_cast<int>(r.sample.appearanceInspection.externalResult);
+        m[QStringLiteral("internal")] = static_cast<int>(r.sample.appearanceInspection.internalResult);
+        m[QStringLiteral("thread")] = static_cast<int>(r.sample.appearanceInspection.threadResult);
+        m[QStringLiteral("valve")] = static_cast<int>(r.sample.appearanceInspection.valveResult);
         return m;
     }
     return {};
