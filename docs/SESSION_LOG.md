@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 修正登录页退出按钮位置（移到窗口右上角）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`481d82e` `fix(ui): move quit button to window top-right header (login page only)`
 - **范围**：修复"退出按钮位置不对"——原按钮锚定在 LoginPage 顶部（header 下方），与 WPF 窗口右上角不符
 
 ### 修复
