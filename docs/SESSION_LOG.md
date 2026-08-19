@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 补全主菜单顶栏（DeviceName + 连接状态 + 退出按钮）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`0a0f339` `feat(ui): complete main-menu header (deviceName + conn status + quit button)`
 - **范围**：核对 WPF `MenuWindow` 顶栏后补全 Qt 顶栏缺失项
 
 ### 核对发现的缺失
