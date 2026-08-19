@@ -25,6 +25,7 @@
 - **中文翻译文件补全**：用 `lupdate` 从 QML 源重新生成 `i18n/sy1000_zh_CN.ts`（178 个 qsTr），全部填中文（脚本 `tools/fill_translations.py`），0 unfinished，lrelease 生成 qm 嵌入
 - **D11 登录页默认中文 + D12 真实 Logo**：默认语言改为 zh_CN（对齐 WPF 中文界面）；引入 WPF `Resources/dklogo.png` 到登录页替换占位矩形
 - **D13 字体暂缓**：WPF 字体（Noto/SourceHan CJK VF，36-59MB）过大暂不引入仓库，仅用系统字体 + 统一 Indigo/Amber 配色
+- **D14 控件样式精细化**：新建 `ShadowCard.qml`（模拟 Elevation 阴影 + 圆角 + hover 高亮/边框变色 + 手型光标），主菜单 4 功能卡片替换为 ShadowCard
 
 ---
 
@@ -58,7 +59,7 @@
 | 11. ~~**登录页中文**~~ | WPF 为中文界面（"用 户 登 录 / 登 录"），微调默认语言或补充中文文案 | ✅ 默认语言改为 zh_CN |
 | 12. ~~**真实 Logo**~~ | 引入 `dklogo.png`（原 WPF Resources），替换占位矩形 | ✅ 引入 `qml/assets/dklogo.png` |
 | 13. 配色/字体统一 | 统一 Indigo/Amber 用色；接入思源/Noto 字体（Noto Sans SC / Noto Serif SC），对齐字号字重 |
-| 14. 控件样式 | 按钮/卡片 hover、圆角、内边距、卡片阴影（Elevation）精细化 |
+| 14. ~~**控件样式**~~ | 按钮/卡片 hover、圆角、内边距、卡片阴影（Elevation）精细化 | ✅ `ShadowCard.qml`（阴影+圆角+hover）接入主菜单 |
 
 ---
 

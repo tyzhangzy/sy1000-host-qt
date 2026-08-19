@@ -124,6 +124,7 @@ qt_add_resources(SY1000 "app"
     qml/AppearanceInspectionDialog.qml
     qml/HydroTestMessageDialog.qml
     qml/ReportViewPage.qml
+    qml/ShadowCard.qml
     qml/assets/dklogo.png
 )
 

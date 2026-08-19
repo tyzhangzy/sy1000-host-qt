@@ -5,6 +5,30 @@
 
 ---
 
+## 2026-08-19 · D14 控件样式精细化 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：D14 卡片/控件样式对齐 WPF MaterialDesign
+
+### 实现
+- 检查到 Qt6 无 `GraphicalEffects` 模块（阴影不可直接使用），改用纯 QML 模拟
+- 新建 `qml/ShadowCard.qml` 可复用组件：
+  - **模拟 Elevation 阴影**：3 层半透明矩形叠加（alpha 递减）实现右下投影
+  - **圆角**（radius 12）+ 边框
+  - **hover 效果**：背景微变 + 边框高亮变色（ColorAnimation 过渡）+ 手型光标
+  - 属性：title / icon / accent / elevation；信号 clicked()
+- `MainMenuPage.qml` 4 个功能卡片替换为 `ShadowCard`（开始试验 / 结果管理 / 用户管理 / 系统维护）
+- `CMakeLists` 注册 `ShadowCard.qml` 资源
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`ShadowCard.qml`/`MainMenuPage.qml` qmllint 无 Error；应用启动无回归
+
+### 备注
+- 样式组件可复用到其他页面卡片（SystemMaintainPage/TestPreparationPage 等），后续按需扩展。
+- 按钮 hover 沿用 Qt Quick Controls 2 Material 默认。
+
+---
+
 ## 2026-08-19 · D 系列：真实 Logo + 默认中文 ✅
 
 - **提交**：`3e4162f` `feat(ui): real product logo + default zh_CN UI (D11, D12)`

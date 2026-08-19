@@ -11,88 +11,25 @@ Page {
         columns: 2
         spacing: 24
 
-        Rectangle {
-            width: 260; height: 150; radius: 12
-            border.color: "#CCCCCC"; color: "white"
-            Rectangle {
-                width: 52; height: 52; radius: 26; color: "#303F9F"
-                anchors.top: parent.top; anchors.topMargin: 18
-                anchors.horizontalCenter: parent.horizontalCenter
-                Label { text: "▶"; color: "white"; font.pixelSize: 26; anchors.centerIn: parent }
-            }
-            Label {
-                text: qsTr("Start Hydrostatic Test")
-                font.pixelSize: 18; font.bold: true
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom; anchors.bottomMargin: 20
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: stack.push("TestPreparationPage.qml")
-            }
+        ShadowCard {
+            title: qsTr("Start Hydrostatic Test")
+            icon: "▶"
+            onClicked: stack.push("TestPreparationPage.qml")
         }
-
-        Rectangle {
-            width: 260; height: 150; radius: 12
-            border.color: "#CCCCCC"; color: "white"
-            Rectangle {
-                width: 52; height: 52; radius: 26; color: "#303F9F"
-                anchors.top: parent.top; anchors.topMargin: 18
-                anchors.horizontalCenter: parent.horizontalCenter
-                Label { text: "≡"; color: "white"; font.pixelSize: 26; anchors.centerIn: parent }
-            }
-            Label {
-                text: qsTr("Result Management")
-                font.pixelSize: 18; font.bold: true
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom; anchors.bottomMargin: 20
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: stack.push("ResultManagementPage.qml")
-            }
+        ShadowCard {
+            title: qsTr("Result Management")
+            icon: "≡"
+            onClicked: stack.push("ResultManagementPage.qml")
         }
-
-        Rectangle {
-            width: 260; height: 150; radius: 12
-            border.color: "#CCCCCC"; color: "white"
-            Rectangle {
-                width: 52; height: 52; radius: 26; color: "#303F9F"
-                anchors.top: parent.top; anchors.topMargin: 18
-                anchors.horizontalCenter: parent.horizontalCenter
-                Label { text: "☺"; color: "white"; font.pixelSize: 26; anchors.centerIn: parent }
-            }
-            Label {
-                text: qsTr("User Management")
-                font.pixelSize: 18; font.bold: true
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom; anchors.bottomMargin: 20
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: stack.push("UserManagementPage.qml")
-            }
+        ShadowCard {
+            title: qsTr("User Management")
+            icon: "☺"
+            onClicked: stack.push("UserManagementPage.qml")
         }
-
-        Rectangle {
-            width: 260; height: 150; radius: 12
-            border.color: "#CCCCCC"; color: "white"
-            Rectangle {
-                width: 52; height: 52; radius: 26; color: "#303F9F"
-                anchors.top: parent.top; anchors.topMargin: 18
-                anchors.horizontalCenter: parent.horizontalCenter
-                Label { text: "⚙"; color: "white"; font.pixelSize: 26; anchors.centerIn: parent }
-            }
-            Label {
-                text: qsTr("System Maintain")
-                font.pixelSize: 18; font.bold: true
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom; anchors.bottomMargin: 20
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: stack.push("SystemMaintainPage.qml")
-            }
+        ShadowCard {
+            title: qsTr("System Maintain")
+            icon: "⚙"
+            onClicked: stack.push("SystemMaintainPage.qml")
         }
     }
 
