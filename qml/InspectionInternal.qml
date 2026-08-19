@@ -34,7 +34,6 @@ Rectangle {
                 width: 340
                 height: 40
                 Material.background: "transparent"
-                Material.underlineColor: "transparent"
                 padding: 4
                 Rectangle {
                     anchors.left: parent.left; anchors.right: parent.right

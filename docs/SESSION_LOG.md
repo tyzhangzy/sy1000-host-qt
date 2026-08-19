@@ -5,6 +5,16 @@
 
 ---
 
+## 2026-08-19 · 修复"外观检测评估"按钮无反应（无效属性）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`FieldRow / InspectionInternal / InspectionThread / InspectionValve.qml`
+- **根因**：`Material.underlineColor` 不是有效属性，导致 `FieldRow` 组件编译失败 → `InspectionExternal` 失败 → 页面 `push` 加载失败 → 点击按钮无反应
+- **修复**：删除所有 `Material.underlineColor`，TextField 用透明背景 + Rectangle 画下划线横线
+- **验证**：✅ qmlscene 页面加载无组件错误；构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 外观检查页全面核对 WPF，螺纹/阀并排 ✅
 
 - **提交**：`2c41a23` `fix(ui): thread/valve fields side-by-side per WPF`
