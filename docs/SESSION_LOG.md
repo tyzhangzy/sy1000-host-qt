@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-08-19 · 外观检查对话框完整对齐 WPF 布局 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/AppearanceInspectionDialog.qml`（"外观检测评估"按钮加载的对话框）
+
+### 实现（对照 WPF `AppearenceInspectionWindow.xaml`）
+- 去掉"检查员信息"区块（WPF 无此区块）
+- 四组（外部/内部/螺纹/阀）字段改为 WPF 式布局："标签:输入框"一行式、CheckBox 并排、螺纹规格/状况并排、瓶阀编号/连接螺纹并排
+- 每组评定结果 3 个 RadioButton（合格/待修复/判废），加载/保存/重置逻辑同步（去掉检查员，设检查日期）
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 外观检查对话框评定结果修正为 3 个单选框 ✅
 
 - **提交**：`d4a11c1` `fix(ui): inspection radios = 3 (Qualified/Repair/Scrapped) match WPF`

@@ -16,11 +16,10 @@ Dialog {
     width: 640
     height: Math.min(parent.height - 60, 780)
 
-    property var resultLabels: [qsTr("Qualified"), qsTr("To Repair"), qsTr("To Replace"), qsTr("Scrapped")]
+    property var resultLabels: [qsTr("Qualified"), qsTr("To Repair"), qsTr("Scrapped")]
 
     // Reset all fields (WPF "重置" button).
     function reset() {
-        inspName.text = ""; inspCert.text = ""; inspDate.text = ""
         extR0.checked = true; intR0.checked = true; thrR0.checked = true; valR0.checked = true
         extThermal.checked = extScratch.checked = extWear.checked = extDela.checked = extDeform.checked = false
         extDefect.text = extOther.text = ""
@@ -56,20 +55,6 @@ Dialog {
             spacing: 12
             width: parent.width
 
-            // Inspector information.
-            Label { text: qsTr("Inspector"); font.bold: true; font.pixelSize: 16 }
-            Grid {
-                columns: 2
-                spacing: 8
-                columnSpacing: 12
-                Label { text: qsTr("Name"); width: 90 }
-                TextField { id: inspName; width: 220; placeholderText: qsTr("Inspector name") }
-                Label { text: qsTr("Cert No"); width: 90 }
-                TextField { id: inspCert; width: 220; placeholderText: qsTr("Certificate No") }
-                Label { text: qsTr("Date"); width: 90 }
-                TextField { id: inspDate; width: 220; placeholderText: "yyyy-MM-dd" }
-            }
-
             // ============ External (appearance) ============
             SectionBox {
                 title: qsTr("External")
@@ -77,27 +62,30 @@ Dialog {
                     spacing: 8
                     width: parent.width
                     Row {
-                        spacing: 12
-                        Label { text: qsTr("Result"); width: 90; anchors.verticalCenter: parent.verticalCenter }
-                        RadioButton { id: extR0; text: dlg.resultLabels[0] }
-                        RadioButton { id: extR1; text: dlg.resultLabels[1] }
-                        RadioButton { id: extR3; text: dlg.resultLabels[3] }
-                    }
-                    Row {
                         spacing: 14
                         CheckBox { id: extThermal; text: qsTr("Thermal damage") }
                         CheckBox { id: extScratch; text: qsTr("Scratch") }
                         CheckBox { id: extWear; text: qsTr("Wear") }
-                    }
-                    Row {
-                        spacing: 14
                         CheckBox { id: extDela; text: qsTr("Delamination") }
                         CheckBox { id: extDeform; text: qsTr("Deformation") }
                     }
-                    Label { text: qsTr("Defect location"); font.bold: true }
-                    TextField { id: extDefect; width: parent.width; placeholderText: qsTr("Defect location") }
-                    Label { text: qsTr("Other"); font.bold: true }
-                    TextField { id: extOther; width: parent.width; placeholderText: qsTr("Other notes") }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Defect location") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: extDefect; width: parent.width - 130 }
+                    }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Other") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: extOther; width: parent.width - 130 }
+                    }
+                    Row {
+                        spacing: 12
+                        Label { text: qsTr("Result") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        RadioButton { id: extR0; text: dlg.resultLabels[0] }
+                        RadioButton { id: extR1; text: dlg.resultLabels[1] }
+                        RadioButton { id: extR2; text: dlg.resultLabels[2] }
+                    }
                 }
             }
 
@@ -109,20 +97,32 @@ Dialog {
                     width: parent.width
                     Row {
                         spacing: 12
-                        Label { text: qsTr("Result"); width: 90; anchors.verticalCenter: parent.verticalCenter }
+                        CheckBox { id: intSmell; text: qsTr("Smell present") }
+                        Label { text: qsTr("Debris") + ":"; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: intDebris; width: parent.width - 220 }
+                    }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Surface condition") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: intSurface; width: parent.width - 130 }
+                    }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Defect location") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: intDefect; width: parent.width - 130 }
+                    }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Other") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: intOther; width: parent.width - 130 }
+                    }
+                    Row {
+                        spacing: 12
+                        Label { text: qsTr("Result") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: intR0; text: dlg.resultLabels[0] }
                         RadioButton { id: intR1; text: dlg.resultLabels[1] }
-                        RadioButton { id: intR3; text: dlg.resultLabels[3] }
+                        RadioButton { id: intR2; text: dlg.resultLabels[2] }
                     }
-                    CheckBox { id: intSmell; text: qsTr("Smell present") }
-                    Label { text: qsTr("Debris"); font.bold: true }
-                    TextField { id: intDebris; width: parent.width; placeholderText: qsTr("Debris description") }
-                    Label { text: qsTr("Surface condition"); font.bold: true }
-                    TextField { id: intSurface; width: parent.width; placeholderText: qsTr("Surface condition") }
-                    Label { text: qsTr("Defect location"); font.bold: true }
-                    TextField { id: intDefect; width: parent.width; placeholderText: qsTr("Defect location") }
-                    Label { text: qsTr("Other"); font.bold: true }
-                    TextField { id: intOther; width: parent.width; placeholderText: qsTr("Other notes") }
                 }
             }
 
@@ -133,20 +133,29 @@ Dialog {
                     spacing: 8
                     width: parent.width
                     Row {
+                        spacing: 8
+                        Label { text: qsTr("Specification") + ":"; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: thrSpec; width: 160 }
+                        Label { text: qsTr("Condition") + ":"; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: thrCond; width: 160 }
+                    }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Evaluation") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: thrEval; width: parent.width - 130 }
+                    }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Other") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: thrOther; width: parent.width - 130 }
+                    }
+                    Row {
                         spacing: 12
-                        Label { text: qsTr("Result"); width: 90; anchors.verticalCenter: parent.verticalCenter }
+                        Label { text: qsTr("Result") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: thrR0; text: dlg.resultLabels[0] }
                         RadioButton { id: thrR1; text: dlg.resultLabels[1] }
-                        RadioButton { id: thrR3; text: dlg.resultLabels[3] }
+                        RadioButton { id: thrR2; text: dlg.resultLabels[2] }
                     }
-                    Label { text: qsTr("Specification"); font.bold: true }
-                    TextField { id: thrSpec; width: parent.width; placeholderText: qsTr("Thread specification") }
-                    Label { text: qsTr("Condition"); font.bold: true }
-                    TextField { id: thrCond; width: parent.width; placeholderText: qsTr("Thread condition") }
-                    Label { text: qsTr("Evaluation"); font.bold: true }
-                    TextField { id: thrEval; width: parent.width; placeholderText: qsTr("Thread evaluation") }
-                    Label { text: qsTr("Other"); font.bold: true }
-                    TextField { id: thrOther; width: parent.width; placeholderText: qsTr("Other notes") }
                 }
             }
 
@@ -158,20 +167,29 @@ Dialog {
                     width: parent.width
                     Row {
                         spacing: 12
-                        Label { text: qsTr("Result"); width: 90; anchors.verticalCenter: parent.verticalCenter }
+                        Label { text: qsTr("Result"); width: 130; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: valR0; text: dlg.resultLabels[0] }
                         RadioButton { id: valR1; text: dlg.resultLabels[1] }
-                        RadioButton { id: valR3; text: dlg.resultLabels[3] }
+                        RadioButton { id: valR2; text: dlg.resultLabels[2] }
                     }
-                    Label { text: qsTr("Valve No"); font.bold: true }
-                    TextField { id: valNo; width: parent.width; placeholderText: qsTr("Valve number") }
-                    Label { text: qsTr("Thread condition"); font.bold: true }
-                    TextField { id: valThreadCond; width: parent.width; placeholderText: qsTr("Valve thread condition") }
-                    Label { text: qsTr("Air tightness"); font.bold: true }
-                    TextField { id: valAirtight; width: parent.width; placeholderText: qsTr("Air tightness") }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Valve No") + ":"; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: valNo; width: 160 }
+                        Label { text: qsTr("Thread condition") + ":"; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: valThreadCond; width: 160 }
+                    }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Air tightness") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: valAirtight; width: parent.width - 130 }
+                    }
                     CheckBox { id: valDiaphragm; text: qsTr("Diaphragm replaced") }
-                    Label { text: qsTr("Other"); font.bold: true }
-                    TextField { id: valOther; width: parent.width; placeholderText: qsTr("Other notes") }
+                    Row {
+                        spacing: 8
+                        Label { text: qsTr("Other") + ":"; width: 130; anchors.verticalCenter: parent.verticalCenter }
+                        TextField { id: valOther; width: parent.width - 130 }
+                    }
                 }
             }
 
@@ -186,13 +204,10 @@ Dialog {
 
     onOpened: {
         var it = insp()
-        extR0.checked = (it.external === undefined || it.external === 0); extR1.checked = it.external === 1; extR3.checked = it.external === 3
-        intR0.checked = (it.internal === undefined || it.internal === 0); intR1.checked = it.internal === 1; intR3.checked = it.internal === 3
-        thrR0.checked = (it.thread === undefined || it.thread === 0); thrR1.checked = it.thread === 1; thrR3.checked = it.thread === 3
-        valR0.checked = (it.valve === undefined || it.valve === 0); valR1.checked = it.valve === 1; valR3.checked = it.valve === 3
-        inspName.text = it.inspectorName || ""
-        inspCert.text = it.inspectorCertNo || ""
-        inspDate.text = it.inspectionDate || ""
+        extR0.checked = (it.external === undefined || it.external === 0); extR1.checked = it.external === 1; extR2.checked = it.external === 3
+        intR0.checked = (it.internal === undefined || it.internal === 0); intR1.checked = it.internal === 1; intR2.checked = it.internal === 3
+        thrR0.checked = (it.thread === undefined || it.thread === 0); thrR1.checked = it.thread === 1; thrR2.checked = it.thread === 3
+        valR0.checked = (it.valve === undefined || it.valve === 0); valR1.checked = it.valve === 1; valR2.checked = it.valve === 3
         extThermal.checked = !!it.externalThermalDamage
         extScratch.checked = !!it.externalScratch
         extWear.checked = !!it.externalWear
@@ -222,9 +237,7 @@ Dialog {
         it.internal = intR0.checked ? 0 : intR1.checked ? 1 : 3
         it.thread = thrR0.checked ? 0 : thrR1.checked ? 1 : 3
         it.valve = valR0.checked ? 0 : valR1.checked ? 1 : 3
-        it.inspectorName = inspName.text
-        it.inspectorCertNo = inspCert.text
-        it.inspectionDate = inspDate.text !== "" ? inspDate.text : dlg.todayStr()
+        it.inspectionDate = dlg.todayStr()
         it.externalThermalDamage = extThermal.checked
         it.externalScratch = extScratch.checked
         it.externalWear = extWear.checked
