@@ -5,6 +5,25 @@
 
 ---
 
+## 2026-08-19 · 修正登录页退出按钮位置（移到窗口右上角）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：修复"退出按钮位置不对"——原按钮锚定在 LoginPage 顶部（header 下方），与 WPF 窗口右上角不符
+
+### 修复
+- 从 `qml/LoginPage.qml` 移除退出按钮
+- `qml/Main.qml` 顶部 header（窗口右上角）新增电源式退出按钮：
+  - `visible: stack.depth === 1`（仅登录页显示）
+  - 44×44 圆形、深蓝、白边电源图标 ⏻、hover 变深
+  - `onClicked: Qt.quit()`；用户名 Label 左移让位
+- 位置现为**窗口右上角**（header 内，对齐 WPF QuitButton）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`Main.qml`/`LoginPage.qml` qmllint 无 Error；应用启动无回归
+- 清理临时调试文件（debug_out.txt / debug_err.txt / login_shot.png）
+
+---
+
 ## 2026-08-19 · 登录页右上角电源式退出按钮 ✅
 
 - **提交**：`6d10986` `feat(ui): power-style quit button on login page top-right (WPF parity)`

@@ -33,12 +33,38 @@ ApplicationWindow {
             }
         }
         Label {
-            anchors.right: parent.right
-            anchors.rightMargin: 20
+            anchors.right: quitBtn.left
+            anchors.rightMargin: 16
             anchors.verticalCenter: parent.verticalCenter
             text: loginService.username() !== "" ? loginService.username() : ""
             color: "white"
             font.pixelSize: 18
+        }
+
+        // Power-style quit button, window top-right (matches WPF LoginWindow
+        // QuitButton). Shown only on the login page (first stack item).
+        Button {
+            id: quitBtn
+            width: 44
+            height: 44
+            visible: stack.depth === 1
+            anchors.right: parent.right
+            anchors.rightMargin: 16
+            anchors.verticalCenter: parent.verticalCenter
+            onClicked: Qt.quit()
+
+            contentItem: Label {
+                text: "⏻"
+                color: "white"
+                font.pixelSize: 26
+                anchors.centerIn: parent
+            }
+            background: Rectangle {
+                radius: height / 2
+                color: quitBtn.hovered ? "#193660" : "#1E2A5A"
+                border.color: "white"
+                border.width: 2
+            }
         }
     }
 
