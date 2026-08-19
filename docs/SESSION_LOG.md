@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · D14 控件样式精细化 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`1d4d43c` `feat(ui): reusable ShadowCard with elevation/hover + menu cards (D14)`
 - **范围**：D14 卡片/控件样式对齐 WPF MaterialDesign
 
 ### 实现
