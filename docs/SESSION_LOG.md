@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录页左侧三项纵向间距对齐 WPF ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`38fd033` `fix(ui): login brand vertical spacing 50px match WPF`
 - **范围**：品牌区 logo / 设备名 / 制造商 的纵向排列间距
 
 ### 修复
