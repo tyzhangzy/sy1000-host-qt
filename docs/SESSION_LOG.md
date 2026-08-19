@@ -5,6 +5,23 @@
 
 ---
 
+## 2026-08-19 · 修正电源按钮外圈/内圈 y 坐标不一致 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：登录页右上角电源按钮，外圈（背景圆）与内圈（⏻ 图标）垂直中心错位（外圈偏上、内圈偏下）
+
+### 修复
+- 根因：Qt Quick Controls `Button` 内部有 padding，`contentItem` 的居中中心与 `background` 圆中心不在同一位置
+- 将 `Button` 改为自定义 `Item`：
+  - 外圈 `Rectangle`（`anchors.fill: parent`）与内圈 `Label`（`anchors.centerIn: parent`）**都居中于同一父级**，几何中心严格一致
+  - 电源字形 `⏻` 字体度量略偏下，加 `verticalCenterOffset: -1` 光学微调
+  - 点击/hover 用 `MouseArea` 实现（`cursorShape` 手型、hover 变色）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；应用启动无回归
+
+---
+
 ## 2026-08-19 · 部署 Qt 运行库到 exe 目录 ✅
 
 - **提交**：无（构建产物，`build/` 被 .gitignore 忽略，不提交）

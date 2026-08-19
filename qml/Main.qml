@@ -44,28 +44,44 @@ ApplicationWindow {
 
         // Power-style quit button, window top-right (matches WPF LoginWindow
         // QuitButton). Shown only on the login page (first stack item).
-        Button {
+        // Custom Item: outer circle and inner icon both center on the same
+        // parent so their y coordinates align exactly.
+        Item {
             id: quitBtn
             width: 44
             height: 44
+            property bool hovered: false
             visible: stack.depth === 1
             anchors.right: parent.right
             anchors.rightMargin: 16
             // Align the button's bottom with the title label's bottom (top-left).
             anchors.bottom: titleLabel.bottom
-            onClicked: Qt.quit()
 
-            contentItem: Label {
-                text: "⏻"
-                color: "white"
-                font.pixelSize: 26
-                anchors.centerIn: parent
-            }
-            background: Rectangle {
+            // Outer circle (background) - fills the Item.
+            Rectangle {
+                anchors.fill: parent
                 radius: height / 2
                 color: quitBtn.hovered ? "#193660" : "#1E2A5A"
                 border.color: "white"
                 border.width: 2
+            }
+            // Inner power glyph - centered on the same Item; small -1px lift to
+            // optically center the glyph (its font metrics sit slightly low).
+            Label {
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: -1
+                text: "⏻"
+                color: "white"
+                font.pixelSize: 26
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onEntered: quitBtn.hovered = true
+                onExited: quitBtn.hovered = false
+                onClicked: Qt.quit()
             }
         }
     }
