@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 主菜单对齐 WPF MenuWindow（分区 + 布局）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`0d265e2` `feat(ui): main menu two-section layout matching WPF MenuWindow + zh_CN`
 - **范围**：对照 WPF `MenuWindow` 重写 Qt `MainMenuPage` 的控件内容与布局
 
 ### 实现（`qml/MainMenuPage.qml`）
