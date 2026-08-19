@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · B5 试验结果管理拆分 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`beecc55` `feat(ui,services): split result management into two tabs (B5)`
 - **范围**：`docs/TODO.md` 待办第 5 项
 
 ### 实现
