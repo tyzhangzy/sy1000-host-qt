@@ -5,6 +5,19 @@
 
 ---
 
+## 2026-08-19 · 登录卡加多层阴影（层次感）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：用户登录框阴影增强，模拟 WPF Elevation Dp12
+
+### 实现
+- `qml/LoginPage.qml`：登录卡阴影由单层改为 **3 层半透明圆角矩形**（alpha 递减、偏移递增：14/9/4px），营造柔和层次感
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 启动界面无边框（对齐 WPF）✅
 
 - **提交**：`e011ff2` `feat(ui): frameless maximized window to match WPF login`

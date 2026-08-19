@@ -67,15 +67,10 @@ Item {
         height: parent.height
         anchors.left: brandArea.right
 
-        // Elevation shadow (Dp12-like), layered translucent rounded rect.
-        Rectangle {
-            id: cardShadow
-            radius: 16
-            color: "#1F000000"
-            anchors.fill: loginCard
-            anchors.leftMargin: 8
-            anchors.topMargin: 8
-        }
+        // Elevation Dp12 shadow (layered translucent rounded rects, outward).
+        Rectangle { radius: 17; color: "#2E000000"; anchors.fill: loginCard; anchors.leftMargin: 14; anchors.topMargin: 14 }
+        Rectangle { radius: 16; color: "#26000000"; anchors.fill: loginCard; anchors.leftMargin: 9; anchors.topMargin: 9 }
+        Rectangle { radius: 15; color: "#1A000000"; anchors.fill: loginCard; anchors.leftMargin: 4; anchors.topMargin: 4 }
         // Login card (matches WPF Card: 400 wide, radius 15, Elevation Dp12).
         Rectangle {
             id: loginCard
