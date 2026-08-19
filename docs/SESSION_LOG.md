@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 外观检查改为页面（非对话框）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`5f30b8c` `feat(ui): appearance inspection as a page, not a dialog`
 - **范围**：`AppearanceInspectionDialog.qml` → 新建 `AppearanceInspectionPage.qml`
 
 ### 实现
