@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-08-19 · 登录卡阴影参照 WPF Elevation Dp12 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：按 WPF 登录卡阴影（`ElevationAssist.Elevation="Dp12"` 的 `DropShadowEffect`）调整 Qt 阴影
+
+### 核对
+- WPF 登录卡：MaterialDesign `Card` + `ElevationAssist.Elevation="Dp12"`，内部为 `DropShadowEffect`（Direction 270 向下、BlurRadius≈20、ShadowDepth≈10、柔和渐变）
+
+### 调整（`qml/LoginPage.qml`）
+- Qt 无 `DropShadowEffect`（GraphicalEffects 不可用），用 **4 层半透明圆角矩形**近似：阴影改为**主要向下**（topMargin 2/5/9/13 递增）+ 左右轻微对称扩散，模拟 Dp12 柔和向下阴影
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 登录卡加多层阴影（层次感）✅
 
 - **提交**：`52ca56b` `feat(ui): layered shadow on login card for depth`

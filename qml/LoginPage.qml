@@ -67,10 +67,13 @@ Item {
         height: parent.height
         anchors.left: brandArea.right
 
-        // Elevation Dp12 shadow (layered translucent rounded rects, outward).
-        Rectangle { radius: 17; color: "#2E000000"; anchors.fill: loginCard; anchors.leftMargin: 14; anchors.topMargin: 14 }
-        Rectangle { radius: 16; color: "#26000000"; anchors.fill: loginCard; anchors.leftMargin: 9; anchors.topMargin: 9 }
-        Rectangle { radius: 15; color: "#1A000000"; anchors.fill: loginCard; anchors.leftMargin: 4; anchors.topMargin: 4 }
+        // Simulate WPF MaterialDesign Elevation Dp12: a soft, mostly-downward
+        // shadow (DropShadowEffect Direction 270). Qt has no DropShadowEffect, so
+        // layered translucent rounded rects approximate the soft downward blur.
+        Rectangle { radius: 16; color: "#0F000000"; anchors.fill: loginCard; anchors.leftMargin: 1; anchors.rightMargin: 1; anchors.topMargin: 2 }
+        Rectangle { radius: 16; color: "#18000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 5 }
+        Rectangle { radius: 16; color: "#20000000"; anchors.fill: loginCard; anchors.leftMargin: 3; anchors.rightMargin: 3; anchors.topMargin: 9 }
+        Rectangle { radius: 16; color: "#26000000"; anchors.fill: loginCard; anchors.leftMargin: 4; anchors.rightMargin: 4; anchors.topMargin: 13 }
         // Login card (matches WPF Card: 400 wide, radius 15, Elevation Dp12).
         Rectangle {
             id: loginCard
