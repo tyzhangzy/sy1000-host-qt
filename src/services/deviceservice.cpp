@@ -36,10 +36,16 @@ QString DeviceServiceAdapter::manufacturer() const
 QString DeviceServiceAdapter::connectDevices()
 {
     auto &dm = DeviceManager::instance();
-    // Real COM ports required; without hardware this reports failure.
-    const bool ok = dm.connectAll(QStringLiteral("COM1"), QStringLiteral("COM2"));
-    return ok ? QStringLiteral("TasIO + scales connected")
-              : QStringLiteral("Connection failed (check COM ports / hardware)");
+    // Report the software + two COM ports (TasIO / PrecisaScale) status.
+    const QString tasPort = QStringLiteral("COM1");
+    const QString scalePort = QStringLiteral("COM2");
+    const bool tasOk = dm.tasIO().connect(tasPort);
+    const bool scaleOk = dm.precisa().connect(scalePort);
+    const QString okS = QStringLiteral("已连接");
+    const QString noS = QStringLiteral("未连接");
+    return QStringLiteral("%1\nTasIO (%2): %3\n天平 (%4): %5")
+        .arg(ConfigManager::deviceName(), tasPort, tasOk ? okS : noS,
+             scalePort, scaleOk ? okS : noS);
 }
 
 void DeviceServiceAdapter::setWaterInlet(bool on)

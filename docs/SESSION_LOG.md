@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-08-19 · 连接状态显示两 COM 口 + 右下角按钮加箭头 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：①连接状态框显示软件 + TasIO/天平 两 COM 口状态；②主菜单右下角按钮加箭头
+
+### 实现
+- `src/services/deviceservice.cpp`：`connectDevices()` 返回 `软件名\nTasIO(COM1): 已连接/未连接\n天平(COM2): 已连接/未连接`
+- `qml/Main.qml`：header 新增连接状态框（`connStatus`），连接状态按钮点击后在框内显示状态（原 ToolTip）；修复 Rectangle 无 padding 的 QML 错误
+- `qml/MainMenuPage.qml`：右下角按钮 `text: "→  " + qsTr("Return to Main Menu")`（带箭头 + 返回主菜单）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 主菜单右下角按钮改为"返回主菜单" ✅
 
 - **提交**：`6d25121` `feat(ui): main menu bottom-right button label = Return to Main Menu`

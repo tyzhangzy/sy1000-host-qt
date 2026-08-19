@@ -44,7 +44,7 @@ ApplicationWindow {
             Button {
                 text: qsTr("Connection Status")
                 font.bold: true
-                onClicked: ToolTip.show(deviceService.connectDevices(), 3000)
+                onClicked: connStatus.text = deviceService.connectDevices()
                 background: Rectangle { color: "white"; radius: 4 }
             }
         }
@@ -92,6 +92,30 @@ ApplicationWindow {
                 }
             }
         }
+
+        // Connection status box: shows software + two COM ports (TasIO / scale).
+        Rectangle {
+            id: connStatusBox
+            visible: connStatus.text !== ""
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 4
+            width: 300
+            radius: 4
+            color: "white"
+            border.color: "#CCCCCC"
+            Label {
+                id: connStatus
+                anchors.fill: parent
+                anchors.margins: 4
+                color: "#333"
+                font.pixelSize: 11
+                wrapMode: Text.Wrap
+                text: ""
+            }
+        }
+
     }
 
     StackView {
