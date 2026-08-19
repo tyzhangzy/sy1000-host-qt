@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-08-19 · 登录页右上角电源式退出按钮 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：按 WPF `LoginWindow.xaml` 的 `QuitButton`（右上角 Power 图标）给 Qt 登录页补退出按钮
+
+### 实现
+- `qml/LoginPage.qml` 右上角新增电源式退出按钮：
+  - 60×60 圆形（radius = 高/2），深蓝背景（#193660，hover 变 #303F9F）、白色 2px 边框
+  - 内容为电源图标（⏻，白色）
+  - `onClicked: Qt.quit()` 退出应用
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；应用启动无回归
+
+---
+
 ## 2026-08-19 · D14 控件样式精细化 ✅
 
 - **提交**：`1d4d43c` `feat(ui): reusable ShadowCard with elevation/hover + menu cards (D14)`

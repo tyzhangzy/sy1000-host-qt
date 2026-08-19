@@ -145,6 +145,32 @@ Item {
             }
         }
     }
+
+    // Power-style quit button, top-right corner (matches WPF LoginWindow QuitButton).
+    Button {
+        id: quitBtn
+        width: 60
+        height: 60
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        onClicked: Qt.quit()
+
+        contentItem: Label {
+            text: "⏻"
+            color: "white"
+            font.pixelSize: 32
+            anchors.centerIn: parent
+        }
+        background: Rectangle {
+            radius: height / 2
+            color: quitBtn.hovered ? "#303F9F" : "#193660"
+            border.color: "white"
+            border.width: 2
+        }
+    }
+
 }
 
 
