@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 下移电源按钮避免顶部超出 header ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`9332033` `fix(ui): shift power quit button down to stay within header`
 - **范围**：电源按钮底部对齐标题标签后，其顶部超出 header 上边界，整体下移 6px
 
 ### 修复
