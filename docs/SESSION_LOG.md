@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 主菜单按钮配色/背景/图标对齐 WPF ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`2a9f3e8` `feat(ui): menu card colors + logout button bg/icon match WPF`
 - **范围**：主菜单卡片配色 + 登出按钮背景与图标对齐 WPF
 
 ### 实现（`qml/MainMenuPage.qml`）
