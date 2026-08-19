@@ -337,32 +337,32 @@
         <translation>有无异常变形</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionExternal.qml" line="42"/>
+        <location filename="../qml/InspectionExternal.qml" line="40"/>
         <source>Defect location</source>
         <translation>缺陷位置描述</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionExternal.qml" line="47"/>
+        <location filename="../qml/InspectionExternal.qml" line="41"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionExternal.qml" line="52"/>
+        <location filename="../qml/InspectionExternal.qml" line="44"/>
         <source>Result</source>
         <translation>评定结果</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionExternal.qml" line="53"/>
+        <location filename="../qml/InspectionExternal.qml" line="45"/>
         <source>Qualified</source>
         <translation>合格</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionExternal.qml" line="54"/>
+        <location filename="../qml/InspectionExternal.qml" line="46"/>
         <source>To Repair</source>
         <translation>待修复</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionExternal.qml" line="55"/>
+        <location filename="../qml/InspectionExternal.qml" line="47"/>
         <source>Scrapped</source>
         <translation>判废</translation>
     </message>
@@ -380,42 +380,42 @@
         <translation>有无气味</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="31"/>
+        <location filename="../qml/InspectionInternal.qml" line="29"/>
         <source>Debris</source>
         <translation>杂物的种类和数量</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="36"/>
+        <location filename="../qml/InspectionInternal.qml" line="30"/>
         <source>Surface condition</source>
         <translation>内表面状况描述</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="41"/>
+        <location filename="../qml/InspectionInternal.qml" line="31"/>
         <source>Defect location</source>
         <translation>缺陷位置描述</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="46"/>
+        <location filename="../qml/InspectionInternal.qml" line="32"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="51"/>
+        <location filename="../qml/InspectionInternal.qml" line="35"/>
         <source>Result</source>
         <translation>评定结果</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="52"/>
+        <location filename="../qml/InspectionInternal.qml" line="36"/>
         <source>Qualified</source>
         <translation>合格</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="53"/>
+        <location filename="../qml/InspectionInternal.qml" line="37"/>
         <source>To Repair</source>
         <translation>待修复</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionInternal.qml" line="54"/>
+        <location filename="../qml/InspectionInternal.qml" line="38"/>
         <source>Scrapped</source>
         <translation>判废</translation>
     </message>
@@ -428,42 +428,42 @@
         <translation>瓶口螺纹检查</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionThread.qml" line="30"/>
+        <location filename="../qml/InspectionThread.qml" line="28"/>
         <source>Specification</source>
         <translation>螺纹规格</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionThread.qml" line="35"/>
+        <location filename="../qml/InspectionThread.qml" line="29"/>
         <source>Condition</source>
         <translation>螺纹状况描述</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionThread.qml" line="40"/>
+        <location filename="../qml/InspectionThread.qml" line="30"/>
         <source>Evaluation</source>
         <translation>螺纹状况评估</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionThread.qml" line="45"/>
+        <location filename="../qml/InspectionThread.qml" line="31"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionThread.qml" line="50"/>
+        <location filename="../qml/InspectionThread.qml" line="34"/>
         <source>Result</source>
         <translation>评定结果</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionThread.qml" line="51"/>
+        <location filename="../qml/InspectionThread.qml" line="35"/>
         <source>Qualified</source>
         <translation>合格</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionThread.qml" line="52"/>
+        <location filename="../qml/InspectionThread.qml" line="36"/>
         <source>To Repair</source>
         <translation>待修复</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionThread.qml" line="53"/>
+        <location filename="../qml/InspectionThread.qml" line="37"/>
         <source>Scrapped</source>
         <translation>判废</translation>
     </message>
@@ -476,47 +476,47 @@
         <translation>气瓶阀检查</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionValve.qml" line="30"/>
+        <location filename="../qml/InspectionValve.qml" line="28"/>
         <source>Valve No</source>
         <translation>气瓶阀编号</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionValve.qml" line="35"/>
+        <location filename="../qml/InspectionValve.qml" line="29"/>
         <source>Thread condition</source>
         <translation>螺纹状况描述</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionValve.qml" line="40"/>
+        <location filename="../qml/InspectionValve.qml" line="30"/>
         <source>Air tightness</source>
         <translation>气密状况描述</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionValve.qml" line="43"/>
+        <location filename="../qml/InspectionValve.qml" line="31"/>
         <source>Diaphragm replaced</source>
         <translation>爆破片是否更换</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionValve.qml" line="46"/>
+        <location filename="../qml/InspectionValve.qml" line="32"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionValve.qml" line="51"/>
+        <location filename="../qml/InspectionValve.qml" line="35"/>
         <source>Result</source>
         <translation>评定结果</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionValve.qml" line="52"/>
+        <location filename="../qml/InspectionValve.qml" line="36"/>
         <source>Qualified</source>
         <translation>合格</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionValve.qml" line="53"/>
+        <location filename="../qml/InspectionValve.qml" line="37"/>
         <source>To Repair</source>
         <translation>待修复</translation>
     </message>
     <message>
-        <location filename="../qml/InspectionValve.qml" line="54"/>
+        <location filename="../qml/InspectionValve.qml" line="38"/>
         <source>Scrapped</source>
         <translation>判废</translation>
     </message>
