@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 修复登录后无法进入主菜单（Page title FINAL 冲突）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`bc19b9c` `fix(ui,core): login could not enter main menu (Page title FINAL) + embed zh_CN qm + testlogin`
 - **范围**：点击登录无反应、无法进入新界面的重大 bug
 
 ### 根因（stderr 定位）
