@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-08-19 · 主菜单按钮配色/背景/图标对齐 WPF ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：主菜单卡片配色 + 登出按钮背景与图标对齐 WPF
+
+### 实现（`qml/MainMenuPage.qml`）
+- **开始水压试验卡片**：accent 设为 `#FFC107`（Amber）—— 对齐 WPF `RaisedSecondaryButton`（Secondary 色）
+- **登出菜单按钮**：补深色背景 `#283593`（hover `#1A237E`，对齐 `RaisedDarkButton`），白字
+- **登出图标**：由 `→` 改为 ExitToApp 风格 `⇤`
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 主菜单右下角按钮文案改为"登出菜单" ✅
 
 - **提交**：`157a207` `feat(ui): main menu bottom-right button = Log out Menu`

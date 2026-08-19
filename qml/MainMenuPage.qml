@@ -42,7 +42,7 @@ Page {
                         color: "#303F9F"
                     }
                     Rectangle { width: parent.width; height: 1; color: "#303F9F" }
-                    // Test-function card (reused component, data-driven).
+                    // Test-function card (WPF RaisedSecondaryButton = Amber).
                     Repeater {
                         model: [
                             { icon: "▶", text: qsTr("Start Hydrostatic Test"), page: "TestPreparationPage.qml" }
@@ -50,6 +50,7 @@ Page {
                         delegate: ShadowCard {
                             title: modelData.text
                             icon: modelData.icon
+                            accent: "#FFC107"
                             onClicked: stack.push(modelData.page)
                         }
                     }
@@ -100,15 +101,25 @@ Page {
         }
     }
 
-    // Bottom-right: log-out-menu button (WPF LogoutButton, with arrow).
+    // Bottom-right: log-out-menu button (WPF LogoutButton: RaisedDarkButton + ExitToApp).
     Button {
         id: logoutBtn
-        text: "→  " + qsTr("Log out Menu")
         width: 240; height: 60
         anchors.right: parent.right; anchors.bottom: parent.bottom
         anchors.margins: 50
-        font.pixelSize: 20; font.bold: true
         onClicked: stack.replace("LoginPage.qml")
+
+        contentItem: Row {
+            anchors.centerIn: parent
+            spacing: 8
+            Label { text: "⇤"; color: "white"; font.pixelSize: 26 }
+            Label { text: qsTr("Log out Menu"); color: "white"; font.pixelSize: 20; font.bold: true }
+        }
+        background: Rectangle {
+            radius: 6
+            color: logoutBtn.hovered ? "#1A237E" : "#283593"
+            Behavior on color { ColorAnimation { duration: 150 } }
+        }
     }
 }
 
