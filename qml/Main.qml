@@ -130,21 +130,41 @@ ApplicationWindow {
         initialItem: "LoginPage.qml"
     }
 
+    // Open a drawer/menu page, skipping a duplicate push when that page is
+    // already on top of the stack (L20).
+    function openPage(page) {
+        if (stack.currentItem && stack.currentItem.pageSource === page) {
+            drawer.close()
+            return
+        }
+        stack.push(page)
+        drawer.close()
+    }
+
+    // After a successful login, switch to the main menu. Delayed briefly so the
+    // "Welcome, <user>" message on the login page stays visible (L11).
+    Timer {
+        id: loginSwitchTimer
+        interval: 700
+        onTriggered: stack.replace("MainMenuPage.qml")
+    }
+
     // After a successful login, navigate to the main menu.
     Connections {
         target: loginService
         function onLoginSucceeded() {
-            stack.replace("MainMenuPage.qml")
+            loginSwitchTimer.restart()
         }
     }
 
     // Side navigation drawer, opened by the header hamburger button
-    // (WPF MaterialDesignHamburgerToggleButton).
+    // (WPF MaterialDesignHamburgerToggleButton). modal:true lets a click on the
+    // dimmed area close the drawer (L20).
     Drawer {
         id: drawer
         width: 280
         edge: Qt.LeftEdge
-        modal: false
+        modal: true
         Column {
             anchors.fill: parent
             anchors.margins: 12
@@ -168,7 +188,7 @@ ApplicationWindow {
                     width: parent.width
                     text: modelData.icon + "  " + modelData.text
                     font.pixelSize: 16
-                    onClicked: { stack.push(modelData.page); drawer.close() }
+                    onClicked: root.openPage(modelData.page)
                 }
             }
             Item { width: 1; height: 16 }

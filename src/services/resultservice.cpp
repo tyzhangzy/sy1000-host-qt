@@ -1,6 +1,8 @@
 #include "services/resultservice.h"
 
 #include <QDateTime>
+#include <QDesktopServices>
+#include <QUrl>
 #include <QVariantMap>
 
 #include "dao/testresultdao.h"
@@ -114,6 +116,14 @@ QString ResultServiceAdapter::generatePdf(int id)
     if (TestReportGenerator::generatePdf(r, &path))
         return path;
     return QString();
+}
+
+bool ResultServiceAdapter::openReportPdf(const QString &path)
+{
+    if (path.isEmpty())
+        return false;
+    // fromLocalFile escapes spaces / CJK characters correctly (L14).
+    return QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
 
 void ResultServiceAdapter::removeResult(int id)

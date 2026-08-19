@@ -40,6 +40,17 @@ bool UserServiceAdapter::addUser(const QString &username, const QString &company
 
 bool UserServiceAdapter::removeUser(int id)
 {
+    // Protect the last administrator account from being removed (L8).
+    bool targetIsAdmin = false;
+    int adminCount = 0;
+    for (const auto &u : UserDao::findAll()) {
+        if (u.isAdmin != 0)
+            ++adminCount;
+        if (u.id == id && u.isAdmin != 0)
+            targetIsAdmin = true;
+    }
+    if (targetIsAdmin && adminCount <= 1)
+        return false;
     return UserDao::remove(id);
 }
 

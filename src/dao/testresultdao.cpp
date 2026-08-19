@@ -137,6 +137,7 @@ std::vector<UnifiedTestResult> TestResultDao::getLatest(int count)
 int TestResultDao::count()
 {
     QSqlQuery q(QStringLiteral("SELECT COUNT(*) FROM unified_test_results"));
-    q.next();
-    return q.value(0).toInt();
+    if (q.exec() && q.next())
+        return q.value(0).toInt();
+    return 0;
 }

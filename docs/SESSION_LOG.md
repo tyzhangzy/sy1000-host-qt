@@ -5,7 +5,81 @@
 
 ---
 
-## 2026-08-20 · 修复中优先级问题 M1-M10（代码审查 08-20） ✅
+## 2026-08-20 · 修复低优先级问题 L1-L20（代码审查 08-20） ✅
+
+- **依据**：`docs/CODE_REVIEW_20260820.md`（低优先级问题全部处理）
+- **状态**：待提交（构建 ✅ / 6 个 headless 冒烟测试全绿 ✅ / qmllint 0 Error ✅ / `SY1000.exe` 启动无回归、stderr 干净 ✅）
+
+### L1 泄漏阈值 0.5 硬编码
+- `hydrotypes.h`：`TaskParams.leakThresholdKg` / `TestOptions.leakThresholdKg`（默认 0.5）
+- `states.cpp`：`HoldingAtWorkingState` 从 options 传入；`tasks.cpp`：`HoldTask::finishWithResult` 改用参数阈值
+
+### L2 DB 初始化失败仅 qWarning
+- `main.cpp`：初始化失败改 `qCritical` + `return -1`（快速退出，不再静默失败）
+
+### L3 PDF 路径非跨平台 + 文件名未 sanitize
+- `testreportgenerator.cpp`：改用 `QStandardPaths::DocumentsLocation`；新增 `sanitizeFileName()` 过滤 `\ / : * ? " < > |` 与控制字符
+
+### L4 报告分页
+- `testreportgenerator.cpp`：`buildHtml` 在"水压试验数据"表格与曲线图前加 `page-break-before:always`，避免超一页被切
+
+### L5 死代码
+- `devicemanager.h/.cpp`：删除未使用的 `connectAll()`；`controller.h`：删除 `voice()`/`voicePrompt` 信号；`states.cpp`：移除全部 `c.voice()` 调用
+
+### L6 脆弱断言
+- `testcontroller.cpp`：`stateCount >= 10` 改为里程碑集合断言（PressurizingToWorking/HoldingAtTesting/CalculatingResult/Completed 必须经过）
+
+### L7 检验员信息无录入入口
+- `AppearanceInspectionPage.qml`：新增"检验员"卡片（检验员姓名/证书号输入）
+- `testreportgenerator.cpp`：样品信息表加"检验员/证书号"行（缺省回退登录用户）
+- `ReportViewPage.qml`：显示检验员
+
+### L8 create_date 硬编码 / 无唯一约束 / 最后管理员可删
+- `userdao.cpp`：`insert()` 用真实当前时间；`database.cpp`：`username UNIQUE` + 唯一索引；`userservice.cpp`：`removeUser` 拒绝删除最后一名管理员
+
+### L9 q.next() 未检查
+- `testresultdao.cpp::count()`、`database.cpp::seed()`：`exec() && next()` 检查
+
+### L10 SimulatedDeviceProvider const hack
+- `ideviceprovider.h`：`currentPressure()` 改为非 const；`simdevice.h`：去掉 `mutable` hack（改用 `setReleaseValveOpen` 建模压力释放，L19 配套）
+
+### L11 登录欢迎语被切页覆盖
+- `Main.qml`：登录成功经 700ms `Timer` 再切主菜单，欢迎语可见
+
+### L12 新增用户未清 company
+- `UserManagementPage.qml`：成功添加后清空 company 输入框
+
+### L13 main.cpp 析构顺序
+- `main.cpp`：服务对象（hydro/login/result/user/device）声明移到 engine 之前 → 析构顺序倒序：engine 先销毁，服务后销毁
+
+### L14 openUrlExternally 未转义
+- `resultservice.h/.cpp`：新增 `openReportPdf()`（`QUrl::fromLocalFile`）；`ReportViewPage.qml` 改用它
+
+### L15 headless 测试共享真实数据库
+- `database.h/.cpp`：新增 `Database::initialize(path)` 重载；`testcore/testlogin` 改用 `QTemporaryDir` + 结束清理连接
+
+### L16 CMake 打包/版本
+- `CMakeLists.txt`：`find_package(Qt6 6.3)`（对齐 `qt_standard_project_setup`）；新增 `install(TARGETS SY1000)` + `install(FILES config.json)` + windeployqt/linuxdeployqt 注释
+
+### L17 include 卫生
+- `testresultservice.cpp`：补 `<ctime>`（`std::time/localtime_s`）；`tasio.cpp` 的 `<cstring>` 已于上轮补齐
+
+### L18 准备页默认压力不一致 / 开始不校验
+- `hydrotypes.h`：`TestOptions` 默认 30/45（对齐准备页）；`TestPreparationPage.qml`："开始"前强制应用标准卡数值 + 校验 4 样品（`saveSample` 返回 bool）
+
+### L19 ReleaseTask 只等倒计时
+- `ideviceprovider.h`：新增 `setReleaseValveOpen()`（默认 no-op）；`simdevice.h`/`testcontroller` 模拟泄压时压力衰减
+- `tasks.cpp`：`ReleaseTask` 泄压倒计时结束后校验压力是否回落（容差 0.5），未回落则最多再等 `releaseMaxExtraSec` 秒，仍不回落 `ReleaseFailed` 中止
+- `hydrotypes.h`：`TaskParams/TestOptions.releaseMaxExtraSec`（默认 60）
+
+### L20 重复 push / Drawer modal
+- 4 个抽屉页面加 `pageSource` 标识；`Main.qml` 新增 `openPage()` 去重 + `Drawer modal:true`（点遮罩关闭）；`MainMenuPage` 卡片同样去重
+
+### i18n
+- ts 新增：`AppearanceInspectionPage`（Inspector/Inspector name/Certificate No）、`ReportViewPage`（Inspector: %1）、`TestPage/TestPreparationPage`（Result saved (id=%1)）、`sy1000_core`（Waiting for pressure to drop...）
+
+---
+
 
 - **依据**：`docs/CODE_REVIEW_20260820.md`（中优先级问题全部处理）
 - **状态**：待提交（构建 ✅ / 6 个 headless 冒烟测试全绿 ✅ / qmllint 0 Error ✅ / `SY1000.exe` 启动无回归、stderr 干净 ✅）

@@ -29,8 +29,13 @@ struct TaskParams {
     int holdSampleInterval1Sec = 10;
     int holdSampleInterval2Sec = 20;
     int leakCheckSampleIntervalSec = 5;
+    // Leak pass/fail threshold (kg / MPa) used by HoldTask (L1).
+    double leakThresholdKg = 0.5;
     int countdownSec = 0;
     double initialPressure = 0;
+    // Extra time (s) ReleaseTask keeps waiting for the pressure to actually drop
+    // before failing with ReleaseFailed (L19).
+    int releaseMaxExtraSec = 60;
 };
 
 // Result produced by a sub-task (sample weights/pressures, leak flags).
@@ -72,8 +77,10 @@ struct TestOptions {
     int releaseSec = 10;
     int stabilizeSec = 5;
 
-    double workingPressure = 25.0;
-    double testingPressure = 37.5;
+    double workingPressure = 30.0;   // aligned with the preparation page (L18)
+    double testingPressure = 45.0;
+    double leakThresholdKg = 0.5;    // leak pass/fail threshold (L1)
+    int releaseMaxExtraSec = 60;     // extra wait for pressure to drop (L19)
     double fastStopDelta = 1.0;
     double slowStopDelta = 0.15;
     int fastTimeoutMin = 5;

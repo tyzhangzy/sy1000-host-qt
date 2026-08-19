@@ -51,7 +51,12 @@ Page {
                             title: modelData.text
                             icon: modelData.icon
                             accent: "#FFC107"
-                            onClicked: stack.push(modelData.page)
+                            onClicked: {
+                                // Avoid a duplicate push when the page is already open (L20).
+                                if (stack.currentItem && stack.currentItem.pageSource === modelData.page)
+                                    return
+                                stack.push(modelData.page)
+                            }
                         }
                     }
                 }
@@ -92,7 +97,12 @@ Page {
                             delegate: ShadowCard {
                                 title: modelData.text
                                 icon: modelData.icon
-                                onClicked: stack.push(modelData.page)
+                                onClicked: {
+                                    // Avoid a duplicate push when the page is already open (L20).
+                                    if (stack.currentItem && stack.currentItem.pageSource === modelData.page)
+                                        return
+                                    stack.push(modelData.page)
+                                }
                             }
                         }
                     }

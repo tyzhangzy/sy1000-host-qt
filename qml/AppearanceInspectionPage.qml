@@ -64,6 +64,36 @@ Page {
                 anchors.margins: 20
                 spacing: 18
 
+                // Inspector info (L7): the report's 检验员/证书号 fields come
+                // from here (previously there was no QML entry point at all).
+                Rectangle {
+                    width: parent.width
+                    radius: 8
+                    color: "#F5F7FA"
+                    border.color: "#DDDDDD"
+                    Column {
+                        width: parent.width
+                        anchors.margins: 14
+                        spacing: 10
+                        Label { text: qsTr("Inspector"); font.bold: true; font.pixelSize: 16; color: "#303F9F" }
+                        Row {
+                            spacing: 12
+                            Label { text: qsTr("Inspector name"); width: 130; anchors.verticalCenter: parent.verticalCenter; color: "#555" }
+                            TextField {
+                                width: 280
+                                text: page.insp().inspectorName || ""
+                                onTextChanged: page.insp().inspectorName = text
+                            }
+                            Label { text: qsTr("Certificate No"); width: 100; anchors.verticalCenter: parent.verticalCenter; color: "#555" }
+                            TextField {
+                                width: 220
+                                text: page.insp().inspectorCertNo || ""
+                                onTextChanged: page.insp().inspectorCertNo = text
+                            }
+                        }
+                    }
+                }
+
                 InspectionExternal { id: extGroup; inspection: page.insp() }
                 InspectionInternal { id: intGroup; inspection: page.insp() }
                 InspectionThread { id: thrGroup; inspection: page.insp() }

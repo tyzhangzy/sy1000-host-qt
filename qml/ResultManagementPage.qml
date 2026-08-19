@@ -7,6 +7,8 @@ import QtQuick.Controls
 Page {
     id: resultPage
     title: qsTr("Result Management")
+    // Identifier used by Main.qml / MainMenuPage to avoid duplicate pushes (L20).
+    readonly property string pageSource: "ResultManagementPage.qml"
     property var data: []
 
     function refresh() { data = resultService.results() }

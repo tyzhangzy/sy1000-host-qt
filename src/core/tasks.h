@@ -70,7 +70,8 @@ private:
     double m_p30 = 0;
 };
 
-// Release pressure: waits for countdownSec (operator opens the release valve).
+// Release pressure: waits for countdownSec (operator opens the release valve)
+// and verifies the pressure actually drops before reporting success (L19).
 class ReleaseTask : public HydroSubTask
 {
     Q_OBJECT
@@ -83,6 +84,7 @@ protected:
 private:
     void tick();
     int m_remaining = 0;
+    int m_extraWaits = 0; // extra seconds waited for the pressure to drop
     QTimer m_timer;
 };
 

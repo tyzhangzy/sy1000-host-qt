@@ -1,6 +1,9 @@
 // Headless smoke test for LoginService (valid credentials + signal emission).
+// Uses a throw-away SQLite database in a temp dir (L15).
 #include <QCoreApplication>
 #include <QEventLoop>
+#include <QSqlDatabase>
+#include <QTemporaryDir>
 #include <QTimer>
 
 #include <cstdio>
@@ -12,7 +15,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
 
-    if (!Database::initialize()) {
+    QTemporaryDir tmp;
+    if (!Database::initialize(tmp.filePath(QStringLiteral("sy1000_login_test.db")))) {
         std::printf("[FAIL] db init\n");
         return 1;
     }
@@ -34,5 +38,10 @@ int main(int argc, char *argv[])
 
     const bool pass = ok && signalCount == 1 && !bad && ls.username() == "admin";
     std::printf(pass ? "LOGIN SMOKE PASS\n" : "LOGIN SMOKE FAIL\n");
+    // Close and drop the temp database so QTemporaryDir can clean it up (L15).
+    if (QSqlDatabase::contains(QStringLiteral("qt_sql_default_connection"))) {
+        QSqlDatabase::database().close();
+        QSqlDatabase::removeDatabase(QStringLiteral("qt_sql_default_connection"));
+    }
     return pass ? 0 : 1;
 }

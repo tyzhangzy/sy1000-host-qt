@@ -6,10 +6,15 @@
 class Database
 {
 public:
-    // Open (or create) the SQLite database and initialize schema. Call once at startup.
+    // Open (or create) the SQLite database at the default location and initialize
+    // schema. Call once at startup.
     static bool initialize();
 
-    // Absolute path of the database file (Documents/QuanshenAppData/SY1000/userInfo.db).
+    // Same as initialize() but at an explicit file path — used by headless tests
+    // so they never touch the real production database (L15).
+    static bool initialize(const QString &databaseFilePath);
+
+    // Absolute path of the default database file (Documents/QuanshenAppData/SY1000/sy1000_qt.db).
     static QString databasePath();
 
 private:

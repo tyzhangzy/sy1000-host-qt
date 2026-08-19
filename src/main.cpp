@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 #include <QUrl>
+#include <QDebug>
 #include <QtQml>
 
 #include "core/simdevice.h"
@@ -30,13 +31,25 @@ int main(int argc, char *argv[])
     // Register the realtime chart widget for QML (import SyCharts 1.0).
     qmlRegisterType<RealTimeChart>("SyCharts", 1, 0, "RealTimeChart");
 
-    // Initialize SQLite (database + tables + seed admin).
+    // Initialize SQLite (database + tables + seed admin). A missing database
+    // would make every data feature fail silently later, so fail fast (L2).
     if (!Database::initialize()) {
-        qWarning("SY1000: database initialization failed");
+        qCritical() << "SY1000: database initialization failed, exiting";
+        return -1;
     }
 
     // Load device/system configuration from config.json (fall back to defaults).
     sy1000::ConfigManager::load();
+
+    // Services are declared BEFORE the engine so they are destroyed AFTER it:
+    // QML objects may still reference them while the engine is being torn down
+    // (L13). simDevice is declared before hydro, which borrows its pointer.
+    sy1000::SimulatedDeviceProvider simDevice;
+    sy1000::HydroTestControllerAdapter hydro(&simDevice);
+    LoginService loginService;
+    sy1000::ResultServiceAdapter resultService;
+    sy1000::UserServiceAdapter userService;
+    sy1000::DeviceServiceAdapter deviceService;
 
     QQmlApplicationEngine engine;
     QObject::connect(
@@ -58,13 +71,10 @@ int main(int argc, char *argv[])
     langHelper.setLanguage(QStringLiteral("zh_CN"));
 
     // Login service (SQLite users table). Exposed to QML as "loginService".
-    LoginService loginService;
     engine.rootContext()->setContextProperty(QStringLiteral("loginService"), &loginService);
 
     // Hydrostatic test controller (simulated device, so the flow runs without
     // real hardware). Exposed to QML as "hydro".
-    sy1000::SimulatedDeviceProvider simDevice;
-    sy1000::HydroTestControllerAdapter hydro(&simDevice);
     engine.rootContext()->setContextProperty(QStringLiteral("hydro"), &hydro);
 
     // On successful login, pass the logged-in user to the adapter for result saving.
@@ -73,15 +83,12 @@ int main(int argc, char *argv[])
     });
 
     // Result management bridge for QML (query saved results).
-    sy1000::ResultServiceAdapter resultService;
     engine.rootContext()->setContextProperty(QStringLiteral("resultService"), &resultService);
 
     // User management bridge for QML.
-    sy1000::UserServiceAdapter userService;
     engine.rootContext()->setContextProperty(QStringLiteral("userService"), &userService);
 
     // Device maintenance bridge for QML.
-    sy1000::DeviceServiceAdapter deviceService;
     engine.rootContext()->setContextProperty(QStringLiteral("deviceService"), &deviceService);
 
     // Entry QML UI (login page; core/devices/dao/report layers plug in later).

@@ -4,6 +4,8 @@ import QtQuick.Controls
 Page {
     id: userPage
     title: qsTr("User Management")
+    // Identifier used by Main.qml / MainMenuPage to avoid duplicate pushes (L20).
+    readonly property string pageSource: "UserManagementPage.qml"
 
     function refresh() {
         list.model = userService.users()
@@ -27,7 +29,7 @@ Page {
                 text: qsTr("Add")
                 onClicked: {
                     if (userService.addUser(newUser.text, newCompany.text, newPwd.text, newAdmin.checked)) {
-                        newUser.text = ""; newPwd.text = ""; newAdmin.checked = false
+                        newUser.text = ""; newCompany.text = ""; newPwd.text = ""; newAdmin.checked = false   // clear all fields (L12)
                         userPage.refresh()
                     }
                 }

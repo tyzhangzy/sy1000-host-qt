@@ -144,9 +144,10 @@ void HoldTask::finishWithResult()
     r.weightT30 = m_w30;
     r.pressureT10 = m_p10;
     r.pressureT30 = m_p30;
-    r.pressureLeaking = std::abs(m_p30 - m_p10) > 0.5;
+    // Leak thresholds are configurable through TestOptions (L1).
+    r.pressureLeaking = std::abs(m_p30 - m_p10) > m_params.leakThresholdKg;
     for (int i : m_device->availableScales()) {
-        if (i >= 0 && i < 5 && std::abs(m_w30[i] - m_w10[i]) > 0.5)
+        if (i >= 0 && i < 5 && std::abs(m_w30[i] - m_w10[i]) > m_params.leakThresholdKg)
             r.leakingWaterJackets.insert(i);
     }
     if (r.pressureLeaking || !r.leakingWaterJackets.empty())
@@ -156,6 +157,11 @@ void HoldTask::finishWithResult()
 }
 
 // ---------------- ReleaseTask ----------------
+namespace {
+// Pressure (MPa) above the pre-test pressure that counts as "not yet released".
+constexpr double kReleasePressureTolerance = 0.5;
+} // namespace
+
 void ReleaseTask::run()
 {
     // Ask the operator to open the release valve before starting the countdown.
@@ -169,7 +175,11 @@ void ReleaseTask::run()
                                 finish(false, HydroTestError::Cancelled);
                                 return;
                             }
+                            // Tell the device the valve is open so simulated/hardware
+                            // providers can model the pressure drop (L19).
+                            m_device->setReleaseValveOpen(true);
                             m_remaining = m_params.countdownSec > 0 ? m_params.countdownSec : 10;
+                            m_extraWaits = 0;
                             emit statusChanged(QCoreApplication::translate("sy1000_core", "Releasing pressure, %1 s remaining").arg(m_remaining));
                             m_timer.setInterval(1000);
                             QObject::connect(&m_timer, &QTimer::timeout, this, &ReleaseTask::tick);
@@ -182,12 +192,30 @@ void ReleaseTask::tick()
     if (stopped())
         return;
     --m_remaining;
-    if (m_remaining <= 0) {
+    if (m_remaining > 0) {
+        emit statusChanged(QCoreApplication::translate("sy1000_core", "Releasing pressure, %1 s remaining").arg(m_remaining));
+        return;
+    }
+
+    // The countdown is over: verify the pressure actually dropped. If not, keep
+    // waiting (the operator may not have opened the valve yet) up to
+    // releaseMaxExtraSec, then fail instead of producing a result while the
+    // cylinder is still pressurized (L19).
+    if (m_device->currentPressure() <= m_params.initialPressure + kReleasePressureTolerance) {
+        m_device->setReleaseValveOpen(false);
         m_timer.stop();
         finish(true, HydroTestError::None);
-    } else {
-        emit statusChanged(QCoreApplication::translate("sy1000_core", "Releasing pressure, %1 s remaining").arg(m_remaining));
+        return;
     }
+    if (m_extraWaits < m_params.releaseMaxExtraSec) {
+        ++m_extraWaits;
+        m_remaining = 1;
+        emit statusChanged(QCoreApplication::translate("sy1000_core", "Waiting for pressure to drop..."));
+        return;
+    }
+    m_device->setReleaseValveOpen(false);
+    m_timer.stop();
+    finish(false, HydroTestError::ReleaseFailed);
 }
 
 // ---------------- StabilizeTask ----------------

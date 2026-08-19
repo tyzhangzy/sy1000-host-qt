@@ -16,8 +16,6 @@ public:
     TasIO &tasIO() { return m_tasIO; }
     PrecisaScale &precisa() { return m_precisa; }
 
-    bool connectAll(const QString &tasPort, const QString &scalePort);
-
 private:
     DeviceManager();
     TasIO m_tasIO;

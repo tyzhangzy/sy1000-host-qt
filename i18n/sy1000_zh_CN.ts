@@ -290,6 +290,18 @@
         <source>Reset</source>
         <translation>重置</translation>
     </message>
+    <message>
+        <source>Inspector</source>
+        <translation>检验员</translation>
+    </message>
+    <message>
+        <source>Inspector name</source>
+        <translation>检验员姓名</translation>
+    </message>
+    <message>
+        <source>Certificate No</source>
+        <translation>证书号</translation>
+    </message>
 </context>
 <context>
     <name>HydroTestMessageDialog</name>
@@ -893,6 +905,10 @@
         <source>Back</source>
         <translation>返回</translation>
     </message>
+    <message>
+        <source>Inspector: %1</source>
+        <translation>检验员：%1</translation>
+    </message>
 </context>
 <context>
     <name>ResultManagementPage</name>
@@ -1204,6 +1220,10 @@
         <source>Back to menu</source>
         <translation type="vanished">返回菜单</translation>
     </message>
+    <message>
+        <source>Result saved (id=%1)</source>
+        <translation>结果已保存 (id=%1)</translation>
+    </message>
 </context>
 <context>
     <name>TestPreparationPage</name>
@@ -1411,6 +1431,10 @@
     <message>
         <source>Back</source>
         <translation>返回</translation>
+    </message>
+    <message>
+        <source>Result saved (id=%1)</source>
+        <translation>结果已保存 (id=%1)</translation>
     </message>
 </context>
 <context>
@@ -1625,6 +1649,10 @@
     <message>
         <source>Aborted</source>
         <translation>已中止</translation>
+    </message>
+    <message>
+        <source>Waiting for pressure to drop...</source>
+        <translation>等待压力释放...</translation>
     </message>
 </context>
 <context>

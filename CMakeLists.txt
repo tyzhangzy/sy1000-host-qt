@@ -6,7 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
 # Qt 6: Quick (QML UI) + QuickControls2 + LinguistTools (i18n) + Sql (SQLite) + SerialPort
-find_package(Qt6 6.2 REQUIRED COMPONENTS Quick QuickControls2 LinguistTools Sql SerialPort PrintSupport)
+# qt_standard_project_setup() requires Qt >= 6.3 (L16).
+find_package(Qt6 6.3 REQUIRED COMPONENTS Quick QuickControls2 LinguistTools Sql SerialPort PrintSupport)
 qt_standard_project_setup()
 
 # Data model layer (pure C++ standard library, cross-platform; no Qt dependency)
@@ -163,5 +164,13 @@ target_link_libraries(SY1000 PRIVATE core services models dao devices charts Qt6
 add_custom_command(TARGET SY1000 POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_if_different
           ${CMAKE_CURRENT_SOURCE_DIR}/config.json $<TARGET_FILE_DIR:SY1000>/config.json)
+
+# ---- Install / packaging rules (L16) ----
+# `cmake --install` copies the app + config to the install prefix. For a
+# self-contained bundle run windeployqt (Windows) / linuxdeployqt (Linux,
+# Kylin/UOS) on the installed exe, e.g.:
+#   windeployqt.exe --qmldir <src>/qml <install>/bin/SY1000.exe
+install(TARGETS SY1000 RUNTIME DESTINATION bin)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/config.json DESTINATION bin)
 
 

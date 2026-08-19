@@ -1,5 +1,6 @@
 #include "dao/userdao.h"
 
+#include <QDateTime>
 #include <QSqlQuery>
 #include <QVariant>
 
@@ -15,6 +16,11 @@ User rowToUser(const QSqlQuery &q)
     u.password = q.value(3).toString().toStdString();
     u.isAdmin = q.value(4).toInt();
     return u;
+}
+
+QString nowText()
+{
+    return QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
 }
 } // namespace
 
@@ -57,7 +63,7 @@ int UserDao::insert(const User &u)
     q.addBindValue(QString::fromStdString(u.username));
     q.addBindValue(QString::fromStdString(u.company));
     q.addBindValue(QString::fromStdString(u.password));
-    q.addBindValue(QStringLiteral("2026-01-01 00:00:00"));
+    q.addBindValue(nowText());   // real creation timestamp instead of a hard-coded date (L8)
     q.addBindValue(u.isAdmin);
     if (!q.exec())
         return 0;

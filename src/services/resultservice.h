@@ -21,6 +21,9 @@ public:
     Q_INVOKABLE QVariantMap reportData(int id) const;
     // Generate a PDF report for the result; returns the file path ("" on failure).
     Q_INVOKABLE QString generatePdf(int id);
+    // Open a generated PDF with the system viewer. Uses QUrl::fromLocalFile so
+    // spaces / CJK characters in the path are correctly escaped (L14).
+    Q_INVOKABLE bool openReportPdf(const QString &path);
     Q_INVOKABLE void removeResult(int id);
 };
 

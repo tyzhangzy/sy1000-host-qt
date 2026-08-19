@@ -7,6 +7,8 @@ import QtQuick.Controls.Material
 Page {
     id: prepPage
     title: qsTr("Test Preparation")
+    // Identifier used by Main.qml / MainMenuPage to avoid duplicate pushes (L20).
+    readonly property string pageSource: "TestPreparationPage.qml"
     // This page draws its own top bar (WPF MainTestWindow), so the app-wide
     // header (device/user/quit) is hidden. Top bar height 80 == Main.qml header.
     readonly property bool hideGlobalHeader: true
@@ -125,7 +127,20 @@ Page {
                     anchors.horizontalCenter: parent.horizontalCenter
                     Material.background: "#FFC107"; Material.foreground: "#212121"; Material.elevation: 2
                     font.pixelSize: 17; font.bold: true
-                    onClicked: { for (var i = 0; i < 4; i++) hydro.setSampleInspection(i + 1, sampleData[i].inspection); stack.push("TestPage.qml") }
+                    onClicked: {
+                        // Apply the standard-card values even when "确定" was never
+                        // clicked, so the real test matches what the operator sees (L18).
+                        hydro.setWorkingPressure(workingPressure)
+                        hydro.setTestingPressure(testingPressure)
+                        hydro.setTestStandard(standardName, holdTime, residualRate)
+                        // Require all 4 samples to be filled in + inspected (L18);
+                        // saveSample() pops the warning popup on the first failure.
+                        for (var i = 0; i < 4; i++) {
+                            if (!prepPage.saveSample(i)) return
+                        }
+                        for (var j = 0; j < 4; j++) hydro.setSampleInspection(j + 1, sampleData[j].inspection)
+                        stack.push("TestPage.qml")
+                    }
                 }
             }
             Column {
@@ -330,18 +345,20 @@ Page {
     }
 
     // Validate + save a single sample (mirrors WPF SampleCard ValidateSampleData).
+    // Returns true on success; the first invalid sample shows the warning popup.
     function saveSample(idx) {
         var d = sampleData[idx]
-        if (!d.model) { warnPopup.msg(qsTr("Please enter cylinder model.")); return }
-        if (!d.manufacturer) { warnPopup.msg(qsTr("Please enter manufacturer.")); return }
-        if (!(d.volume > 0)) { warnPopup.msg(qsTr("Please enter a valid cylinder volume.")); return }
-        if (!d.userCompany) { warnPopup.msg(qsTr("Please enter user company.")); return }
-        if (!d.serialNo) { warnPopup.msg(qsTr("Please enter serial No.")); return }
-        if (!(d.inspection && d.inspection.inspectionCompleted)) { warnPopup.msg(qsTr("Please complete appearance inspection before saving.")); return }
+        if (!d.model) { warnPopup.msg(qsTr("Please enter cylinder model.")); return false }
+        if (!d.manufacturer) { warnPopup.msg(qsTr("Please enter manufacturer.")); return false }
+        if (!(d.volume > 0)) { warnPopup.msg(qsTr("Please enter a valid cylinder volume.")); return false }
+        if (!d.userCompany) { warnPopup.msg(qsTr("Please enter user company.")); return false }
+        if (!d.serialNo) { warnPopup.msg(qsTr("Please enter serial No.")); return false }
+        if (!(d.inspection && d.inspection.inspectionCompleted)) { warnPopup.msg(qsTr("Please complete appearance inspection before saving.")); return false }
         hydro.setSample(idx + 1, d.model, d.manufacturer, d.serialNo, d.volume)
         // Refresh the left-column cylinder summary box.
         var areas = [leftS1, leftS2, leftS3, leftS4]
         areas[idx].text = hydro.sampleInfo(idx + 1)
+        return true
     }
 }
 

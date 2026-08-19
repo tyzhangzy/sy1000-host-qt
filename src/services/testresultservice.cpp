@@ -1,6 +1,7 @@
 #include "services/testresultservice.h"
 
 #include <cstdlib>
+#include <ctime>
 #include <random>
 
 #include "dao/testresultdao.h"

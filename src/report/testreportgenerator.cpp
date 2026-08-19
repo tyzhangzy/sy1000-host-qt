@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QPrinter>
+#include <QStandardPaths>
 #include <QTextDocument>
 #include <QTextStream>
 
@@ -52,6 +53,19 @@ QString esc(const QString &s)
     QString out = s;
     out.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;");
     return out;
+}
+
+// Replace characters that are illegal in filenames (Windows/Linux) and control
+// characters so reports can be opened/shared on any platform (L3).
+QString sanitizeFileName(QString name)
+{
+    if (name.trimmed().isEmpty())
+        return QStringLiteral("unknown");
+    for (QChar &ch : name) {
+        if (ch.unicode() < 32 || QStringLiteral("\\/:*?\"<>|").contains(ch))
+            ch = QLatin1Char('_');
+    }
+    return name;
 }
 
 // Render a simple pressure/time chart (if there is enough data) and return a
@@ -155,15 +169,20 @@ QString TestReportGenerator::buildHtml(const UnifiedTestResult &r)
       << "<tr><td>型号</td><td>" << esc(QString::fromStdString(s.sampleModel)) << "</td>"
       << "<td>制造厂商</td><td>" << esc(QString::fromStdString(s.manufacturer)) << "</td></tr>"
       << "<tr><td>产品编号</td><td>" << esc(QString::fromStdString(s.serialNo)) << "</td>"
-      << "<td>容积 (L)</td><td>" << s.volume << "</td></tr></table>"
+      << "<td>容积 (L)</td><td>" << s.volume << "</td></tr>"
+      // Appearance inspector info captured on the preparation page (L7); falls
+      // back to the logged-in tester when no inspection record exists.
+      << "<tr><td>检验员</td><td>"
+      << esc(QString::fromStdString(insp.inspectorName.empty() ? r.testerName : insp.inspectorName))
+      << "</td><td>证书号</td><td>" << esc(QString::fromStdString(insp.inspectorCertNo)) << "</td></tr></table>"
 
-      << "<h3>水压试验数据</h3><table border='1' cellspacing='0' cellpadding='4' width='100%'>"
+      << "<div style='page-break-before:always'><h3>水压试验数据</h3><table border='1' cellspacing='0' cellpadding='4' width='100%'>"
       << "<tr><th>初始重量</th><th>试验压力重量</th><th>泄压后重量</th></tr>"
       << "<tr><td>" << h.initialWeight << "</td><td>" << h.pressureWeight
       << "</td><td>" << h.finalWeight << "</td></tr>"
       << "<tr><th>全变形量</th><th>残余变形量</th><th>残余变形率 (%)</th></tr>"
       << "<tr><td>" << h.fullDeformation << "</td><td>" << h.residualDeformation
-      << "</td><td>" << h.residualDeformationRate << "</td></tr></table>"
+      << "</td><td>" << h.residualDeformationRate << "</td></tr></table></div>"
 
       << "<h3>外观检查</h3><table border='1' cellspacing='0' cellpadding='4' width='100%'>"
       << "<tr><th>外观</th><th>内部</th><th>螺纹</th><th>瓶阀</th></tr>"
@@ -177,7 +196,8 @@ QString TestReportGenerator::buildHtml(const UnifiedTestResult &r)
 
     const QString chart = chartDataUri(h);
     if (!chart.isEmpty())
-        o << "<p style='text-align:center'><img src='" << chart << "' width='620'/></p>";
+        o << "<div style='page-break-before:always'><p style='text-align:center'><img src='"
+          << chart << "' width='620'/></p></div>";
 
     o << "</body></html>";
     return html;
@@ -188,10 +208,15 @@ bool TestReportGenerator::generatePdf(const UnifiedTestResult &r, QString *outPa
 {
     const auto &s = r.sample;
     const auto stamp = QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMdd_HHmm"));
-    const QString mfg = QString::fromStdString(s.manufacturer).trimmed();
-    const QString serial = QString::fromStdString(s.serialNo).trimmed();
+    // Manufacturer / serial are used in the folder & file names, so they are
+    // sanitized to be safe on every platform (L3).
+    const QString mfg = sanitizeFileName(QString::fromStdString(s.manufacturer).trimmed());
+    const QString serial = sanitizeFileName(QString::fromStdString(s.serialNo).trimmed());
 
-    QDir dir(QDir::homePath() + QStringLiteral("/Documents/") + baseFolder);
+    // Cross-platform documents folder (QStandardPaths instead of
+    // homePath() + "/Documents", which is wrong on Linux/Kylin) (L3).
+    const QString docsDir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    QDir dir(docsDir + QDir::separator() + baseFolder);
     const QString folderName = QStringLiteral("%1_%2_%3").arg(mfg, serial, stamp);
     if (!dir.mkpath(folderName))
         return false;

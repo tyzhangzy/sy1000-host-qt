@@ -1,5 +1,6 @@
 #include "dao/database.h"
 
+#include <QDateTime>
 #include <QDebug>
 #include <QDir>
 #include <QSqlDatabase>
@@ -20,12 +21,17 @@ QString Database::databasePath()
 
 bool Database::initialize()
 {
+    return initialize(databasePath());
+}
+
+bool Database::initialize(const QString &databaseFilePath)
+{
     if (QSqlDatabase::contains(QStringLiteral("qt_sql_default_connection"))) {
         return QSqlDatabase::database().isOpen();
     }
 
     QSqlDatabase db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"));
-    db.setDatabaseName(databasePath());
+    db.setDatabaseName(databaseFilePath);
     if (!db.open()) {
         qWarning() << "[dao] DB open failed:" << db.lastError().text();
         return false;
@@ -46,7 +52,7 @@ bool Database::createTables()
     const char *usersSql =
         "CREATE TABLE IF NOT EXISTS users ("
         " id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        " username TEXT NOT NULL,"
+        " username TEXT NOT NULL UNIQUE,"       // unique username (L8)
         " company TEXT,"
         " password TEXT,"
         " create_date TEXT,"
@@ -55,6 +61,11 @@ bool Database::createTables()
         qWarning() << "[dao] create users failed:" << q.lastError().text();
         return false;
     }
+    // Enforce the unique-username rule on pre-existing databases too (L8).
+    // Not fatal if duplicates already exist in an old DB (index creation fails).
+    QSqlQuery uniqIdx(QStringLiteral("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username ON users(username)"));
+    if (!uniqIdx.exec())
+        qWarning() << "[dao] unique username index failed:" << uniqIdx.lastError().text();
 
     const char *resultsSql =
         "CREATE TABLE IF NOT EXISTS unified_test_results ("
@@ -80,15 +91,14 @@ bool Database::createTables()
 void Database::seed()
 {
     QSqlQuery countQ(QStringLiteral("SELECT COUNT(*) FROM users"));
-    countQ.next();
-    if (countQ.value(0).toInt() == 0) {
+    if (countQ.exec() && countQ.next() && countQ.value(0).toInt() == 0) {
         QSqlQuery q;
         q.prepare(QStringLiteral("INSERT INTO users (username, company, password, create_date, is_admin)"
                                  " VALUES (?, ?, ?, ?, ?)"));
         q.addBindValue(QStringLiteral("admin"));
         q.addBindValue(QStringLiteral("Quanshen"));
         q.addBindValue(QStringLiteral("9999"));
-        q.addBindValue(QStringLiteral("2026-01-01 00:00:00"));
+        q.addBindValue(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd HH:mm:ss")));  // real timestamp (L8)
         q.addBindValue(1);
         if (!q.exec()) {
             qWarning() << "[dao] seed admin failed:" << q.lastError().text();

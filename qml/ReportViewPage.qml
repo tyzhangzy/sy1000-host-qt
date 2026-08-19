@@ -73,6 +73,9 @@ Page {
                     Text { text: qsTr("Tester: %1    Company: %2    Date: %3")
                                .arg(d.tester || "-", d.company || "-", d.date || "-"); color: "#333" }
 
+                    // Inspector captured during the appearance inspection (L7).
+                    Text { text: qsTr("Inspector: %1").arg(d.inspector || "-"); color: "#333" }
+
                     // Standard
                     Label { text: qsTr("Test Standard"); font.bold: true; font.pixelSize: 14 }
                     Grid { columns: 2; spacing: 6; columnSpacing: 24
@@ -148,7 +151,9 @@ Page {
                 onClicked: {
                     var p = resultService.generatePdf(resultId)
                     pdfPath.text = (p === "") ? qsTr("Generate failed") : p
-                    if (p !== "") Qt.openUrlExternally("file:///" + p)
+                    // Open via C++ QUrl::fromLocalFile so paths with spaces / CJK
+                    // are escaped correctly (L14).
+                    if (p !== "") resultService.openReportPdf(p)
                 }
             }
             Button { text: qsTr("Back"); onClicked: stack.pop() }

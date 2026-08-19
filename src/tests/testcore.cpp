@@ -1,6 +1,10 @@
 // Headless smoke test for the data/services layer (no GUI).
 // Verifies: generate serial -> create result -> save -> read back.
+// Uses a throw-away SQLite database in a temp dir so the real production
+// database under Documents is never touched (L15).
 #include <QCoreApplication>
+#include <QSqlDatabase>
+#include <QTemporaryDir>
 #include <cstdio>
 
 #include "dao/database.h"
@@ -16,7 +20,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
 
-    if (!Database::initialize()) {
+    QTemporaryDir tmp;
+    if (!Database::initialize(tmp.filePath(QStringLiteral("sy1000_test.db")))) {
         std::printf("[FAIL] database init\n");
         return 1;
     }
@@ -92,5 +97,10 @@ int main(int argc, char *argv[])
                     loaded.testEnvironment.equipmentId == "SY1000-0001" &&
                     loaded.testEnvironment.equipmentModel == "SY1000";
     std::printf(ok ? "SMOKE PASS\n" : "SMOKE FAIL\n");
+    // Close and drop the temp database so QTemporaryDir can clean it up (L15).
+    if (QSqlDatabase::contains(QStringLiteral("qt_sql_default_connection"))) {
+        QSqlDatabase::database().close();
+        QSqlDatabase::removeDatabase(QStringLiteral("qt_sql_default_connection"));
+    }
     return ok ? 0 : 1;
 }

@@ -43,7 +43,6 @@ public:
     double rateLimit() const { return m_rateLimit; }
 
     void runTask(HydroSubTask *task, const TaskParams &params);
-    void voice(const QString &text) { emit voicePrompt(text); }
     void emitDataUpdated() { emit dataUpdated(); }
     void emitTestCompleted(bool ok) { emit testCompleted(ok); }
     void safeShutdown();
@@ -52,7 +51,6 @@ public:
 signals:
     void stateChanged(HydroTestState state);
     void statusChanged(const QString &content);
-    void voicePrompt(const QString &text);
     void dataUpdated();
     void testCompleted(bool success);
     void testAborted(HydroTestError error, const QString &message);

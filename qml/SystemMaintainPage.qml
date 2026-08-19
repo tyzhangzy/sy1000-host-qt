@@ -7,6 +7,8 @@ import QtQuick.Layouts
 Page {
     id: sysPage
     title: qsTr("System Maintain")
+    // Identifier used by Main.qml / MainMenuPage to avoid duplicate pushes (L20).
+    readonly property string pageSource: "SystemMaintainPage.qml"
 
     // Top bar: back button + title.
     Rectangle {
