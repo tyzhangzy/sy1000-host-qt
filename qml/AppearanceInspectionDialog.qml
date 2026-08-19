@@ -81,7 +81,6 @@ Dialog {
                         Label { text: qsTr("Result"); width: 90; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: extR0; text: dlg.resultLabels[0] }
                         RadioButton { id: extR1; text: dlg.resultLabels[1] }
-                        RadioButton { id: extR2; text: dlg.resultLabels[2] }
                         RadioButton { id: extR3; text: dlg.resultLabels[3] }
                     }
                     Row {
@@ -113,7 +112,6 @@ Dialog {
                         Label { text: qsTr("Result"); width: 90; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: intR0; text: dlg.resultLabels[0] }
                         RadioButton { id: intR1; text: dlg.resultLabels[1] }
-                        RadioButton { id: intR2; text: dlg.resultLabels[2] }
                         RadioButton { id: intR3; text: dlg.resultLabels[3] }
                     }
                     CheckBox { id: intSmell; text: qsTr("Smell present") }
@@ -139,7 +137,6 @@ Dialog {
                         Label { text: qsTr("Result"); width: 90; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: thrR0; text: dlg.resultLabels[0] }
                         RadioButton { id: thrR1; text: dlg.resultLabels[1] }
-                        RadioButton { id: thrR2; text: dlg.resultLabels[2] }
                         RadioButton { id: thrR3; text: dlg.resultLabels[3] }
                     }
                     Label { text: qsTr("Specification"); font.bold: true }
@@ -164,7 +161,6 @@ Dialog {
                         Label { text: qsTr("Result"); width: 90; anchors.verticalCenter: parent.verticalCenter }
                         RadioButton { id: valR0; text: dlg.resultLabels[0] }
                         RadioButton { id: valR1; text: dlg.resultLabels[1] }
-                        RadioButton { id: valR2; text: dlg.resultLabels[2] }
                         RadioButton { id: valR3; text: dlg.resultLabels[3] }
                     }
                     Label { text: qsTr("Valve No"); font.bold: true }
@@ -190,10 +186,10 @@ Dialog {
 
     onOpened: {
         var it = insp()
-        extR0.checked = (it.external === undefined || it.external === 0); extR1.checked = it.external === 1; extR2.checked = it.external === 2; extR3.checked = it.external === 3
-        intR0.checked = (it.internal === undefined || it.internal === 0); intR1.checked = it.internal === 1; intR2.checked = it.internal === 2; intR3.checked = it.internal === 3
-        thrR0.checked = (it.thread === undefined || it.thread === 0); thrR1.checked = it.thread === 1; thrR2.checked = it.thread === 2; thrR3.checked = it.thread === 3
-        valR0.checked = (it.valve === undefined || it.valve === 0); valR1.checked = it.valve === 1; valR2.checked = it.valve === 2; valR3.checked = it.valve === 3
+        extR0.checked = (it.external === undefined || it.external === 0); extR1.checked = it.external === 1; extR3.checked = it.external === 3
+        intR0.checked = (it.internal === undefined || it.internal === 0); intR1.checked = it.internal === 1; intR3.checked = it.internal === 3
+        thrR0.checked = (it.thread === undefined || it.thread === 0); thrR1.checked = it.thread === 1; thrR3.checked = it.thread === 3
+        valR0.checked = (it.valve === undefined || it.valve === 0); valR1.checked = it.valve === 1; valR3.checked = it.valve === 3
         inspName.text = it.inspectorName || ""
         inspCert.text = it.inspectorCertNo || ""
         inspDate.text = it.inspectionDate || ""
@@ -222,10 +218,10 @@ Dialog {
 
     onAccepted: {
         var it = insp()
-        it.external = extR0.checked ? 0 : extR1.checked ? 1 : extR2.checked ? 2 : 3
-        it.internal = intR0.checked ? 0 : intR1.checked ? 1 : intR2.checked ? 2 : 3
-        it.thread = thrR0.checked ? 0 : thrR1.checked ? 1 : thrR2.checked ? 2 : 3
-        it.valve = valR0.checked ? 0 : valR1.checked ? 1 : valR2.checked ? 2 : 3
+        it.external = extR0.checked ? 0 : extR1.checked ? 1 : 3
+        it.internal = intR0.checked ? 0 : intR1.checked ? 1 : 3
+        it.thread = thrR0.checked ? 0 : thrR1.checked ? 1 : 3
+        it.valve = valR0.checked ? 0 : valR1.checked ? 1 : 3
         it.inspectorName = inspName.text
         it.inspectorCertNo = inspCert.text
         it.inspectionDate = inspDate.text !== "" ? inspDate.text : dlg.todayStr()

@@ -5,6 +5,15 @@
 
 ---
 
+## 2026-08-19 · 外观检查对话框评定结果修正为 3 个单选框 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/AppearanceInspectionDialog.qml` 四组评定结果
+- **实现**：对照 WPF，每组评定结果由 4 个改为 **3 个 RadioButton（合格/待修复/判废）**，与 WPF 一致；加载/保存/重置逻辑同步
+- **验证**：✅ 构建成功；qmllint 无 Error；exe 已确认包含新版 QML（Save and Close / Appearance Inspection）；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 外观检查对话框对齐 WPF ✅
 
 - **提交**：`a808a0d` `feat(ui): inspection dialog radios + save/reset buttons match WPF`
