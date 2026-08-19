@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 按规范文档实现主菜单（补汉堡按钮 + 侧边导航）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`9304c2e` `feat(ui): main menu per WPF spec + hamburger/drawer nav; add spec doc`
 - **范围**：新建 `docs/MAIN_MENU_WPF.md`（WPF 登录后页面内容与布局规范），并按其补全 Qt 实现
 
 ### 新增文档
