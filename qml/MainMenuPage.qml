@@ -21,12 +21,18 @@ Page {
 
             // ===== Test Functions section =====
             Rectangle {
+                id: testRect
                 width: parent.width
+                implicitHeight: testCol.implicitHeight + 40
                 radius: 10
                 color: "white"
                 border.color: "#DDDDDD"
                 Column {
-                    anchors.fill: parent
+                    id: testCol
+                    width: parent.width
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
                     anchors.margins: 20
                     spacing: 12
                     Label {
@@ -52,12 +58,18 @@ Page {
 
             // ===== Management System section =====
             Rectangle {
+                id: mgmtRect
                 width: parent.width
+                implicitHeight: mgmtCol.implicitHeight + 40
                 radius: 10
                 color: "white"
                 border.color: "#DDDDDD"
                 Column {
-                    anchors.fill: parent
+                    id: mgmtCol
+                    width: parent.width
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
                     anchors.margins: 20
                     spacing: 12
                     Label {

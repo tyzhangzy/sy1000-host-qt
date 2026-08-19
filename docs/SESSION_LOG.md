@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-08-19 · 修复主菜单分区不显示（登录后误显示管理系统）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：登录后进入主菜单却只显示"管理系统"区——根因是分区 Rectangle 高度异常
+
+### 根因
+- 主菜单两个分区 `Rectangle` 未设显式高度，`Column anchors.fill` 无法撑开 → 分区高度异常、内容错位，登录后看起来像只显示"管理系统"
+
+### 修复（`qml/MainMenuPage.qml`）
+- 两个分区 Rectangle 加 `implicitHeight: <col>.implicitHeight + 40`，由内容撑开
+- 内层 Column 由 `anchors.fill` 改为 `anchors.left/right/top + margins 20`
+- 用 console.log 验证：`testRect h=245, mgmtRect h=245`（两分区均正常显示）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`MainMenuPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 按规范文档实现主菜单（补汉堡按钮 + 侧边导航）✅
 
 - **提交**：`9304c2e` `feat(ui): main menu per WPF spec + hamburger/drawer nav; add spec doc`
