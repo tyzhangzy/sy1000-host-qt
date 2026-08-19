@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · C7 PDF 报告生成 + A2 报告查看 ✅
 
-- **提交**：待填（本次改动提交后补 hash）
+- **提交**：`3473e9c` `feat(report,ui): PDF test report generation + report view page (C7, A2)`
 - **范围**：`docs/TODO.md` 建议顺序第 5 项（报告闭环）
 
 ### 说明
