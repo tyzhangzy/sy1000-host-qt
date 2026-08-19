@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 按 WPF 源码核对修正中文翻译 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`4bce98a` `i18n: align zh_CN translations with original WPF wording`
 - **范围**：读取 `sy1000-host-wpf` 源码中的中文文案（XAML Text/Content/Header + C#），逐条核对 `i18n/sy1000_zh_CN.ts` 翻译，按 WPF 用词修正不一致项
 
 ### 修正要点（对齐 WPF 原文）
