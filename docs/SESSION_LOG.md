@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 测试准备页控件/布局对齐 WPF ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`89c65e3` `feat(ui): test prep page matches WPF card layout/controls`
 - **范围**：`qml/TestPreparationPage.qml` 重写，与 WPF TestPreparationPage 控件内容和布局一致
 
 ### 实现
