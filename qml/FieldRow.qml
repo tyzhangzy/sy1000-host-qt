@@ -23,8 +23,9 @@ Row {
         width: root.width - 168
         height: 40
         Material.background: "transparent"
+        Material.variant: Material.Text
         padding: 4
-        // The long underline line.
+        // The long underline line (no other border).
         Rectangle {
             anchors.left: parent.left; anchors.right: parent.right
             anchors.bottom: parent.bottom

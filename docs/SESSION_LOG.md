@@ -5,6 +5,15 @@
 
 ---
 
+## 2026-08-19 · FieldRow/检查输入框去掉边框，仅保留下划线 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`FieldRow / InspectionInternal / InspectionThread / InspectionValve.qml`
+- **实现**：TextField 用 `Material.variant: Material.Text` 去掉边框，仅保留底部 Rectangle 一条横线（下划线）
+- **验证**：✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 外观检查页标题栏去掉背景色 ✅
 
 - **提交**：`9b38638` `feat(ui): inspection page title bar without background color`
