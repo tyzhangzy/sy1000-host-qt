@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-08-19 · 登录页隐藏顶部 header，左上角留空 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：启动界面左上角无控件（对齐 WPF 无边框登录窗口），仅右上角电源按钮
+
+### 实现
+- `qml/Main.qml`：
+  - header 加 `visible: stack.depth > 1`（登录页隐藏顶部深蓝条，左上角留空）
+  - 移除 header 内退出按钮；用户名 Label 锚回 `parent.right`
+- `qml/LoginPage.qml`：新增电源退出按钮，`anchors` 到 `loginPage` 右上角（无 header 时即窗口右上角）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`Main.qml`/`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 登录页制造商文本垂直居中修复 ✅
 
 - **提交**：`1a9ac32` `fix(ui): center manufacturer label horizontally on login page`

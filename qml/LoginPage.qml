@@ -178,6 +178,43 @@ Item {
             }
         }
     }
+
+    // Power quit button, top-right corner (WPF LoginWindow QuitButton). The
+    // login page has no header, so the button anchors to the page itself.
+    Item {
+        id: quitBtn
+        width: 44
+        height: 44
+        property bool hovered: false
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+
+        Rectangle {
+            anchors.fill: parent
+            radius: height / 2
+            color: quitBtn.hovered ? "#193660" : "#1E2A5A"
+            border.color: "white"
+            border.width: 2
+        }
+        Label {
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -1
+            text: "⏻"
+            color: "white"
+            font.pixelSize: 26
+        }
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onEntered: quitBtn.hovered = true
+            onExited: quitBtn.hovered = false
+            onClicked: Qt.quit()
+        }
+    }
+
 }
 
 
