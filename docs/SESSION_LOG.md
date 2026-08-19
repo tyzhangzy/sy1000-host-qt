@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-08-19 · 测试准备页补 MainTestWindow 布局（修正）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：用户点"开始水压试验"进入的是准备页 `TestPreparationPage.qml`，上一版误把布局加到了执行页 `TestPage`；本版把 MainTestWindow 布局补到准备页
+
+### 实现（`qml/TestPreparationPage.qml`）
+- **顶栏**：测试状态显示框 + "气瓶压力"标签 + 压力值编辑框
+- **左侧列**（WPF MainTestWindow 左列）：
+  - 上半：使用标准 + 1..4 号气瓶摘要（确 定保存后刷新）+ "开始水压试验"按钮
+  - 下半："保存试验结果 / 查看试验报告（禁用）/ 返回主菜单"
+- **右侧**：原有 5 张准备卡（标准卡 + 4 样品卡），水平可滚动
+- 顶部按钮/对话框移入页面级
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 水压试验页布局对齐 WPF MainTestWindow ✅
 
 - **提交**：`421c3ad` `feat(ui): hydrostatic test page matches WPF MainTestWindow`

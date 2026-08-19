@@ -53,22 +53,81 @@ Page {
         }
     }
 
-    Flickable {
-        anchors.fill: parent
-        contentHeight: row.implicitHeight + 80
-        clip: true
+    // Top status bar (WPF MainTestWindow ColorZone header).
+    Rectangle {
+        id: topBar
+        width: parent.width; height: 64; color: "#303F9F"
+        Row {
+            anchors.left: parent.left; anchors.leftMargin: 20
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 18
+            Label { text: qsTr("Hydrostatic Test"); color: "white"; font.pixelSize: 22; font.bold: true; anchors.verticalCenter: parent.verticalCenter }
+            Rectangle { width: 340; height: 40; radius: 4; color: "white"
+                Label { anchors.fill: parent; anchors.margins: 6
+                    text: hydro.status === "" ? qsTr("Status: ") + hydro.state : hydro.status
+                    color: "#333"; font.pixelSize: 16; font.bold: true; verticalAlignment: Text.AlignVCenter } }
+            Label { text: qsTr("Cylinder pressure"); color: "white"; font.pixelSize: 20; font.bold: true; anchors.verticalCenter: parent.verticalCenter }
+            Rectangle { width: 170; height: 40; radius: 4; color: "white"
+                TextField { anchors.fill: parent; anchors.margins: 2; readOnly: true; horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 20; font.bold: true; color: "#333"
+                    text: isNaN(hydro.currentPressure) ? "N/A" : hydro.currentPressure.toFixed(2) + " MPa" } }
+        }
+    }
 
-        Column {
-            anchors.fill: parent
-            spacing: 12
+    Row {
+        width: parent.width; height: parent.height - topBar.height
 
-            // Row of 5 cards: standard + 4 samples (matches WPF).
-            Row {
-                id: row
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 12
+        // Left column (WPF MainTestWindow left column).
+        Rectangle {
+            width: 320; height: parent.height; color: "#F5F7FA"
+            Column {
+                anchors.top: parent.top; anchors.topMargin: 12
+                anchors.left: parent.left; anchors.right: parent.right
+                anchors.leftMargin: 10; anchors.rightMargin: 10
+                spacing: 10
+                TextArea { id: leftStd; width: parent.width; height: 128; readOnly: true; font.pixelSize: 14; wrapMode: Text.Wrap; text: hydro.testStandardInfo() }
+                TextArea { id: leftS1; width: parent.width; height: 104; readOnly: true; font.pixelSize: 14; wrapMode: Text.Wrap; text: hydro.sampleInfo(1) }
+                TextArea { id: leftS2; width: parent.width; height: 104; readOnly: true; font.pixelSize: 14; wrapMode: Text.Wrap; text: hydro.sampleInfo(2) }
+                TextArea { id: leftS3; width: parent.width; height: 104; readOnly: true; font.pixelSize: 14; wrapMode: Text.Wrap; text: hydro.sampleInfo(3) }
+                TextArea { id: leftS4; width: parent.width; height: 104; readOnly: true; font.pixelSize: 14; wrapMode: Text.Wrap; text: hydro.sampleInfo(4) }
+                Button {
+                    text: qsTr("Start Hydrostatic Test")
+                    width: 240; height: 56
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    Material.background: "#FFC107"; Material.foreground: "#212121"; Material.elevation: 2
+                    font.pixelSize: 17; font.bold: true
+                    onClicked: { for (var i = 0; i < 4; i++) hydro.setSampleInspection(i + 1, sampleData[i].inspection); stack.push("TestPage.qml") }
+                }
+            }
+            Column {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom; anchors.bottomMargin: 14
+                spacing: 10
+                DarkButton { btnText: qsTr("Save Test Result"); enabled: false }
+                DarkButton { btnText: qsTr("View Test Report"); enabled: false }
+                DarkButton { btnText: qsTr("Return to Main Menu"); onClicked: stack.pop() }
+            }
+        }
+
+        Rectangle { width: 2; color: "#CCCCCC"; height: parent.height }
+
+        // Right: prep cards (standard + 4 samples) in a scrollable area.
+        Flickable {
+            width: parent.width - 322
+            height: parent.height
+            contentWidth: row.implicitWidth + 24
+            contentHeight: cardsCol.implicitHeight
+            clip: true
+
+            Column {
+                id: cardsCol
+                width: parent.width
                 spacing: 12
+                Row {
+                    id: row
+                    width: parent.width
+                    anchors.margins: 12
+                    spacing: 12
 
                 // Standard card (WPF StandardCardUserControl).
                 Rectangle {
@@ -127,6 +186,7 @@ Page {
                             hydro.setWorkingPressure(workingPressure)
                             hydro.setTestingPressure(testingPressure)
                             hydro.setTestStandard(standardName, holdTime, residualRate)
+                            leftStd.text = hydro.testStandardInfo()
                         }
                     }
                 }
@@ -206,45 +266,27 @@ Page {
                 }
             }
 
-            // Shared appearance inspection dialog (WPF AppearenceInspectionWindow).
-            AppearanceInspectionDialog { id: inspectDlg }
-
-            // Validation warning popup.
-            Popup {
-                id: warnPopup
-                function msg(s) { warnText.text = s; warnPopup.open() }
-                modal: true; focus: true
-                anchors.centerIn: parent
-                width: 420
-                padding: 20
-                Column { spacing: 12; width: parent.width
-                    Label { id: warnText; text: ""; wrapMode: Text.Wrap; font.pixelSize: 16; width: parent.width }
-                    Button {
-                        text: qsTr("OK")
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        onClicked: warnPopup.close()
-                    }
-                }
             }
+        }
+    }
 
-            // Bottom actions: start the test / back.
-            Row {
+    // Shared appearance inspection dialog (WPF AppearenceInspectionWindow).
+    AppearanceInspectionDialog { id: inspectDlg }
+
+    // Validation warning popup.
+    Popup {
+        id: warnPopup
+        function msg(s) { warnText.text = s; warnPopup.open() }
+        modal: true; focus: true
+        anchors.centerIn: parent
+        width: 420
+        padding: 20
+        Column { spacing: 12; width: parent.width
+            Label { id: warnText; text: ""; wrapMode: Text.Wrap; font.pixelSize: 16; width: parent.width }
+            Button {
+                text: qsTr("OK")
                 anchors.horizontalCenter: parent.horizontalCenter
-                spacing: 16
-                DarkButton {
-                    btnText: qsTr("Start Test")
-                    width: 260
-                    onClicked: {
-                        for (var i = 0; i < 4; i++)
-                            hydro.setSampleInspection(i + 1, sampleData[i].inspection)
-                        stack.push("TestPage.qml")
-                    }
-                }
-                DarkButton {
-                    btnText: qsTr("Back")
-                    width: 160
-                    onClicked: stack.pop()
-                }
+                onClicked: warnPopup.close()
             }
         }
     }
@@ -259,6 +301,9 @@ Page {
         if (!d.serialNo) { warnPopup.msg(qsTr("Please enter serial No.")); return }
         if (!(d.inspection && d.inspection.inspectionCompleted)) { warnPopup.msg(qsTr("Please complete appearance inspection before saving.")); return }
         hydro.setSample(idx + 1, d.model, d.manufacturer, d.serialNo, d.volume)
+        // Refresh the left-column cylinder summary box.
+        var areas = [leftS1, leftS2, leftS3, leftS4]
+        areas[idx].text = hydro.sampleInfo(idx + 1)
     }
 }
 
