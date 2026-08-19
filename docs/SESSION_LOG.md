@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录卡高度调小 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`3f24331` `feat(ui): reduce login card height to 500`
 - **范围**：用户登录框高度 545→500
 
 ### 实现（`qml/LoginPage.qml`）
