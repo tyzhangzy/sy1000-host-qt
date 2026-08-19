@@ -10,6 +10,9 @@ import QtQuick.Controls.Material
 Item {
     id: loginPage
     property string title: qsTr("Login")
+    // Marks this as the login page so the header hides only here (WPF LoginWindow
+    // is frameless); MainMenu and other pages show the header title bar.
+    readonly property bool isLoginPage: true
 
     // Unified light-grey background (matches WPF #E0E0E0 gradient).
     Rectangle {

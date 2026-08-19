@@ -18,7 +18,7 @@ ApplicationWindow {
     header: Rectangle {
         height: 80
         color: "#303F9F"
-        visible: stack.depth > 1
+        visible: stack.currentItem ? !stack.currentItem.isLoginPage : false
 
         // Left: device name (config) + connection status button (WPF header).
         Row {

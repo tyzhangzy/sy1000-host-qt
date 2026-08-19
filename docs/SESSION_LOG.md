@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-08-19 · 修复登录后主菜单标题栏不显示 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：登录后主菜单缺标题栏（header）——因 `stack.replace` 后 `depth===1`，header 的 `visible: stack.depth > 1` 恒为假
+
+### 修复
+- `qml/LoginPage.qml`：加 `readonly property bool isLoginPage: true`
+- `qml/Main.qml`：header `visible` 由 `stack.depth > 1` 改为 `stack.currentItem ? !stack.currentItem.isLoginPage : false`
+  - 登录页隐藏 header（无边框），MainMenu 及其它页显示标题栏
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 修复主菜单分区不显示（登录后误显示管理系统）✅
 
 - **提交**：`fa14648` `fix(ui): main menu section rectangles now sized by content (was showing only management)`
