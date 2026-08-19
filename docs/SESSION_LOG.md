@@ -5,6 +5,15 @@
 
 ---
 
+## 2026-08-19 · 准备页右侧 5 卡高度撑满到底部 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/TestPreparationPage.qml` 右侧 5 张卡（标准卡 + 4 样品卡）
+- **实现**：卡高由固定 `720` 改为 `rightFlick.height`（右侧区域高度），与父窗口底部对齐
+- **验证**：✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 修复卡片黄色标题栏文字不显示 ✅
 
 - **提交**：`f548cb5` `fix(ui): amber card title text via parent chain`

@@ -142,6 +142,7 @@ Page {
 
         // Right: prep cards (standard + 4 samples) in a scrollable area.
         Flickable {
+            id: rightFlick
             width: parent.width - 322
             height: parent.height
             contentWidth: row.implicitWidth + 24
@@ -160,7 +161,7 @@ Page {
 
                 // Standard card (WPF StandardCardUserControl).
                 Rectangle {
-                    width: 300; height: 720
+                    width: 300; height: rightFlick.height
                     radius: 8; color: "white"; border.color: "#E0E0E0"
 
                     TitleBar {
@@ -221,7 +222,7 @@ Page {
                 Repeater {
                     model: 4
                     Rectangle {
-                        width: 300; height: 720
+                        width: 300; height: rightFlick.height
                         radius: 8; color: "white"; border.color: "#E0E0E0"
 
                         TitleBar {
