@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 修复"外观检测评估"按钮无反应（无效属性）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`a15c069` `fix(ui): remove invalid Material.underlineColor (caused no-reaction)`
 - **范围**：`FieldRow / InspectionInternal / InspectionThread / InspectionValve.qml`
 - **根因**：`Material.underlineColor` 不是有效属性，导致 `FieldRow` 组件编译失败 → `InspectionExternal` 失败 → 页面 `push` 加载失败 → 点击按钮无反应
 - **修复**：删除所有 `Material.underlineColor`，TextField 用透明背景 + Rectangle 画下划线横线
