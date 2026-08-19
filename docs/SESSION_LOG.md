@@ -5,6 +5,26 @@
 
 ---
 
+## 2026-08-19 · 部署 Qt 运行库到 exe 目录 ✅
+
+- **提交**：无（构建产物，`build/` 被 .gitignore 忽略，不提交）
+- **范围**：为 `build/msvc/Debug/SY1000.exe` 补全启动所需 Qt 库，实现独立运行
+
+### 操作
+- 使用 Qt 官方 `windeployqt --qmldir <qml> SY1000.exe` 自动部署
+- 部署内容：34 个 Qt DLL（Qt6Cored/Guid/Quick/Sqld/SerialPortd/Networkd/PrintSupportd 等）+ 平台插件 `qwindowsd.dll` + `platforms/qml/sqldrivers/styles/translations` 等 QML 插件 + 翻译
+- `Debug` 目录部署后约 254 MB
+
+### 验证
+- ✅ 系统 PATH（Machine/User）均不含 Qt
+- ✅ 用干净 PATH（仅 System32/Windows/exe 目录）启动 `SY1000.exe` → **APP ALIVE（真正独立运行）**
+- ✅ `build/` 在 .gitignore 中，部署文件不会被 git 跟踪
+
+### 备注
+- 若需发布，可将整个 `Debug`（或 Release）目录一起打包（exe + 全部 DLL + QML 插件）。
+
+---
+
 ## 2026-08-19 · 对齐退出按钮与标题标签底部 ✅
 
 - **提交**：`545ad52` `fix(ui): align quit button bottom with header title label bottom`
