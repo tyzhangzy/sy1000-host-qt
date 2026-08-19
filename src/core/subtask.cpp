@@ -47,6 +47,26 @@ void HydroSubTask::delay(int ms, std::function<void()> callback)
     });
 }
 
+void HydroSubTask::requestConfirmation(const QString &title, const QString &message,
+                                       std::function<void(bool)> callback)
+{
+    if (m_stopped) {
+        finish(false, HydroTestError::Cancelled);
+        return;
+    }
+    m_confirmCallback = std::move(callback);
+    emit requestConfirm(title, message);
+}
+
+void HydroSubTask::confirmResponse(bool accepted)
+{
+    if (!m_confirmCallback)
+        return;
+    auto cb = std::move(m_confirmCallback);
+    m_confirmCallback = nullptr;
+    cb(accepted);
+}
+
 void HydroSubTask::finish(bool success, HydroTestError error, const TaskResult &result)
 {
     if (m_finished)

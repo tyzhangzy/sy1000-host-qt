@@ -25,6 +25,8 @@ public:
     void startTest();
     void stopTest();
     void reset();
+    // Forward the operator's answer to the sub-task waiting on a confirm dialog.
+    Q_INVOKABLE void respondConfirm(bool accepted);
 
     // Residual deformation rate limit (%) for pass/fail (default 3.0).
     void setResidualDeformationRateLimit(double limit) { m_rateLimit = limit; }
@@ -54,6 +56,8 @@ signals:
     void dataUpdated();
     void testCompleted(bool success);
     void testAborted(HydroTestError error, const QString &message);
+    // Operator instruction/confirmation requested by the active sub-task.
+    void confirmRequested(const QString &title, const QString &message);
 
 private:
     std::unique_ptr<HydroStateBase> createState(HydroTestState s);
@@ -64,6 +68,7 @@ private:
     HydroTestData m_data;
     std::unique_ptr<HydroStateBase> m_currentState;
     HydroSubTask *m_currentTask = nullptr;
+    HydroSubTask *m_pendingConfirm = nullptr;   // sub-task awaiting a confirm response
     double m_rateLimit = 3.0;
     TestOptions m_options;
 };

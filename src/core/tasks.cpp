@@ -157,11 +157,21 @@ void HoldTask::finishWithResult()
 // ---------------- ReleaseTask ----------------
 void ReleaseTask::run()
 {
-    m_remaining = m_params.countdownSec > 0 ? m_params.countdownSec : 10;
-    emit statusChanged(QString("Releasing, %1 s").arg(m_remaining));
-    m_timer.setInterval(1000);
-    QObject::connect(&m_timer, &QTimer::timeout, this, &ReleaseTask::tick);
-    m_timer.start();
+    // Ask the operator to open the release valve before starting the countdown.
+    emit statusChanged(QStringLiteral("Waiting for operator to open release valve..."));
+    requestConfirmation(QStringLiteral("Release Pressure"),
+                        QStringLiteral("Please open the release valve, then confirm to release pressure."),
+                        [this](bool accepted) {
+                            if (!accepted) {
+                                finish(false, HydroTestError::Cancelled);
+                                return;
+                            }
+                            m_remaining = m_params.countdownSec > 0 ? m_params.countdownSec : 10;
+                            emit statusChanged(QString("Releasing, %1 s").arg(m_remaining));
+                            m_timer.setInterval(1000);
+                            QObject::connect(&m_timer, &QTimer::timeout, this, &ReleaseTask::tick);
+                            m_timer.start();
+                        });
 }
 
 void ReleaseTask::tick()

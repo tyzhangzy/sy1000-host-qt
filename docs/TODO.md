@@ -14,6 +14,7 @@
 - **A1 外观检查补全**：`AppearanceInspectionDialog.qml` 已重写为四部分完整表单（检验员信息 + External/Internal/Thread/Valve 逐项检查、缺陷位置、其他备注）
 - **C6 外观检查接入结果保存**：`HydroTestControllerAdapter::setSampleInspection()` 接收 QML 检查对象，`buildResult()` 写入 `sample.appearanceInspection` 持久化
 - **B4 4 样品双轴曲线**：`RealTimeChart` 扩为多序列 + 双 Y 轴（左轴压力 MPa、右轴重量 g），试验页显示压力曲线 + 1-4 号样品曲线（`addSeries`/`addSeriesValue`/`weightSample` 信号）
+- **A3 水压试验消息对话框**：`HydroSubTask` 支持阻塞式确认请求（`requestConfirmation`/`confirmResponse`），`ReleaseTask` 泄压前弹窗"打开泄压阀并确认"；`HydroTestMessageDialog.qml` 接通 `hydro.respondConfirm()`
 
 ---
 
@@ -24,7 +25,7 @@
 |------|-----------|------|
 | 1. ~~**外观检查窗口补全**~~ | `AppearenceInspectionWindow` | ✅ 已完成：四部分逐项 bool 检查、检验员信息（姓名/证书号/日期）、缺陷位置、"其他"备注 |
 | 2. **测试报告查看窗口** | `TestReportWindow` | 用 QML 内嵌 PDF 查看（`QPdfView`）显示生成的报告，支持多报告翻页 |
-| 3. **水压试验消息对话框** | `HydroTestMessageWindow` | 状态机弹出操作指令 + OK/取消确认（如"打开泄压阀"、"是否继续"），需接通 `HydroSubTask` 的指令/确认请求 |
+| 3. ~~**水压试验消息对话框**~~ | `HydroTestMessageWindow` | 状态机弹出操作指令 + OK/取消确认（如"打开泄压阀"、"是否继续"），需接通 `HydroSubTask` 的指令/确认请求 | ✅ 已完成：阻塞式确认请求 + 泄压确认弹窗 |
 
 ### B. 页面增强
 | 项 | 说明 |

@@ -22,8 +22,15 @@ public:
     virtual void stop();
     virtual void reset();
 
+public slots:
+    // Resume a pending confirmation request with the operator's answer.
+    void confirmResponse(bool accepted);
+
 signals:
     void statusChanged(const QString &status);
+    // Ask the operator for a blocking instruction confirmation. The sub-task
+    // pauses until confirmResponse() is invoked.
+    void requestConfirm(const QString &title, const QString &message);
     void finished(bool success, sy1000::HydroTestError error, const sy1000::TaskResult &result);
 
 protected:
@@ -35,11 +42,19 @@ protected:
     // Schedule a single delayed call; no-op if stopped.
     void delay(int ms, std::function<void()> callback);
 
+    // Emit a blocking instruction confirmation and pause until confirmResponse();
+    // invokes callback(accepted) on resume.
+    void requestConfirmation(const QString &title, const QString &message,
+                             std::function<void(bool)> callback);
+
     // Report the sub-task result exactly once.
     void finish(bool success, HydroTestError error, const TaskResult &result = {});
 
     IHydroDeviceProvider *m_device;
     TaskParams m_params;
+
+private:
+    std::function<void(bool)> m_confirmCallback;
 
 private:
     bool m_stopped = false;

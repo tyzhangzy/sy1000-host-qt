@@ -97,7 +97,21 @@ void HydrostaticTestController::runTask(HydroSubTask *task, const TaskParams &pa
     QObject::connect(task, &HydroSubTask::finished, this, &HydrostaticTestController::onSubTaskFinished);
     QObject::connect(task, &HydroSubTask::statusChanged, this,
                      [this](const QString &s) { emit statusChanged(s); });
+    QObject::connect(task, &HydroSubTask::requestConfirm, this,
+                     [this, task](const QString &title, const QString &message) {
+                         m_pendingConfirm = task;
+                         emit confirmRequested(title, message);
+                     });
     task->start(params);
+}
+
+void HydrostaticTestController::respondConfirm(bool accepted)
+{
+    if (!m_pendingConfirm)
+        return;
+    auto *task = m_pendingConfirm;
+    m_pendingConfirm = nullptr;
+    task->confirmResponse(accepted);
 }
 
 void HydrostaticTestController::safeShutdown()

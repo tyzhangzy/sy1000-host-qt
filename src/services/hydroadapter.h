@@ -32,6 +32,8 @@ public:
     Q_INVOKABLE void setWorkingPressure(double p);
     Q_INVOKABLE void setTestingPressure(double p);
     Q_INVOKABLE void setTester(const QString &name, const QString &company);
+    // Forward the operator's answer (OK/Cancel) to the waiting sub-task.
+    Q_INVOKABLE void respondConfirm(bool accepted);
     // Sample info (index 1..4) used when persisting the result.
     Q_INVOKABLE void setSample(int index, const QString &model, const QString &manufacturer,
                                const QString &serialNo, double volume);
@@ -52,6 +54,8 @@ signals:
     void pressureSample(double value);
     // Per-sample weight/deformation sample (index 1..4) for the right Y axis.
     void weightSample(int index, double value);
+    // Operator instruction/confirmation requested by the active sub-task.
+    void confirmRequested(const QString &title, const QString &message);
 
 private:
     struct SampleInfo {

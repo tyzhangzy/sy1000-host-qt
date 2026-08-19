@@ -94,6 +94,10 @@ HydroTestControllerAdapter::HydroTestControllerAdapter(IHydroDeviceProvider *dev
                          emit statusChanged();
                          updateRunning();
                      });
+    QObject::connect(&m_controller, &HydrostaticTestController::confirmRequested,
+                     this, [this](const QString &t, const QString &m) {
+                         emit confirmRequested(t, m);
+                     });
 
     // Sample pressure + per-sample weights periodically for the realtime chart.
     m_sampleTimer.setInterval(100);
@@ -136,6 +140,11 @@ void HydroTestControllerAdapter::setTester(const QString &name, const QString &c
 {
     m_testerName = name;
     m_testerCompany = company;
+}
+
+void HydroTestControllerAdapter::respondConfirm(bool accepted)
+{
+    m_controller.respondConfirm(accepted);
 }
 
 void HydroTestControllerAdapter::setSample(int index, const QString &model, const QString &manufacturer,

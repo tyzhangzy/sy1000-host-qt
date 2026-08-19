@@ -102,6 +102,7 @@ qt_add_resources(SY1000 "app"
     qml/UserManagementPage.qml
     qml/SystemMaintainPage.qml
     qml/AppearanceInspectionDialog.qml
+    qml/HydroTestMessageDialog.qml
 )
 
 # i18n: lrelease compiles ts -> qm, embedded under /i18n/

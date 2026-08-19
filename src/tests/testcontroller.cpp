@@ -62,6 +62,13 @@ int main(int argc, char *argv[])
                      [&](HydroTestError e, const QString &m) {
                          std::printf("  ABORTED err=%d msg=%s\n", static_cast<int>(e), qPrintable(m));
                      });
+    // Headless run: auto-accept any operator confirmation (e.g. release valve).
+    QObject::connect(&ctl, &HydrostaticTestController::confirmRequested,
+                     [&](const QString &title, const QString &msg) {
+                         std::printf("  confirm: %s | %s -> auto-accept\n",
+                                     qPrintable(title), qPrintable(msg));
+                         ctl.respondConfirm(true);
+                     });
 
     QEventLoop loop;
     QTimer::singleShot(30000, &loop, &QEventLoop::quit); // timeout guard

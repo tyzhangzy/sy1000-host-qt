@@ -87,6 +87,9 @@ Page {
             function onWeightSample(index, value) {
                 pressureChart.addSeriesValue(index, value)
             }
+            function onConfirmRequested(title, message) {
+                messageDlg.showRequest(title, message)
+            }
         }
 
         // Realtime dual-axis chart: left = pressure (MPa), right = 4 sample
@@ -160,5 +163,10 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter
             onClicked: stack.pop()
         }
+    }
+
+    // Operator instruction/confirmation dialog (overlays the whole page).
+    HydroTestMessageDialog {
+        id: messageDlg
     }
 }
