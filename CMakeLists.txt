@@ -132,6 +132,11 @@ qt_add_resources(SY1000 "app"
     qml/ReportViewPage.qml
     qml/ShadowCard.qml
     qml/assets/dklogo.png
+    qml/assets/LOGO.png
+    qml/assets/HX1.png
+    qml/assets/HX2.png
+    qml/assets/dk.ico
+    qml/assets/QSI.ico
 )
 
 # i18n: lrelease compiles ts -> qm, embedded under /i18n/
