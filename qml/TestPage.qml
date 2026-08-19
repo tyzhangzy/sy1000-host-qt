@@ -4,7 +4,7 @@ import SyCharts 1.0
 
 Page {
     id: testPage
-    property string title: qsTr("Hydrostatic Test")
+    title: qsTr("Hydrostatic Test")
 
     Column {
         anchors.centerIn: parent

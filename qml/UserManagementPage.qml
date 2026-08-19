@@ -3,7 +3,7 @@ import QtQuick.Controls
 
 Page {
     id: userPage
-    property string title: qsTr("User Management")
+    title: qsTr("User Management")
 
     function refresh() {
         list.model = userService.users()

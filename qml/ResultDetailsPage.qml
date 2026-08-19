@@ -3,7 +3,7 @@ import QtQuick.Controls
 
 Page {
     id: detailPage
-    property string title: qsTr("Result Detail")
+    title: qsTr("Result Detail")
     property int resultId: 0
     property var d: ({})
 

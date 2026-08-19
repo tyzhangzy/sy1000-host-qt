@@ -4,7 +4,7 @@ import QtQuick.Controls
 // Test preparation page: matches the WPF layout (Standard card + 4 Sample cards in a row).
 Page {
     id: prepPage
-    property string title: qsTr("Test Preparation")
+    title: qsTr("Test Preparation")
 
     property var sampleData: [
         { model: "", manufacturer: "", userCompany: "", serialNo: "", volume: 6.8, inspection: {} },

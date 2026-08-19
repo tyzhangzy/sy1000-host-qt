@@ -6,7 +6,7 @@ import QtQuick.Layouts
 // Left = device controls (water jacket locks, pumps), right = system info.
 Page {
     id: sysPage
-    property string title: qsTr("System Maintain")
+    title: qsTr("System Maintain")
 
     // Top bar: back button + title.
     Rectangle {

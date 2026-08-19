@@ -73,6 +73,12 @@ qt_add_executable(testconfig
 )
 target_link_libraries(testconfig PRIVATE services Qt6::Core)
 
+# Headless smoke test for LoginService
+qt_add_executable(testlogin
+  src/tests/testlogin.cpp
+)
+target_link_libraries(testlogin PRIVATE services Qt6::Core)
+
 # Services layer (Qt bridge: login + result + hydro adapter), depends on dao + models + core
 add_library(services STATIC
   src/services/loginservice.cpp
@@ -133,6 +139,13 @@ set(TS_FILES
   i18n/sy1000_zh_CN.ts
 )
 qt_add_lrelease(SY1000 TS_FILES ${TS_FILES})
+
+# Embed the compiled .qm at /i18n/ so LanguageHelper can load it at runtime.
+qt_add_resources(SY1000 "translations"
+  PREFIX "/i18n"
+  BASE ${CMAKE_CURRENT_BINARY_DIR}
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/sy1000_zh_CN.qm
+)
 
 target_link_libraries(SY1000 PRIVATE core services models dao devices charts Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
 

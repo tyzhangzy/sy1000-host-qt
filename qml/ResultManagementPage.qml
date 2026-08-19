@@ -6,7 +6,7 @@ import QtQuick.Controls
 //   Tab 2 "Unified Results"    -> UnifiedTestResultManagementWindow columns
 Page {
     id: resultPage
-    property string title: qsTr("Result Management")
+    title: qsTr("Result Management")
     property var data: []
 
     function refresh() { data = resultService.results() }

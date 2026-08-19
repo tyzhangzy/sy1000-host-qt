@@ -6,7 +6,7 @@ import QtQuick.Controls
 // for environments without QPdfView.
 Page {
     id: reportPage
-    property string title: qsTr("Test Report")
+    title: qsTr("Test Report")
     property int resultId: 0
     property var d: ({})
 

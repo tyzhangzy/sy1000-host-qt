@@ -54,9 +54,9 @@ ApplicationWindow {
             visible: stack.depth === 1
             anchors.right: parent.right
             anchors.rightMargin: 16
-            // Align the button's bottom with the title label's bottom (top-left),
-            // then shift it down so its top stays inside the header.
-            anchors.bottom: titleLabel.bottom
+            // Vertically centered in the header, shifted down slightly so it sits
+            // neatly inside and near the bottom edge of the title bar.
+            anchors.verticalCenter: parent.verticalCenter
             transform: Translate { y: 6 }
 
             // Outer circle (background) - fills the Item.

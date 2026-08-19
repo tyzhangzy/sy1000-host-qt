@@ -5,6 +5,29 @@
 
 ---
 
+## 2026-08-19 · 修复登录后无法进入主菜单（Page title FINAL 冲突）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：点击登录无反应、无法进入新界面的重大 bug
+
+### 根因（stderr 定位）
+1. **`Page` 的 `property string title` 覆盖内置 FINAL 属性** → 8 个 Page 页面（MainMenu/ResultManagement/ResultDetails/ReportView/SystemMaintain/UserManagement/Test/TestPreparation）全部加载失败 → 登录后 `stack.replace("MainMenuPage.qml")` 静默失败，无法进入主菜单
+2. **quitBtn 跨父级锚定 `titleLabel`**（`Cannot anchor to an item that isn't a parent or sibling`）→ 此前按钮位置错乱/顶部超界的根因
+3. **`:/i18n/sy1000_zh_CN.qm` 加载失败** → qm 未嵌入资源，默认中文回退英文
+
+### 修复
+- 8 个 Page 的 `property string title: qsTr("X")` 改为 `title: qsTr("X")`（用内置 title 属性）
+- `Main.qml` quitBtn 由 `anchors.bottom: titleLabel.bottom`（跨级非法）改为 `anchors.verticalCenter: parent.verticalCenter` + `transform: Translate { y: 6 }`
+- `CMakeLists.txt`：在 `qt_add_lrelease` 后新增 `qt_add_resources`，把生成的 `sy1000_zh_CN.qm` 嵌入到 `/i18n/`
+- 新增 `src/tests/testlogin.cpp`：验证 LoginService（admin/9999 登录成功 + `loginSucceeded` 信号）
+
+### 验证
+- ✅ `MainMenuPage` 作为初始页运行 stderr 干净（无 QML 错误）；最终初始页恢复 `LoginPage`
+- ✅ 运行日志 stderr 完全为空（无 zh_CN 加载失败、无 QML 错误）
+- ✅ 6 个 headless 冒烟测试全绿（含新增 `testlogin`：LOGIN SMOKE PASS）
+
+---
+
 ## 2026-08-19 · 下移电源按钮避免顶部超出 header ✅
 
 - **提交**：`9332033` `fix(ui): shift power quit button down to stay within header`

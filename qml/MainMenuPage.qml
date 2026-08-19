@@ -3,7 +3,7 @@ import QtQuick.Controls
 
 Page {
     id: menuPage
-    property string title: qsTr("Main Menu")
+    title: qsTr("Main Menu")
 
     // Center: function card buttons (matches the WPF menu grid layout).
     Grid {
