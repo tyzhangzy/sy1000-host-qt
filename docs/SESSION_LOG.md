@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 拷贝 WPF 图片资源到 Qt 并注册 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`8171f83` `assets(wpf): copy WPF image resources into Qt and register in qrc`
 - **范围**：把 `sy1000-host-wpf/Resources` 的图片资源拷贝到 `qml/assets/` 并注册进 CMake qrc
 - **文件**：`dklogo.png`（已用）、`LOGO.png`、`HX1.png`、`HX2.png`、`dk.ico`、`QSI.ico`
 - **说明**：WPF 中按钮图标为 MaterialDesignThemes PackIcon（字体，非图片）；图片资源仅 `dklogo` 被登录页实际使用，`HX2` 为登录背景（WPF 注释未启用），其余为备用资源
