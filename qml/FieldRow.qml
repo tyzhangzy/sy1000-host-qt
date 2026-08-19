@@ -8,6 +8,7 @@ Row {
     id: root
     property string label
     property alias text: fld.text
+    width: parent.width
     spacing: 8
     Label {
         text: root.label
