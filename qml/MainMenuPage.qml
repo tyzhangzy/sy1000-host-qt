@@ -86,7 +86,7 @@ Page {
                         Repeater {
                             model: [
                                 { icon: "≡", text: qsTr("Result Management"), page: "ResultManagementPage.qml" },
-                                { icon: "☺", text: qsTr("User Management"), page: "UserManagementPage.qml" },
+                                { icon: "👥", text: qsTr("User Management"), page: "UserManagementPage.qml" },
                                 { icon: "⚙", text: qsTr("System Maintain"), page: "SystemMaintainPage.qml" }
                             ]
                             delegate: ShadowCard {
