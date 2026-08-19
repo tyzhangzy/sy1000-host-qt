@@ -5,6 +5,26 @@
 
 ---
 
+## 2026-08-19 · 登录页左侧设备信息对齐 WPF ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：登录页左侧三项（logo → 设备名 → 制造商）的值对齐 WPF `config.json`
+
+### 核对（读 WPF 源码）
+- WPF `Resources/config.json`：`DeviceName="DKSY-I 气瓶水压检测装置"`、`Manufacturer="北京德康时代科技有限公司"`、`SerialNo="2511B01"`、`ManufactureDate="2025-11-10"`
+- Qt 之前的 `config.json` 是占位符（`SY1000`/`Quanshen`），与 WPF 不符
+
+### 修复
+- `config.json` 更新为 WPF 真实值：deviceName/manufacturer/serialNo/manufactureDate
+- 登录页左侧显示：logo → deviceName(64px) → manufacturer(36px)，与 WPF 一致
+- 源文件与 exe 目录副本均 UTF-8 无 BOM，Qt `ConfigManager`（UTF-8 解析）正确返回中文
+
+### 验证
+- ✅ 源与 exe 目录 config.json 均为 UTF-8、中文正确
+- ✅ `SY1000.exe` 构建成功、启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 登录页微调（对齐 WPF，布局不变）✅
 
 - **提交**：`8c1e416` `feat(ui): tune login page details to match WPF (layout unchanged)`
