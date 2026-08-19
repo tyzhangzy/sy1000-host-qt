@@ -1,7 +1,11 @@
 #include "services/hydroadapter.h"
 
+#include <algorithm>
+
+#include <QDateTime>
 #include <QVariantMap>
 
+#include "services/configmanager.h"
 #include "services/testresultservice.h"
 
 namespace sy1000 {
@@ -99,19 +103,34 @@ HydroTestControllerAdapter::HydroTestControllerAdapter(IHydroDeviceProvider *dev
                          emit confirmRequested(t, m);
                      });
 
-    // Sample pressure + per-sample weights periodically for the realtime chart.
+    // Sample pressure + per-sample weights periodically for the realtime chart,
+    // and accumulate curve points for the saved report.
     m_sampleTimer.setInterval(100);
     QObject::connect(&m_sampleTimer, &QTimer::timeout, this, [this]() {
-        emit pressureSample(m_controller.device()->currentPressure());
+        const double p = m_controller.device()->currentPressure();
         const auto w = m_controller.device()->currentWeights();
         for (int i = 1; i <= 4 && i < static_cast<int>(w.size()); ++i)
             emit weightSample(i, w[i]);
+        emit pressureSample(p);
+
+        // Record a curve point for the persisted sample (index 1) while running.
+        if (m_controller.state() != HydroTestState::Idle &&
+            m_controller.state() != HydroTestState::Completed &&
+            m_controller.state() != HydroTestState::Aborted) {
+            PressureWeightPoint pt;
+            pt.timestamp = DateTime(std::chrono::milliseconds(QDateTime::currentMSecsSinceEpoch()));
+            pt.pressure = p;
+            if (!w.empty())
+                pt.weight = w[std::min<std::size_t>(1, w.size() - 1)];
+            m_curvePoints.push_back(pt);
+        }
     });
     m_sampleTimer.start();
 }
 
 void HydroTestControllerAdapter::startTest()
 {
+    m_curvePoints.clear();
     m_controller.startTest();
     updateRunning();
 }
@@ -219,9 +238,13 @@ UnifiedTestResult HydroTestControllerAdapter::buildResult() const
     h.residualDeformation = d.residualDeformations[1];
     h.residualDeformationRate = d.residualDeformationRates[1];
     h.testResult = d.results[1];
+    h.workingPressure = m_controller.options().workingPressure;
+    h.testPressure = m_controller.options().testingPressure;
     // Attach the appearance inspection data captured on the preparation page.
     sample.appearanceInspection = m_inspections[1];
     sample.overallResult = TestResultService::determineOverallResult(sample.appearanceInspection, h);
+    // Attach the sampled curve points so the saved report carries a real curve.
+    h.pressureWeightData = m_curvePoints;
 
     TestStandard ts;
     ts.standardName = QStringLiteral("Demo").toStdString();
@@ -229,9 +252,15 @@ UnifiedTestResult HydroTestControllerAdapter::buildResult() const
     ts.testingPressure = m_controller.options().testingPressure;
     ts.residualDeformationRate = 3.0;
 
-    return TestResultService::createUnifiedTestResult(m_testerName.toStdString(),
-                                                      m_testerCompany.toStdString(),
-                                                      sample, ts);
+    UnifiedTestResult r = TestResultService::createUnifiedTestResult(m_testerName.toStdString(),
+                                                                     m_testerCompany.toStdString(),
+                                                                     sample, ts);
+    // Environment data (from config + placeholders; sensors would feed these live).
+    r.testEnvironment.roomTemperature = 23.0;
+    r.testEnvironment.humidity = 45.0;
+    r.testEnvironment.equipmentId = ConfigManager::serialNo().toStdString();
+    r.testEnvironment.equipmentModel = ConfigManager::deviceName().toStdString();
+    return r;
 }
 
 } // namespace sy1000

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <vector>
 
 #include <QObject>
 #include <QString>
@@ -76,6 +77,8 @@ private:
     QString m_testerCompany;
     std::array<SampleInfo, 5> m_samples;
     std::array<SampleInspectionData, 5> m_inspections;
+    // Sampled pressure/weight points collected during the test (report curve).
+    std::vector<PressureWeightPoint> m_curvePoints;
     QTimer m_sampleTimer;
 };
 

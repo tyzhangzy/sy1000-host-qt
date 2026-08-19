@@ -6,6 +6,7 @@
 using sy1000::DateTime;
 using sy1000::HydroStaticTestData;
 using sy1000::InspectionResult;
+using sy1000::PressureWeightPoint;
 using sy1000::Sample;
 using sy1000::SampleInspectionData;
 using sy1000::TestResultStatus;
@@ -133,6 +134,13 @@ SampleInspectionData sampleInspectionFromJson(const QJsonObject &o)
 
 QJsonObject hydroStaticToJson(const HydroStaticTestData &h)
 {
+    QJsonArray pts;
+    for (const auto &pt : h.pressureWeightData)
+        pts.append(QJsonObject{
+            { "ts", toEpochMillis(pt.timestamp) },
+            { "pressure", pt.pressure },
+            { "weight", pt.weight },
+        });
     return QJsonObject{
         { "initialWeight", h.initialWeight },
         { "pressureWeight", h.pressureWeight },
@@ -144,6 +152,7 @@ QJsonObject hydroStaticToJson(const HydroStaticTestData &h)
         { "testPressure", h.testPressure },
         { "testResult", static_cast<int>(h.testResult) },
         { "resultDetails", QString::fromStdString(h.resultDetails) },
+        { "pressureWeightData", pts },
     };
 }
 
@@ -160,6 +169,15 @@ HydroStaticTestData hydroStaticFromJson(const QJsonObject &o)
     h.testPressure = o.value("testPressure").toDouble();
     h.testResult = static_cast<TestResultStatus>(o.value("testResult").toInt(0));
     h.resultDetails = o.value("resultDetails").toString().toStdString();
+    const QJsonArray pts = o.value("pressureWeightData").toArray();
+    for (const auto &v : pts) {
+        const QJsonObject po = v.toObject();
+        PressureWeightPoint pt;
+        pt.timestamp = fromEpochMillis(po.value("ts").toVariant().toLongLong());
+        pt.pressure = po.value("pressure").toDouble();
+        pt.weight = po.value("weight").toDouble();
+        h.pressureWeightData.push_back(pt);
+    }
     return h;
 }
 
@@ -205,6 +223,8 @@ QString unifiedTestResultToJson(const UnifiedTestResult &r)
         { "sample", sampleToJson(r.sample) },
         { "roomTemperature", r.testEnvironment.roomTemperature },
         { "humidity", r.testEnvironment.humidity },
+        { "equipmentId", QString::fromStdString(r.testEnvironment.equipmentId) },
+        { "equipmentModel", QString::fromStdString(r.testEnvironment.equipmentModel) },
     };
     return QString::fromUtf8(QJsonDocument(o).toJson(QJsonDocument::Compact));
 }
@@ -225,6 +245,8 @@ UnifiedTestResult unifiedTestResultFromJson(const QString &json)
     r.sample = sampleFromJson(o.value("sample").toObject());
     r.testEnvironment.roomTemperature = o.value("roomTemperature").toDouble();
     r.testEnvironment.humidity = o.value("humidity").toDouble();
+    r.testEnvironment.equipmentId = o.value("equipmentId").toString().toStdString();
+    r.testEnvironment.equipmentModel = o.value("equipmentModel").toString().toStdString();
     return r;
 }
 

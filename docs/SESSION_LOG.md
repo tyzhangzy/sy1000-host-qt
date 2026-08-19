@@ -5,6 +5,33 @@
 
 ---
 
+## 2026-08-19 · 试验数据闭环补全（曲线点 + 环境数据）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：实现 WPF 中此前 Qt 未实现的部分——试验结果数据的曲线与环境信息
+
+### 实现
+- `src/services/hydroadapter.h/.cpp`：
+  - 采样定时器在试验进行中采集 `PressureWeightPoint`（压力 + 样品1重量）到 `m_curvePoints`；`startTest()` 清空
+  - `buildResult()` 填入 `h.pressureWeightData` + `h.workingPressure/testPressure`；填充 `testEnvironment`（室温/湿度 + config 设备ID/型号）
+- `src/dao/json_serializer.h/.cpp`：
+  - `hydroStaticToJson/FromJson` 补全 `pressureWeightData`（ts/pressure/weight 数组）序列化
+  - `unifiedTestResultToJson/FromJson` 补全 `equipmentId`/`equipmentModel`
+- `src/tests/testcore.cpp`：新增曲线点 + 环境数据保存读回验证（curve_points=6、eq/model）
+
+### 尝试未实现
+- **语音合成**：尝试接入 `QTextToSpeech`，但其依赖 `Qt6Multimedia`（本机 Qt 未安装），已撤销；保留 `voice()` 信号待后续环境具备时再接入。
+
+### 验证
+- ✅ 全目标编译通过；5 个 headless 冒烟测试全绿（testcore 验证曲线点 + 环境数据 round-trip）
+- ✅ `testreport`：报告含 `data:image/png` 曲线；`SY1000.exe` 启动无回归
+
+### 备注
+- 真实试验保存的结果现在带曲线点，PDF 报告曲线真实化。
+- 环境数据室温/湿度为占位值（无温湿度传感器），设备 ID/型号来自 config.json。
+
+---
+
 ## 2026-08-19 · B5 试验结果管理拆分 ✅
 
 - **提交**：`beecc55` `feat(ui,services): split result management into two tabs (B5)`

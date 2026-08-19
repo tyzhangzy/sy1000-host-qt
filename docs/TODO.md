@@ -20,6 +20,7 @@
 - **C9 config.json 加载**：`ConfigManager`（`src/services/`）从 `config.json` 读设备名/厂商/序列号/日期，接入 `DeviceServiceAdapter::systemInfo()`（原为占位符）；构建后复制 `config.json` 到 exe 目录
 - **（修复）A3 确认框本地化**：泄压确认框文案改为中文操作指令（"泄压操作 / 请打开泄压阀…"），消除英文调试样弹窗观感
 - **B5 试验结果管理拆分**：`ResultManagementPage.qml` 改为双 Tab（测试结果管理 / 试验结果管理），对齐 WPF 两窗口列；`results()` 新增 `sampleModel`/`sampleSerial`
+- **试验数据闭环补全（WPF 未实现部分）**：试验保存时采集 `pressureWeightData` 曲线点（报告真实带曲线）+ 采集保存 `TestEnvironmentData`（室温/湿度/设备ID/型号，JSON 补全序列化）
 
 ---
 
