@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录按钮风格对齐 WPF ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`5ebb989` `feat(ui): login button raised Material style match WPF`
 - **范围**：登录按钮改为 WPF `MaterialDesignRaisedButton` 风格
 
 ### 实现（`qml/LoginPage.qml`）
