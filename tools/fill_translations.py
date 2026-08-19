@@ -63,6 +63,7 @@ D = {
     "System Maintain": "系统维护",
     "Connection Status": "连接状态",
     "Log out": "退出登录",
+    "Return to Main Menu": "返回主菜单",
     "Test Report": "测试报告",
     "Not Tested": "未测试",
     "In Progress": "进行中",
