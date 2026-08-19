@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录页左侧设备信息对齐 WPF ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`194b9c4` `fix(config): login brand info match WPF (DKSY-I / Beijing Dekang)`
 - **范围**：登录页左侧三项（logo → 设备名 → 制造商）的值对齐 WPF `config.json`
 
 ### 核对（读 WPF 源码）
