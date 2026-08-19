@@ -1,8 +1,63 @@
 #include "services/hydroadapter.h"
 
+#include <QVariantMap>
+
 #include "services/testresultservice.h"
 
 namespace sy1000 {
+
+namespace {
+
+// Convert the QML inspection object (camelCase keys) into the model struct.
+void fillInspection(SampleInspectionData &out, const QVariantMap &m)
+{
+    const auto str = [&m](const char *key) {
+        return m.value(QLatin1String(key)).toString().toStdString();
+    };
+    const auto boolean = [&m](const char *key) {
+        return m.value(QLatin1String(key)).toBool();
+    };
+    const auto result = [&m](const char *key) {
+        return static_cast<InspectionResult>(m.value(QLatin1String(key)).toInt(0));
+    };
+
+    out.inspectorName = str("inspectorName");
+    out.inspectorCertNo = str("inspectorCertNo");
+    out.inspectionCompleted = boolean("inspectionCompleted");
+
+    out.externalResult = result("external");
+    out.internalResult = result("internal");
+    out.threadResult = result("thread");
+    out.valveResult = result("valve");
+
+    out.externalThermalDamage = boolean("externalThermalDamage");
+    out.externalScratch = boolean("externalScratch");
+    out.externalWear = boolean("externalWear");
+    out.externalDelamination = boolean("externalDelamination");
+    out.externalDeformation = boolean("externalDeformation");
+    out.externalDefectLocation = str("externalDefectLocation");
+    out.externalOther = str("externalOther");
+
+    out.internalSmell = boolean("internalSmell");
+    out.internalDebris = str("internalDebris");
+    out.internalSurfaceCondition = str("internalSurfaceCondition");
+    out.internalDefectLocation = str("internalDefectLocation");
+    out.internalOther = str("internalOther");
+
+    out.threadSpecification = str("threadSpecification");
+    out.threadCondition = str("threadCondition");
+    out.threadEvaluation = str("threadEvaluation");
+    out.threadOther = str("threadOther");
+
+    out.valveNo = str("valveNo");
+    out.valveThreadCondition = str("valveThreadCondition");
+    out.valveAirTightness = str("valveAirTightness");
+    out.valveDiaphragmReplaced = boolean("valveDiaphragmReplaced");
+    out.valveOther = str("valveOther");
+}
+
+} // namespace
+
 
 HydroTestControllerAdapter::HydroTestControllerAdapter(IHydroDeviceProvider *device, QObject *parent)
     : QObject(parent)
@@ -88,6 +143,16 @@ void HydroTestControllerAdapter::setSample(int index, const QString &model, cons
     m_samples[index] = { model, manufacturer, serialNo, volume };
 }
 
+void HydroTestControllerAdapter::setSampleInspection(int index, const QVariantMap &inspection)
+{
+    if (index < 1 || index > 4)
+        return;
+    fillInspection(m_inspections[index], inspection);
+    // Mark as completed so the saved result reflects that the inspection was done.
+    if (m_inspections[index].inspectionCompleted)
+        m_inspections[index].inspectionDate = std::chrono::system_clock::now();
+}
+
 int HydroTestControllerAdapter::state() const
 {
     return static_cast<int>(m_controller.state());
@@ -142,6 +207,8 @@ UnifiedTestResult HydroTestControllerAdapter::buildResult() const
     h.residualDeformation = d.residualDeformations[1];
     h.residualDeformationRate = d.residualDeformationRates[1];
     h.testResult = d.results[1];
+    // Attach the appearance inspection data captured on the preparation page.
+    sample.appearanceInspection = m_inspections[1];
     sample.overallResult = TestResultService::determineOverallResult(sample.appearanceInspection, h);
 
     TestStandard ts;

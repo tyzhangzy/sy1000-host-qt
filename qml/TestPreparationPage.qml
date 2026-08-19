@@ -7,10 +7,10 @@ Page {
     property string title: qsTr("Test Preparation")
 
     property var sampleData: [
-        { model: "", manufacturer: "", serialNo: "", volume: 6.8 },
-        { model: "", manufacturer: "", serialNo: "", volume: 6.8 },
-        { model: "", manufacturer: "", serialNo: "", volume: 6.8 },
-        { model: "", manufacturer: "", serialNo: "", volume: 6.8 }
+        { model: "", manufacturer: "", serialNo: "", volume: 6.8, inspection: {} },
+        { model: "", manufacturer: "", serialNo: "", volume: 6.8, inspection: {} },
+        { model: "", manufacturer: "", serialNo: "", volume: 6.8, inspection: {} },
+        { model: "", manufacturer: "", serialNo: "", volume: 6.8, inspection: {} }
     ]
 
     Flickable {
@@ -89,8 +89,8 @@ Page {
                                     }
                                 }
                                 Label {
-                                    text: sampleData[index].inspected ? qsTr("Done") : qsTr("Not inspected")
-                                    color: sampleData[index].inspected ? "#2e7d32" : "#c62828"
+                                    text: sampleData[index].inspection && sampleData[index].inspection.inspectionCompleted ? qsTr("Done") : qsTr("Not inspected")
+                                    color: (sampleData[index].inspection && sampleData[index].inspection.inspectionCompleted) ? "#2e7d32" : "#c62828"
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
                             }
@@ -117,6 +117,7 @@ Page {
                         for (var i = 0; i < 4; i++) {
                             var d = sampleData[i]
                             hydro.setSample(i + 1, d.model, d.manufacturer, d.serialNo, d.volume)
+                            hydro.setSampleInspection(i + 1, d.inspection)
                         }
                         stack.push("TestPage.qml")
                     }

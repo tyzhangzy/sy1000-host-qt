@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QString>
 #include <QTimer>
+#include <QVariantMap>
 
 #include "core/controller.h"
 #include "core/ideviceprovider.h"
@@ -34,6 +35,9 @@ public:
     // Sample info (index 1..4) used when persisting the result.
     Q_INVOKABLE void setSample(int index, const QString &model, const QString &manufacturer,
                                const QString &serialNo, double volume);
+    // Full appearance inspection data (index 1..4) captured on the prep page;
+    // written into the saved result via buildResult().
+    Q_INVOKABLE void setSampleInspection(int index, const QVariantMap &inspection);
 
     int state() const;
     QString status() const { return m_status; }
@@ -65,6 +69,7 @@ private:
     QString m_testerName;
     QString m_testerCompany;
     std::array<SampleInfo, 5> m_samples;
+    std::array<SampleInspectionData, 5> m_inspections;
     QTimer m_sampleTimer;
 };
 

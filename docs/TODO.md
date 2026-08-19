@@ -11,6 +11,8 @@
 - 9 个 QML 页面：登录、主菜单、试验准备（含外观检查对话框）、试验页（状态机+实时压力曲线）、结果管理、结果详情、用户管理、系统维护
 - 中英 i18n、Material 风格（Indigo/Amber）、全流程闭环（登录→准备→试验→存结果→查详情）
 - 3 个 headless 冒烟测试全绿；已全部同步 GitHub
+- **A1 外观检查补全**：`AppearanceInspectionDialog.qml` 已重写为四部分完整表单（检验员信息 + External/Internal/Thread/Valve 逐项检查、缺陷位置、其他备注）
+- **C6 外观检查接入结果保存**：`HydroTestControllerAdapter::setSampleInspection()` 接收 QML 检查对象，`buildResult()` 写入 `sample.appearanceInspection` 持久化
 
 ---
 
@@ -19,7 +21,7 @@
 ### A. 未实现的独立界面（3 个）
 | 界面 | 对应原 WPF | 说明 |
 |------|-----------|------|
-| 1. **外观检查窗口补全** | `AppearenceInspectionWindow` | 当前是简化版对话框；需补全：四部分逐项 bool 检查、检验员信息（姓名/证书号/日期）、缺陷位置、"其他"备注 |
+| 1. ~~**外观检查窗口补全**~~ | `AppearenceInspectionWindow` | ✅ 已完成：四部分逐项 bool 检查、检验员信息（姓名/证书号/日期）、缺陷位置、"其他"备注 |
 | 2. **测试报告查看窗口** | `TestReportWindow` | 用 QML 内嵌 PDF 查看（`QPdfView`）显示生成的报告，支持多报告翻页 |
 | 3. **水压试验消息对话框** | `HydroTestMessageWindow` | 状态机弹出操作指令 + OK/取消确认（如"打开泄压阀"、"是否继续"），需接通 `HydroSubTask` 的指令/确认请求 |
 
@@ -32,7 +34,7 @@
 ### C. 功能 / 数据接入
 | 项 | 说明 |
 |----|------|
-| 6. **外观检查接入结果保存** | 把外观检查结果传给 `HydroTestControllerAdapter.buildResult()`，试验完成入库时带上检查数据 |
+| 6. ~~**外观检查接入结果保存**~~ | 把外观检查结果传给 `HydroTestControllerAdapter.buildResult()`，试验完成入库时带上检查数据 | ✅ 已完成：`setSampleInspection()` → `buildResult()` 写入 `sample.appearanceInspection` |
 | 7. **PDF 报告生成** | 用 `QTextDocument`/`QPrinter` 生成试验报告（标题/表单/曲线图），对齐 WPF `TestReportGenerator` |
 | 8. **真实 DeviceManager 接入** | 把 `main.cpp` 的 `SimulatedDeviceProvider` 换成真实 `DeviceManager`（需真机 COM 口），并做 COM 口自动识别 |
 | 9. **config.json 加载** | 建 `ConfigManager`，从 `config.json` 读设备名/厂商/序列号，登录页与系统维护页显示真实信息 |
