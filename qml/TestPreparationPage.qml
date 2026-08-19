@@ -37,7 +37,7 @@ Page {
             anchors.leftMargin: 16
             spacing: 8
             Label { text: "☰"; color: "#212121"; font.pixelSize: 22; anchors.verticalCenter: parent.verticalCenter }
-            Label { text: TitleBar.text; color: "#212121"; font.bold: true; font.pixelSize: 20; anchors.verticalCenter: parent.verticalCenter }
+            Label { text: parent.parent.text; color: "#212121"; font.bold: true; font.pixelSize: 20; anchors.verticalCenter: parent.verticalCenter }
         }
     }
 

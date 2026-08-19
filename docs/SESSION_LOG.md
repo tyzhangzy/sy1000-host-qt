@@ -5,6 +5,15 @@
 
 ---
 
+## 2026-08-19 · 修复卡片黄色标题栏文字不显示 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/TestPreparationPage.qml` 的 `TitleBar` 组件
+- **实现**：文字 Label 由 `text: TitleBar.text` 改为 `text: parent.parent.text`（内联组件中经组件名引用自身属性在 Qt 6 解析不到实例值，导致只剩 ☰ 横杆、无文字）
+- **验证**：✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 标准卡/样品卡黄色标题栏显示字段名（确认方案）✅
 
 - **提交**：`24e96d8` `feat(ui): amber card titles show field names (confirmed)`
