@@ -5,6 +5,23 @@
 
 ---
 
+## 2026-08-19 · D 系列：真实 Logo + 默认中文 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：D11 登录页默认中文、D12 真实 Logo
+
+### 实现
+- **D12 真实 Logo**：复制 WPF `Resources/dklogo.png`（30KB）到 `qml/assets/dklogo.png`；`CMakeLists` 注册资源；`LoginPage.qml` 用 `Image`（PreserveAspectFit）替换原"DKQSY"占位矩形
+- **D11 默认中文**：`src/main.cpp` 启动时 `LanguageHelper::setLanguage("zh_CN")`（对齐 WPF 全中文界面）；`LoginPage` 语言 ComboBox 按 `lang.current()` 显示当前语言
+
+### 验证
+- ✅ `SY1000.exe` 构建成功（dklogo 资源嵌入）；qmllint 无 Error；应用启动无回归
+
+### 备注（D13 字体暂缓）
+- WPF 字体 `NotoSansCJKsc-VF.ttf` / `SourceHanSansSC-VF.ttf` / `SourceHanSerifSC-VF.ttf`（36-59MB）过大，暂不引入仓库；当前用系统字体 + 统一 Indigo/Amber 配色。
+
+---
+
 ## 2026-08-19 · 按 WPF 源码核对修正中文翻译 ✅
 
 - **提交**：`4bce98a` `i18n: align zh_CN translations with original WPF wording`

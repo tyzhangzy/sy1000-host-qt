@@ -26,20 +26,15 @@ Item {
             anchors.centerIn: parent
             spacing: 24
 
-            // Logo placeholder (original uses dklogo.png).
-            Rectangle {
-                width: 260
-                height: 150
-                radius: 10
-                color: "#193660"
+            // Real product logo (from original WPF Resources/dklogo.png).
+            Image {
+                id: logoImg
+                source: "qrc:/qml/assets/dklogo.png"
+                width: 300
+                height: 180
+                fillMode: Image.PreserveAspectFit
                 anchors.horizontalCenter: parent.horizontalCenter
-                Label {
-                    text: "DKSY"
-                    color: "white"
-                    font.pixelSize: 52
-                    font.bold: true
-                    anchors.centerIn: parent
-                }
+                smooth: true
             }
 
             Label {
@@ -143,6 +138,7 @@ Item {
                     ComboBox {
                         width: 150
                         model: ["English", "中文"]
+                        currentIndex: lang.current() === "zh_CN" ? 1 : 0
                         onActivated: (index) => lang.setLanguage(index === 0 ? "en" : "zh_CN")
                     }
                 }

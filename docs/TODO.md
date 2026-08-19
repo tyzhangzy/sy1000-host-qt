@@ -23,6 +23,8 @@
 - **试验数据闭环补全（WPF 未实现部分）**：试验保存时采集 `pressureWeightData` 曲线点（报告真实带曲线）+ 采集保存 `TestEnvironmentData`（室温/湿度/设备ID/型号，JSON 补全序列化）
 - **UI 遗漏补齐（WPF↔Qt 核对）**：样品卡补"使用单位(UserCompany)"字段；结果详情页补外观检查4项结果显示；主菜单补"连接状态"按钮；修复 `ResultDetailsPage.qml` 预存的 `function row()` 语法错误
 - **中文翻译文件补全**：用 `lupdate` 从 QML 源重新生成 `i18n/sy1000_zh_CN.ts`（178 个 qsTr），全部填中文（脚本 `tools/fill_translations.py`），0 unfinished，lrelease 生成 qm 嵌入
+- **D11 登录页默认中文 + D12 真实 Logo**：默认语言改为 zh_CN（对齐 WPF 中文界面）；引入 WPF `Resources/dklogo.png` 到登录页替换占位矩形
+- **D13 字体暂缓**：WPF 字体（Noto/SourceHan CJK VF，36-59MB）过大暂不引入仓库，仅用系统字体 + 统一 Indigo/Amber 配色
 
 ---
 
@@ -53,8 +55,8 @@
 ### D. 细节微调（布局/样式对齐 WPF）
 | 项 | 说明 |
 |----|------|
-| 11. 登录页中文 | WPF 为中文界面（"用 户 登 录 / 登 录"），微调默认语言或补充中文文案 |
-| 12. 真实 Logo | 引入 `dklogo.png`（原 WPF Resources），替换占位矩形 |
+| 11. ~~**登录页中文**~~ | WPF 为中文界面（"用 户 登 录 / 登 录"），微调默认语言或补充中文文案 | ✅ 默认语言改为 zh_CN |
+| 12. ~~**真实 Logo**~~ | 引入 `dklogo.png`（原 WPF Resources），替换占位矩形 | ✅ 引入 `qml/assets/dklogo.png` |
 | 13. 配色/字体统一 | 统一 Indigo/Amber 用色；接入思源/Noto 字体（Noto Sans SC / Noto Serif SC），对齐字号字重 |
 | 14. 控件样式 | 按钮/卡片 hover、圆角、内边距、卡片阴影（Elevation）精细化 |
 

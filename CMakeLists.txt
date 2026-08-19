@@ -124,6 +124,7 @@ qt_add_resources(SY1000 "app"
     qml/AppearanceInspectionDialog.qml
     qml/HydroTestMessageDialog.qml
     qml/ReportViewPage.qml
+    qml/assets/dklogo.png
 )
 
 # i18n: lrelease compiles ts -> qm, embedded under /i18n/

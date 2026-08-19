@@ -51,9 +51,11 @@ int main(int argc, char *argv[])
                              qWarning().noquote() << w.toString();
                      });
 
-    // Language switcher (default EN, can switch to zh_CN). Exposed to QML as "lang".
+    // Language switcher (default zh_CN to match the original WPF Chinese UI;
+    // can switch to EN). Exposed to QML as "lang".
     LanguageHelper langHelper(&engine);
     engine.rootContext()->setContextProperty(QStringLiteral("lang"), &langHelper);
+    langHelper.setLanguage(QStringLiteral("zh_CN"));
 
     // Login service (SQLite users table). Exposed to QML as "loginService".
     LoginService loginService;
