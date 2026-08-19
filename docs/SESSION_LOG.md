@@ -5,6 +5,20 @@
 
 ---
 
+## 2026-08-19 · 回退 5 卡标题栏改动，恢复第一个字段标签 + 修复登录 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：撤销 `f53f31b` 的 5 卡标题栏改动，恢复字段区第一个控件标签
+
+### 实现
+- **恢复** 标准卡第一个字段"试验标准"标签、样品卡第一个字段"气瓶型号"标签；标题栏回到"输入试验标准"/"输入 N 号气瓶信息"
+- **修复**：`LoginPage.qml` 登录欢迎文字 `loginService.username()` → `loginService.username`（Q_PROPERTY 同名，调用报 TypeError）
+
+### 验证
+- ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 准备页 5 卡黄色标题栏内容调整 ✅
 
 - **提交**：`f53f31b` `feat(ui): prep card amber titles show Test Standard / Cylinder Model`

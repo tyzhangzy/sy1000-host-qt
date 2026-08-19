@@ -163,7 +163,7 @@ Item {
                     onClicked: {
                         if (loginService.tryLogin(userBox.currentText, passwordField.text)) {
                             statusLabel.color = "#2e7d32"
-                            statusLabel.text = qsTr("Welcome, ") + loginService.username() +
+                            statusLabel.text = qsTr("Welcome, ") + loginService.username +
                                                (loginService.isAdmin() ? qsTr(" (admin)") : "")
                         } else {
                             statusLabel.color = "#c62828"

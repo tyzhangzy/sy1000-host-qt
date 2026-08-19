@@ -954,65 +954,67 @@
         <translation>返回主菜单</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="228"/>
         <source>Cylinder Model %1</source>
         <translation>气瓶型号 %1</translation>
     </message>
     <message>
+        <location filename="../qml/TestPreparationPage.qml" line="167"/>
         <source>Input Test Standard</source>
         <translation>输入试验标准</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="167"/>
+        <location filename="../qml/TestPreparationPage.qml" line="177"/>
         <source>Test Standard</source>
         <translation>试验标准</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="178"/>
+        <location filename="../qml/TestPreparationPage.qml" line="181"/>
         <source>Working Pressure</source>
         <translation>公称工作压力</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="185"/>
+        <location filename="../qml/TestPreparationPage.qml" line="188"/>
         <source>Testing Pressure</source>
         <translation>试验压力</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="192"/>
+        <location filename="../qml/TestPreparationPage.qml" line="195"/>
         <source>Hold Time</source>
         <translation>保压时间</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="195"/>
+        <location filename="../qml/TestPreparationPage.qml" line="198"/>
         <source>sec</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="199"/>
+        <location filename="../qml/TestPreparationPage.qml" line="202"/>
         <source>Residual Deformation Rate</source>
         <translation>允许容积残余变形率</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="208"/>
-        <location filename="../qml/TestPreparationPage.qml" line="284"/>
+        <location filename="../qml/TestPreparationPage.qml" line="211"/>
+        <location filename="../qml/TestPreparationPage.qml" line="290"/>
         <source>Confirm</source>
         <translation>确 定</translation>
     </message>
     <message>
+        <location filename="../qml/TestPreparationPage.qml" line="231"/>
         <source>Input Cylinder %1 Info</source>
         <translation>输入 %1 号气瓶信息</translation>
     </message>
     <message>
+        <location filename="../qml/TestPreparationPage.qml" line="241"/>
         <source>Cylinder Model</source>
         <translation>气瓶型号</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="280"/>
+        <location filename="../qml/TestPreparationPage.qml" line="286"/>
         <source>Appearance Inspection</source>
         <translation>外观检测评估</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="311"/>
+        <location filename="../qml/TestPreparationPage.qml" line="317"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -1021,32 +1023,32 @@
         <translation>开始试验</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="321"/>
+        <location filename="../qml/TestPreparationPage.qml" line="327"/>
         <source>Please enter cylinder model.</source>
         <translation>请输入气瓶型号。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="322"/>
+        <location filename="../qml/TestPreparationPage.qml" line="328"/>
         <source>Please enter manufacturer.</source>
         <translation>请输入制造厂商。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="323"/>
+        <location filename="../qml/TestPreparationPage.qml" line="329"/>
         <source>Please enter a valid cylinder volume.</source>
         <translation>请输入有效的气瓶容积。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="324"/>
+        <location filename="../qml/TestPreparationPage.qml" line="330"/>
         <source>Please enter user company.</source>
         <translation>请输入使用单位。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="325"/>
+        <location filename="../qml/TestPreparationPage.qml" line="331"/>
         <source>Please enter serial No.</source>
         <translation>请输入产品编号。</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="326"/>
+        <location filename="../qml/TestPreparationPage.qml" line="332"/>
         <source>Please complete appearance inspection before saving.</source>
         <translation>请完成外观检测评估后再保存。</translation>
     </message>
@@ -1079,22 +1081,22 @@
         <translation type="vanished">产品型号</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="241"/>
+        <location filename="../qml/TestPreparationPage.qml" line="247"/>
         <source>Manufacturer</source>
         <translation>生产厂家</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="247"/>
+        <location filename="../qml/TestPreparationPage.qml" line="253"/>
         <source>Cylinder Volume</source>
         <translation>气瓶容积</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="262"/>
+        <location filename="../qml/TestPreparationPage.qml" line="268"/>
         <source>User Company</source>
         <translation>使用单位</translation>
     </message>
     <message>
-        <location filename="../qml/TestPreparationPage.qml" line="268"/>
+        <location filename="../qml/TestPreparationPage.qml" line="274"/>
         <source>Serial No</source>
         <translation>产品编号</translation>
     </message>

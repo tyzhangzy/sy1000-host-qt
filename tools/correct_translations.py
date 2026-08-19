@@ -78,6 +78,7 @@ FIX = {
     "Hydrostatic Test": "水压试验",
     "Test Standard": "试验标准",
     "Cylinder Model %1": "气瓶型号 %1",
+    "Cylinder Model": "气瓶型号",
 }
 
 

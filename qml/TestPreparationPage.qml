@@ -164,7 +164,7 @@ Page {
                     radius: 8; color: "white"; border.color: "#E0E0E0"
 
                     TitleBar {
-                        text: qsTr("Test Standard")
+                        text: qsTr("Input Test Standard")
                         anchors.top: parent.top; anchors.left: parent.left; anchors.right: parent.right
                     }
 
@@ -173,7 +173,10 @@ Page {
                         anchors.left: parent.left; anchors.right: parent.right
                         anchors.leftMargin: 16; anchors.rightMargin: 16
                         spacing: 14
-                        TextField { width: parent.width; text: standardName; onTextChanged: standardName = text }
+                        Column { spacing: 4; width: parent.width
+                            Label { text: qsTr("Test Standard"); font.pixelSize: 15 }
+                            TextField { width: parent.width; text: standardName; onTextChanged: standardName = text }
+                        }
                         Column { spacing: 4; width: parent.width
                             Label { text: qsTr("Working Pressure"); font.pixelSize: 15 }
                             Row { spacing: 6
@@ -225,7 +228,7 @@ Page {
                         radius: 8; color: "white"; border.color: "#E0E0E0"
 
                         TitleBar {
-                            text: qsTr("Cylinder Model %1").arg(index + 1)
+                            text: qsTr("Input Cylinder %1 Info").arg(index + 1)
                             anchors.top: parent.top; anchors.left: parent.left; anchors.right: parent.right
                         }
 
@@ -234,9 +237,12 @@ Page {
                             anchors.left: parent.left; anchors.right: parent.right
                             anchors.leftMargin: 16; anchors.rightMargin: 16
                             spacing: 12
-                            TextField { width: parent.width
-                                text: sampleData[index].model
-                                onTextChanged: sampleData[index].model = text }
+                            Column { spacing: 4; width: parent.width
+                                Label { text: qsTr("Cylinder Model"); font.pixelSize: 15 }
+                                TextField { width: parent.width
+                                    text: sampleData[index].model
+                                    onTextChanged: sampleData[index].model = text }
+                            }
                             Column { spacing: 4; width: parent.width
                                 Label { text: qsTr("Manufacturer"); font.pixelSize: 15 }
                                 TextField { width: parent.width
