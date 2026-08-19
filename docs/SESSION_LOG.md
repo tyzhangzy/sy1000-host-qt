@@ -5,6 +5,19 @@
 
 ---
 
+## 2026-08-19 · 下移电源按钮避免顶部超出 header ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：电源按钮底部对齐标题标签后，其顶部超出 header 上边界，整体下移 6px
+
+### 修复
+- `qml/Main.qml`：`quitBtn` 保留 `anchors.bottom: titleLabel.bottom`，新增 `transform: Translate { y: 6 }` 将整个按钮下移 6px，使顶部位于 header 内
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；应用启动无回归
+
+---
+
 ## 2026-08-19 · 修正电源按钮外圈/内圈 y 坐标不一致 ✅
 
 - **提交**：`46dcfbb` `fix(ui): align power glyph center with outer circle on quit button`
