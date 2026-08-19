@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 外观检查四组布局统一 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`b48f6de` `feat(ui): unify layout of all four inspection groups`
 - **范围**：`qml/AppearanceInspectionPage.qml` 内部/螺纹/阀三组
 - **实现**：三组改为与外部检查一致——字段全部用"标签:下划线输入框"竖排（标签 160、输入框填满、底部对齐），复选框单独一行，评定结果 3 单选框；仅标题文字不同
 - **验证**：✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
