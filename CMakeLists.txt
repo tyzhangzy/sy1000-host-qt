@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
 # Qt 6: Quick (QML UI) + QuickControls2 + LinguistTools (i18n) + Sql (SQLite) + SerialPort
-find_package(Qt6 6.2 REQUIRED COMPONENTS Quick QuickControls2 LinguistTools Sql SerialPort)
+find_package(Qt6 6.2 REQUIRED COMPONENTS Quick QuickControls2 LinguistTools Sql SerialPort PrintSupport)
 qt_standard_project_setup()
 
 # Data model layer (pure C++ standard library, cross-platform; no Qt dependency)
@@ -36,6 +36,13 @@ add_library(core STATIC
 target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(core PUBLIC models Qt6::Core)
 
+# Report layer: PDF test report generation (QTextDocument + QPrinter)
+add_library(report STATIC
+  src/report/testreportgenerator.cpp
+)
+target_include_directories(report PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(report PUBLIC models Qt6::Core Qt6::Gui Qt6::PrintSupport)
+
 # Headless smoke test for the data/services layer
 qt_add_executable(testcore
   src/tests/testcore.cpp
@@ -54,6 +61,12 @@ qt_add_executable(testcontroller
 )
 target_link_libraries(testcontroller PRIVATE core models Qt6::Core)
 
+# Headless smoke test for PDF report generation
+qt_add_executable(testreport
+  src/tests/testreport.cpp
+)
+target_link_libraries(testreport PRIVATE report models Qt6::Core Qt6::Gui Qt6::PrintSupport)
+
 # Services layer (Qt bridge: login + result + hydro adapter), depends on dao + models + core
 add_library(services STATIC
   src/services/loginservice.cpp
@@ -64,7 +77,7 @@ add_library(services STATIC
   src/services/deviceservice.cpp
 )
 target_include_directories(services PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(services PUBLIC dao models core devices Qt6::Core Qt6::Sql)
+target_link_libraries(services PUBLIC dao models core devices report Qt6::Core Qt6::Sql Qt6::Gui Qt6::PrintSupport)
 
 # Devices layer (QSerialPort + Modbus RTU), cross-platform
 add_library(devices STATIC
@@ -103,6 +116,7 @@ qt_add_resources(SY1000 "app"
     qml/SystemMaintainPage.qml
     qml/AppearanceInspectionDialog.qml
     qml/HydroTestMessageDialog.qml
+    qml/ReportViewPage.qml
 )
 
 # i18n: lrelease compiles ts -> qm, embedded under /i18n/

@@ -5,6 +5,38 @@
 
 ---
 
+## 2026-08-19 · C7 PDF 报告生成 + A2 报告查看 ✅
+
+- **提交**：待填（本次改动提交后补 hash）
+- **范围**：`docs/TODO.md` 建议顺序第 5 项（报告闭环）
+
+### 说明
+- 检查到 Qt 安装中 **无 Qt Pdf 模块（QPdfView 不可用）**，但 `Qt6PrintSupport`（QPrinter）可用。
+
+### C7 PDF 报告生成
+- 新增 `src/report/testreportgenerator.h/.cpp`：`TestReportGenerator`
+  - `buildHtml(result)`：HTML 排版（标题/检验员/标准/样品/水压数据表/外观检查/总体结果），内嵌压力曲线图（`chartDataUri`，base64 PNG）
+  - `generatePdf(result, outPath)`：`QTextDocument + QPrinter`（A4）输出 PDF，路径 `Documents/水压测试结果/{mfg}_{serial}_{yyyyMMdd_HHmm}/{mfg}_{serial}_试验报告.pdf`
+- `CMakeLists.txt`：新增 `report` 库（链 PrintSupport）+ `testreport` 测试；services 链入 report
+- `src/services/resultservice.h/.cpp`：新增 `reportData(id)`（报告字段 map）与 `generatePdf(id)`
+- `src/tests/testreport.cpp`：headless 测试（用 `QGuiApplication`，QPrinter 需要字体数据库）验证 PDF 生成
+
+### A2 报告查看（替代方案）
+- 新建 `qml/ReportViewPage.qml`：A4 风格报告预览（原生渲染报告字段）+ "Generate & Open PDF" 按钮（`generatePdf` 后 `Qt.openUrlExternally`）
+- `qml/ResultDetailsPage.qml`：新增 "View Report" 按钮导航
+- `CMakeLists.txt`：注册 `ReportViewPage.qml`
+
+### 验证
+- ✅ 全目标编译通过（report.lib / testreport.exe / SY1000.exe）；4 个 headless 冒烟测试全绿
+- ✅ `testreport`：生成 56KB PDF、html 含 `data:image/png` 曲线图、REPORT SMOKE PASS
+- ✅ `ReportViewPage.qml` qmllint 零错误；`SY1000.exe` 启动无回归
+
+### 备注
+- 修复两处编译问题：① 函数误入匿名命名空间导致 `}` 不匹配；② `PressureWeightPoint.timestamp` 为 `DateTime`（time_point）需转 epoch 毫秒再绘图。
+- 若后续目标机需要内嵌 PDF 查看，可安装 Qt Pdf 模块后改用 `QPdfView`。
+
+---
+
 ## 2026-08-19 · A3 水压试验消息对话框 ✅
 
 - **提交**：`ba9bdf8` `feat(core,ui): blocking operator confirm dialog for hydrostatic test (A3)`

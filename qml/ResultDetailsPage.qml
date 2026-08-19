@@ -65,7 +65,15 @@ Page {
                 Column { Label{text: qsTr("Resid Def")}; Label{text:d.residualDeformation||"-"} }
             }
 
-            Button { text: qsTr("Back"); onClicked: stack.pop() }
+            Row {
+                spacing: 10
+                Button {
+                    text: qsTr("View Report")
+                    font.bold: true
+                    onClicked: stack.push("ReportViewPage.qml", { resultId: detailPage.resultId })
+                }
+                Button { text: qsTr("Back"); onClicked: stack.pop() }
+            }
         }
     }
 

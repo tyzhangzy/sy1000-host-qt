@@ -17,6 +17,10 @@ public:
     Q_INVOKABLE QVariantList results() const;
     // Full detail of one result by id.
     Q_INVOKABLE QVariantMap details(int id) const;
+    // Report-oriented data (all fields for the report preview page) by id.
+    Q_INVOKABLE QVariantMap reportData(int id) const;
+    // Generate a PDF report for the result; returns the file path ("" on failure).
+    Q_INVOKABLE QString generatePdf(int id);
     Q_INVOKABLE void removeResult(int id);
 };
 

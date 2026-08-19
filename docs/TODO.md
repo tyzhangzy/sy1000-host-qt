@@ -15,6 +15,8 @@
 - **C6 外观检查接入结果保存**：`HydroTestControllerAdapter::setSampleInspection()` 接收 QML 检查对象，`buildResult()` 写入 `sample.appearanceInspection` 持久化
 - **B4 4 样品双轴曲线**：`RealTimeChart` 扩为多序列 + 双 Y 轴（左轴压力 MPa、右轴重量 g），试验页显示压力曲线 + 1-4 号样品曲线（`addSeries`/`addSeriesValue`/`weightSample` 信号）
 - **A3 水压试验消息对话框**：`HydroSubTask` 支持阻塞式确认请求（`requestConfirmation`/`confirmResponse`），`ReleaseTask` 泄压前弹窗"打开泄压阀并确认"；`HydroTestMessageDialog.qml` 接通 `hydro.respondConfirm()`
+- **C7 PDF 报告生成**：`TestReportGenerator`（`src/report/`）用 `QTextDocument + QPrinter` 生成试验报告 PDF（标题/表单/内嵌压力曲线图），输出到 `Documents/水压测试结果/{mfg}_{serial}_{时间戳}/`
+- **A2 测试报告查看**：由于 Qt Pdf 模块未安装，改用 A4 风格 QML 报告预览页（`ReportViewPage.qml`）+ 一键生成并用系统查看器打开 PDF
 
 ---
 
@@ -24,7 +26,7 @@
 | 界面 | 对应原 WPF | 说明 |
 |------|-----------|------|
 | 1. ~~**外观检查窗口补全**~~ | `AppearenceInspectionWindow` | ✅ 已完成：四部分逐项 bool 检查、检验员信息（姓名/证书号/日期）、缺陷位置、"其他"备注 |
-| 2. **测试报告查看窗口** | `TestReportWindow` | 用 QML 内嵌 PDF 查看（`QPdfView`）显示生成的报告，支持多报告翻页 |
+| 2. ~~**测试报告查看窗口**~~ | `TestReportWindow` | 用 QML 内嵌 PDF 查看（`QPdfView`）显示生成的报告，支持多报告翻页 | ✅ 已完成（替代方案）：`ReportViewPage.qml` 报告预览 + 系统查看器打开 PDF（Qt Pdf 模块未安装） |
 | 3. ~~**水压试验消息对话框**~~ | `HydroTestMessageWindow` | 状态机弹出操作指令 + OK/取消确认（如"打开泄压阀"、"是否继续"），需接通 `HydroSubTask` 的指令/确认请求 | ✅ 已完成：阻塞式确认请求 + 泄压确认弹窗 |
 
 ### B. 页面增强
@@ -37,7 +39,7 @@
 | 项 | 说明 |
 |----|------|
 | 6. ~~**外观检查接入结果保存**~~ | 把外观检查结果传给 `HydroTestControllerAdapter.buildResult()`，试验完成入库时带上检查数据 | ✅ 已完成：`setSampleInspection()` → `buildResult()` 写入 `sample.appearanceInspection` |
-| 7. **PDF 报告生成** | 用 `QTextDocument`/`QPrinter` 生成试验报告（标题/表单/曲线图），对齐 WPF `TestReportGenerator` |
+| 7. ~~**PDF 报告生成**~~ | 用 `QTextDocument`/`QPrinter` 生成试验报告（标题/表单/曲线图），对齐 WPF `TestReportGenerator` | ✅ 已完成：`TestReportGenerator` + 内嵌曲线图 + `testreport` 测试 |
 | 8. **真实 DeviceManager 接入** | 把 `main.cpp` 的 `SimulatedDeviceProvider` 换成真实 `DeviceManager`（需真机 COM 口），并做 COM 口自动识别 |
 | 9. **config.json 加载** | 建 `ConfigManager`，从 `config.json` 读设备名/厂商/序列号，登录页与系统维护页显示真实信息 |
 | 10. **数据库迁移工具** | LiteDB → SQLite 数据迁移（历史用户/试验结果导入 `sy1000_qt.db`）|
