@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 修复 FieldRow 字段横线宽度为 0 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`4caf04b` `fix(ui): FieldRow width cycle made field/line width 0`
 - **范围**：`qml/FieldRow.qml`
 - **根因**：FieldRow（Row）未设 `width`，内部 `TextField width: root.width - 168` 与 Row 宽度形成循环依赖 → 输入框/横线宽度为 0，外观检查"缺陷位置描述:"/"其他:"等字段横线不显示
 - **修复**：FieldRow 加 `width: parent.width`
