@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-08-19 · 登录卡阴影四周可见（补左侧）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：登录卡阴影此前只向下，左侧无阴影；改为四周可见（MaterialDesign DropShadowEffect 特性）
+
+### 修复（`qml/LoginPage.qml`）
+- 阴影层改用**负 margin**（`leftMargin/rightMargin: -6..-1`、`topMargin: -2..0`、`bottomMargin: -18..-3`），使阴影向**四周**延伸，底部最明显
+- 截图验证：卡片左侧 x1300→1340 出现阴影渐变（R=178→254），此前为纯白
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；qmllint 无 Error；截图确认左/下阴影可见
+- ⚠️ 临时截图 `login_shot4/5/6.png` 可能被进程占用（untracked，未提交），重启后建议删除
+
+---
+
 ## 2026-08-19 · 登录卡阴影增强（确保可见）✅
 
 - **提交**：`73fbbb0` `feat(ui): strengthen login card downward shadow to be clearly visible`

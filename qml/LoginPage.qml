@@ -67,14 +67,14 @@ Item {
         height: parent.height
         anchors.left: brandArea.right
 
-        // Simulate WPF MaterialDesign Elevation Dp12: a soft, mostly-downward
-        // shadow (DropShadowEffect Direction 270). Qt has no DropShadowEffect, so
-        // layered translucent rounded rects approximate the soft downward blur.
-        // bottomMargin is negative so the shadow extends below the card.
-        Rectangle { radius: 16; color: "#33000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 2; anchors.bottomMargin: -22 }
-        Rectangle { radius: 16; color: "#2A000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 2; anchors.bottomMargin: -15 }
-        Rectangle { radius: 16; color: "#20000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 2; anchors.bottomMargin: -9 }
-        Rectangle { radius: 16; color: "#14000000"; anchors.fill: loginCard; anchors.leftMargin: 2; anchors.rightMargin: 2; anchors.topMargin: 2; anchors.bottomMargin: -4 }
+        // Simulate WPF MaterialDesign Elevation Dp12 (DropShadowEffect): shadow
+        // is visible on all sides, strongest at the bottom. Qt has no
+        // DropShadowEffect, so layered translucent rounded rects approximate it.
+        // Negative margins extend the shadow beyond every edge of the card.
+        Rectangle { radius: 16; color: "#2E000000"; anchors.fill: loginCard; anchors.leftMargin: -6; anchors.rightMargin: -6; anchors.topMargin: -2; anchors.bottomMargin: -18 }
+        Rectangle { radius: 16; color: "#26000000"; anchors.fill: loginCard; anchors.leftMargin: -4; anchors.rightMargin: -4; anchors.topMargin: -1; anchors.bottomMargin: -12 }
+        Rectangle { radius: 16; color: "#1C000000"; anchors.fill: loginCard; anchors.leftMargin: -2; anchors.rightMargin: -2; anchors.topMargin: 0;  anchors.bottomMargin: -7 }
+        Rectangle { radius: 16; color: "#12000000"; anchors.fill: loginCard; anchors.leftMargin: -1; anchors.rightMargin: -1; anchors.topMargin: 0;  anchors.bottomMargin: -3 }
         // Login card (matches WPF Card: 400 wide, radius 15, Elevation Dp12).
         Rectangle {
             id: loginCard
