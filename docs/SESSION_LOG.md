@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 启动界面无边框（对齐 WPF）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`e011ff2` `feat(ui): frameless maximized window to match WPF login`
 - **范围**：登录页去掉系统标题栏，对齐 WPF `LoginWindow`（`WindowStyle=None` 无边框、最大化）
 
 ### 实现
