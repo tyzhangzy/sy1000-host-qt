@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 中文翻译文件补全 + UI 遗漏补齐 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`f97fd9c` `feat(i18n,ui): complete zh_CN translations + WPF UI parity fixes`
 - **范围**：① 补全中英 i18n 翻译文件；② 按 WPF↔Qt 核对补齐 UI 遗漏
 
 ### 中文翻译文件补全
