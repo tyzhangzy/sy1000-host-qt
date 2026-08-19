@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · D 系列：真实 Logo + 默认中文 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`3e4162f` `feat(ui): real product logo + default zh_CN UI (D11, D12)`
 - **范围**：D11 登录页默认中文、D12 真实 Logo
 
 ### 实现
