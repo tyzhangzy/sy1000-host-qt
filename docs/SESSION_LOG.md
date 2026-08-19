@@ -5,6 +5,15 @@
 
 ---
 
+## 2026-08-19 · 外观检查改为子页面（用全局标题栏）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/AppearanceInspectionPage.qml`
+- **实现**：去掉 `hideGlobalHeader` 和自绘标题栏，改用 Main.qml 全局标题栏（显示"复合气瓶外观检查评估表"），页面作为子页面在标题栏下方显示内容，不再覆盖整个窗口
+- **验证**：✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 修复 FieldRow 字段横线宽度为 0 ✅
 
 - **提交**：`4caf04b` `fix(ui): FieldRow width cycle made field/line width 0`

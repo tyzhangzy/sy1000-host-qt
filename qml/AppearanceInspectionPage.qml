@@ -2,14 +2,13 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 
-// "复合气瓶外观检查评估表" — page composed of four independent inspection
-// group components (External / Internal / Thread / Valve).
+// "复合气瓶外观检查评估表" — a sub-page (uses the global app header), composed
+// of four independent inspection group components (External/Internal/Thread/Valve).
 Page {
     id: page
     title: qsTr("Appearance Inspection")
     property int sampleIndex: 0
     property var target: ({})
-    readonly property bool hideGlobalHeader: true
 
     function insp() {
         if (target.inspection === undefined || target.inspection === null)
@@ -41,52 +40,38 @@ Page {
         valGroup.reset()
     }
 
-    Column {
+    // Content area (below the global app header).
+    ScrollView {
         anchors.fill: parent
+        clip: true
+        contentWidth: availableWidth
+        Column {
+            width: parent.width
+            anchors.margins: 20
+            spacing: 18
 
-        // Title bar: "复合气瓶外观检查评估表"
-        Rectangle {
-            width: parent.width; height: 64; color: "#303F9F"
-            Label {
-                anchors.centerIn: parent
-                text: qsTr("Appearance Inspection")
-                color: "white"; font.pixelSize: 26; font.bold: true
-            }
-        }
+            InspectionExternal { id: extGroup; inspection: page.insp() }
+            InspectionInternal { id: intGroup; inspection: page.insp() }
+            InspectionThread { id: thrGroup; inspection: page.insp() }
+            InspectionValve { id: valGroup; inspection: page.insp() }
 
-        // Content: just load the four group components.
-        ScrollView {
-            width: parent.width; height: parent.height - 64
-            clip: true
-            contentWidth: availableWidth
-            Column {
-                width: parent.width
-                anchors.margins: 20
-                spacing: 18
-
-                InspectionExternal { id: extGroup; inspection: page.insp() }
-                InspectionInternal { id: intGroup; inspection: page.insp() }
-                InspectionThread { id: thrGroup; inspection: page.insp() }
-                InspectionValve { id: valGroup; inspection: page.insp() }
-
-                // 操作按钮
-                Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 16
-                    Button {
-                        text: qsTr("Save and Close")
-                        width: 220; height: 44
-                        Material.background: "#303F9F"; Material.foreground: "white"
-                        font.pixelSize: 16; font.bold: true
-                        onClicked: { page.saveAll(); stack.pop() }
-                    }
-                    Button {
-                        text: qsTr("Reset")
-                        width: 220; height: 44
-                        Material.background: "#303F9F"; Material.foreground: "white"
-                        font.pixelSize: 16; font.bold: true
-                        onClicked: page.resetAll()
-                    }
+            // 操作按钮
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 16
+                Button {
+                    text: qsTr("Save and Close")
+                    width: 220; height: 44
+                    Material.background: "#303F9F"; Material.foreground: "white"
+                    font.pixelSize: 16; font.bold: true
+                    onClicked: { page.saveAll(); stack.pop() }
+                }
+                Button {
+                    text: qsTr("Reset")
+                    width: 220; height: 44
+                    Material.background: "#303F9F"; Material.foreground: "white"
+                    font.pixelSize: 16; font.bold: true
+                    onClicked: page.resetAll()
                 }
             }
         }
