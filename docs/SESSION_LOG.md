@@ -5,6 +5,14 @@
 
 ---
 
+## 2026-08-19 · 登出菜单按钮标题居中 ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：`qml/MainMenuPage.qml` 登出按钮内容改为 `Item + Row(anchors.centerIn)` 确保图标+标题整体居中
+- **验证**：✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 主菜单按钮配色/背景/图标对齐 WPF ✅
 
 - **提交**：`2a9f3e8` `feat(ui): menu card colors + logout button bg/icon match WPF`

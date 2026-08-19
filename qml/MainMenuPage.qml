@@ -109,11 +109,14 @@ Page {
         anchors.margins: 50
         onClicked: stack.replace("LoginPage.qml")
 
-        contentItem: Row {
-            anchors.centerIn: parent
-            spacing: 8
-            Label { text: "⇤"; color: "white"; font.pixelSize: 26 }
-            Label { text: qsTr("Log out Menu"); color: "white"; font.pixelSize: 20; font.bold: true }
+        contentItem: Item {
+            anchors.fill: parent
+            Row {
+                anchors.centerIn: parent
+                spacing: 8
+                Label { text: "⇤"; color: "white"; font.pixelSize: 26 }
+                Label { text: qsTr("Log out Menu"); color: "white"; font.pixelSize: 20; font.bold: true }
+            }
         }
         background: Rectangle {
             radius: 6
