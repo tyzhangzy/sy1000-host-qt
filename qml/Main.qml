@@ -16,34 +16,73 @@ ApplicationWindow {
     // Top title bar (matches WPF MenuWindow ColorZone header). Hidden on the
     // login page (WPF LoginWindow is frameless with no header).
     header: Rectangle {
-        height: 60
+        height: 80
         color: "#303F9F"
         visible: stack.depth > 1
+
+        // Left: device name (config) + connection status button (WPF header).
         Row {
             anchors.left: parent.left
             anchors.leftMargin: 20
             anchors.verticalCenter: parent.verticalCenter
+            spacing: 16
             Label {
-                text: qsTr("SY1000")
+                text: deviceService.deviceName()
                 color: "white"
-                font.pixelSize: 26
+                font.pixelSize: 24
                 font.bold: true
-            }
-            Label {
-                id: titleLabel
-                text: "  |  " + stack.currentItem.title
-                color: "#EEEEEE"
-                font.pixelSize: 20
                 anchors.verticalCenter: parent.verticalCenter
             }
+            Button {
+                text: qsTr("Connection Status")
+                font.bold: true
+                onClicked: ToolTip.show(deviceService.connectDevices(), 3000)
+                background: Rectangle { color: "white"; radius: 4 }
+            }
         }
+
+        // Center: current page title (WPF "主菜单" header).
         Label {
+            id: titleLabel
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            text: stack.currentItem.title
+            color: "white"
+            font.pixelSize: 24
+            font.bold: true
+        }
+
+        // Right: logged-in user + quit button (WPF header QuitButton).
+        Row {
             anchors.right: parent.right
             anchors.rightMargin: 20
             anchors.verticalCenter: parent.verticalCenter
-            text: loginService.username() !== "" ? loginService.username() : ""
-            color: "white"
-            font.pixelSize: 18
+            spacing: 14
+            Label {
+                text: loginService.username() !== "" ? loginService.username() : ""
+                color: "white"
+                font.pixelSize: 18
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Item {
+                id: quitBtn
+                width: 40; height: 40
+                property bool hovered: false
+                Rectangle {
+                    anchors.fill: parent
+                    radius: height / 2
+                    color: quitBtn.hovered ? "#193660" : "#1E2A5A"
+                    border.color: "white"; border.width: 2
+                }
+                Label { text: "⏻"; anchors.centerIn: parent; color: "white"; font.pixelSize: 24 }
+                MouseArea {
+                    anchors.fill: parent; hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onEntered: quitBtn.hovered = true
+                    onExited: quitBtn.hovered = false
+                    onClicked: Qt.quit()
+                }
+            }
         }
     }
 

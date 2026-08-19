@@ -5,6 +5,30 @@
 
 ---
 
+## 2026-08-19 · 补全主菜单顶栏（DeviceName + 连接状态 + 退出按钮）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：核对 WPF `MenuWindow` 顶栏后补全 Qt 顶栏缺失项
+
+### 核对发现的缺失
+| WPF 顶栏 | Qt 之前 |
+|------|------|
+| DeviceName（config） | 硬编码 "SY1000" |
+| 连接状态按钮 | 无（放 MainMenuPage 右下） |
+| 退出按钮（Power） | 无 |
+
+### 补全（`qml/Main.qml` header）
+- 左侧：**DeviceName**（`deviceService.deviceName()`，config）+ **连接状态按钮**（点击 `ToolTip.show(connectDevices())`）
+- 中间：当前页标题（titleLabel）
+- 右侧：用户名 + **电源退出按钮**（⏻）
+- header 高度 60→80（对齐 WPF）
+- `MainMenuPage`：移除重复的连接状态按钮（改在顶栏），保留右下退出登录
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`Main.qml`/`MainMenuPage.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 主菜单卡片组件化（Repeater + 数据驱动）✅
 
 - **提交**：`856ef9c` `refactor(ui): main menu cards via Repeater + reusable ShadowCard`

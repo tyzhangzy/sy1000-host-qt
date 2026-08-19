@@ -98,23 +98,5 @@ Page {
         font.pixelSize: 20; font.bold: true
         onClicked: stack.replace("LoginPage.qml")
     }
-    // Connection status button (WPF header ConnectionStatusButton).
-    Button {
-        id: connBtn
-        text: qsTr("Connection Status")
-        width: 200; height: 60
-        anchors.right: logoutBtn.left; anchors.rightMargin: 20
-        anchors.bottom: parent.bottom; anchors.bottomMargin: 50
-        font.pixelSize: 18; font.bold: true
-        onClicked: menuStatus.text = deviceService.connectDevices()
-    }
-
-    Label {
-        id: menuStatus
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom; anchors.bottomMargin: 20
-        color: "#888"
-        text: ""
-    }
 }
 
