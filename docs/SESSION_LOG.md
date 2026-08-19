@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-08-19 · 主菜单卡片风格对齐 WPF（MaterialDesignRaisedButton）✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：主菜单功能卡片（测试功能 + 管理系统三按钮）风格对齐 WPF 的 MaterialDesignRaisedButton
+
+### 调整（`qml/ShadowCard.qml`）
+- 卡片面由**白色卡片 + 圆形 Indigo 图标**改为 **accent 填充背景（Indigo）+ 白色图标 + 白色文字**
+- hover 用 `Qt.darker(accent, 1.25)` 变深（对齐 MaterialDesign 按钮 hover）
+- 保留模拟阴影（Elevation）与点击
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；`ShadowCard.qml` qmllint 无 Error；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 补全主菜单右上角登录者信息（对齐 WPF）✅
 
 - **提交**：`0902d96` `feat(ui): show logged-in user in header top-right (Q_PROPERTY NOTIFY + Account icon)`

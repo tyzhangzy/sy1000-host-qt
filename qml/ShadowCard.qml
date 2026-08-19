@@ -24,15 +24,12 @@ Item {
     Rectangle { z: -2; radius: 12; color: "#12000000"
         anchors.fill: parent; anchors.leftMargin: 2; anchors.topMargin: 2 }
 
-    // Card face.
+    // Card face: filled MaterialDesign-RaisedButton style (accent bg, white icon/text).
     Rectangle {
         id: face
         anchors.fill: parent
-        radius: 12
-        color: hovered ? "#F4F5FF" : "white"
-        border.color: hovered ? accent : "#CCCCCC"
-        border.width: hovered ? 2 : 1
-        Behavior on border.color { ColorAnimation { duration: 150 } }
+        radius: 10
+        color: hovered ? Qt.darker(accent, 1.25) : accent
         Behavior on color { ColorAnimation { duration: 150 } }
 
         Column {
@@ -40,19 +37,15 @@ Item {
             anchors.margins: 12
             spacing: 10
 
-            Rectangle {
-                width: 52; height: 52; radius: 26
-                color: accent
+            Label {
+                text: card.icon
+                color: "white"
+                font.pixelSize: 40
                 anchors.horizontalCenter: parent.horizontalCenter
-                Label {
-                    text: card.icon
-                    color: "white"
-                    font.pixelSize: 26
-                    anchors.centerIn: parent
-                }
             }
             Label {
                 text: card.title
+                color: "white"
                 font.pixelSize: 18
                 font.bold: true
                 anchors.horizontalCenter: parent.horizontalCenter
