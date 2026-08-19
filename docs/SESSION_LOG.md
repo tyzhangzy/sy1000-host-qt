@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 对齐退出按钮与标题标签底部 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`545ad52` `fix(ui): align quit button bottom with header title label bottom`
 - **范围**：按用户要求，将电源式退出按钮的**底部**与 header 左上角标题标签（"| Login"）的**底部**对齐
 
 ### 实现
