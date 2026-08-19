@@ -5,6 +5,20 @@
 
 ---
 
+## 2026-08-19 · 主菜单右下角按钮文案改为"登出菜单" ✅
+
+- **提交**：待填（提交后补 hash）
+- **范围**：右下角按钮由"返回主菜单"改为"登出菜单"
+
+### 实现
+- `qml/MainMenuPage.qml`：`logoutBtn` 文案 `qsTr("Return to Main Menu")` → `qsTr("Log out Menu")`（"登出菜单"）
+- 翻译：新增 `Log out Menu`→登出菜单（`tools/correct_translations.py` 补充）
+
+### 验证
+- ✅ `SY1000.exe` 构建成功；ts 0 unfinished；启动无回归、stderr 干净
+
+---
+
 ## 2026-08-19 · 主菜单卡片风格对齐 WPF（MaterialDesignRaisedButton）✅
 
 - **提交**：`16b192c` `feat(ui): menu cards match WPF MaterialDesignRaisedButton style`

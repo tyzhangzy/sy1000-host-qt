@@ -310,27 +310,27 @@
         <translation>连接状态</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="132"/>
+        <location filename="../qml/Main.qml" line="162"/>
         <source>Start Hydrostatic Test</source>
         <translation>开始水压试验</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="133"/>
+        <location filename="../qml/Main.qml" line="163"/>
         <source>Result Management</source>
         <translation>试验结果管理</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="134"/>
+        <location filename="../qml/Main.qml" line="164"/>
         <source>User Management</source>
         <translation>用户管理</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="135"/>
+        <location filename="../qml/Main.qml" line="165"/>
         <source>System Maintain</source>
         <translation>系统维护</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="147"/>
+        <location filename="../qml/Main.qml" line="177"/>
         <source>Log out</source>
         <translation>退出登录</translation>
     </message>
@@ -386,8 +386,12 @@
     </message>
     <message>
         <location filename="../qml/MainMenuPage.qml" line="106"/>
+        <source>Log out Menu</source>
+        <translation>登出菜单</translation>
+    </message>
+    <message>
         <source>Return to Main Menu</source>
-        <translation>返回主菜单</translation>
+        <translation type="vanished">返回主菜单</translation>
     </message>
     <message>
         <source>Connection Status</source>

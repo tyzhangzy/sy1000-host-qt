@@ -36,6 +36,7 @@ FIX = {
     "User Management": "用户管理",
     "System Maintain": "系统维护",
     "Log out": "退出登录",
+    "Log out Menu": "登出菜单",
     "Start": "开始试验",
     "Stop": "停止试验",
     "Add": "创建新用户",
