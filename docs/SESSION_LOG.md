@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 登录卡阴影四周可见（补左侧）✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`e57b649` `feat(ui): login card shadow visible on all sides (incl. left)`
 - **范围**：登录卡阴影此前只向下，左侧无阴影；改为四周可见（MaterialDesign DropShadowEffect 特性）
 
 ### 修复（`qml/LoginPage.qml`）
