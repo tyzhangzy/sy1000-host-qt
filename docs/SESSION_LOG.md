@@ -7,7 +7,7 @@
 
 ## 2026-08-19 · 连接状态显示两 COM 口 + 右下角按钮加箭头 ✅
 
-- **提交**：待填（提交后补 hash）
+- **提交**：`650dead` `feat(ui,services): conn status shows two COM ports + arrow on return button`
 - **范围**：①连接状态框显示软件 + TasIO/天平 两 COM 口状态；②主菜单右下角按钮加箭头
 
 ### 实现
