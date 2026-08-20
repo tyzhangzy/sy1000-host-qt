@@ -37,8 +37,8 @@ Rectangle {
             CheckBox { id: extDeform; text: qsTr("Deformation"); Layout.fillWidth: true }
         }
         // Label + underlined field, bottom-aligned.
-        FieldRow { id: extDefect; label: qsTr("Defect location") + ":" }
-        FieldRow { id: extOther; label: qsTr("Other") + ":" }
+        FieldRow { id: extDefect; label: qsTr("Defect location") + ":"; rowSpacing: 32 }
+        FieldRow { id: extOther; label: qsTr("Other") + ":"; rowSpacing: 32 }
         Row {
             spacing: 20
             Label { text: qsTr("Result") + ":"; width: 160; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 16; color: "#333" }
