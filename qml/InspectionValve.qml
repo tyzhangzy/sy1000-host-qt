@@ -27,13 +27,39 @@ Rectangle {
         }
         Row {
             spacing: 8
-            Label { text: qsTr("Valve No") + ":"; font.pixelSize: 16; color: "#333"; anchors.verticalCenter: parent.verticalCenter }
-            TextField { id: valNo; width: 220; height: 40; background: Rectangle { color: "transparent" }; padding: 4
-                Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 1; color: "#9E9E9E" }
+            Label {
+                text: qsTr("Valve No") + ":"
+                font.pixelSize: 16; color: "#333"
+                anchors.verticalCenter: parent.verticalCenter
             }
-            Label { text: qsTr("Thread condition") + ":"; font.pixelSize: 16; color: "#333"; anchors.verticalCenter: parent.verticalCenter }
-            TextField { id: valThreadCond; width: 220; height: 40; background: Rectangle { color: "transparent" }; padding: 4
-                Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 1; color: "#9E9E9E" }
+            TextField {
+                id: valNo
+                width: 220
+                height: 40
+                background: Rectangle { color: "transparent" }
+                padding: 4
+                Rectangle {
+                    anchors.left: parent.left; anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    height: 1; color: "#9E9E9E"
+                }
+            }
+            Label {
+                text: qsTr("Thread condition") + ":"
+                font.pixelSize: 16; color: "#333"
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            TextField {
+                id: valThreadCond
+                width: 220
+                height: 40
+                background: Rectangle { color: "transparent" }
+                padding: 4
+                Rectangle {
+                    anchors.left: parent.left; anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    height: 1; color: "#9E9E9E"
+                }
             }
         }
         FieldRow { id: valAirtight; label: qsTr("Air tightness") + ":" }

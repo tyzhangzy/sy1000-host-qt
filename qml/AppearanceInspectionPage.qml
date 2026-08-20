@@ -2,8 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 
-// "复合气瓶外观检查评估表" — a sub-page with a background-less title bar,
-// composed of four independent inspection group components.
+// "复合气瓶外观检查评估表" — shown as a centered card (80% of main window).
 Page {
     id: page
     title: qsTr("Appearance Inspection")
@@ -41,81 +40,101 @@ Page {
         valGroup.reset()
     }
 
-    Column {
+    // Dimmed backdrop.
+    Rectangle {
         anchors.fill: parent
+        color: "#AA000000"
+    }
 
-        // Title bar with no background color (dark text title only).
-        Rectangle {
-            width: parent.width; height: 64; color: "transparent"
-            Label {
-                anchors.centerIn: parent
-                text: qsTr("Appearance Inspection")
-                color: "#303F9F"; font.pixelSize: 24; font.bold: true
+    // Centered card: 80% of main window width/height.
+    Rectangle {
+        id: card
+        anchors.centerIn: parent
+        width: parent.width * 0.8
+        height: parent.height * 0.8
+        radius: 12
+        color: "white"
+        border.color: "#CCCCCC"
+
+        Column {
+            anchors.fill: parent
+
+            // Title bar.
+            Rectangle {
+                width: parent.width; height: 64; color: "transparent"
+                Label {
+                    anchors.centerIn: parent
+                    text: qsTr("Appearance Inspection")
+                    color: "#303F9F"; font.pixelSize: 24; font.bold: true
+                }
             }
-        }
 
-        // Content area.
-        ScrollView {
-            width: parent.width; height: parent.height - 64
-            clip: true
-            contentWidth: availableWidth
-            Column {
-                width: parent.width
-                anchors.margins: 20
-                spacing: 18
-
-                // Inspector info (L7): the report's 检验员/证书号 fields come
-                // from here (previously there was no QML entry point at all).
-                Rectangle {
+            // Content area.
+            ScrollView {
+                width: parent.width; height: parent.height - 64
+                clip: true
+                contentWidth: availableWidth
+                Column {
                     width: parent.width
-                    radius: 8
-                    color: "#F5F7FA"
-                    border.color: "#DDDDDD"
-                    Column {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.margins: 40
+                    spacing: 18
+
+                    // Inspector info.
+                    Rectangle {
                         width: parent.width
-                        anchors.margins: 14
-                        spacing: 10
-                        Label { text: qsTr("Inspector"); font.bold: true; font.pixelSize: 16; color: "#303F9F" }
-                        Row {
-                            spacing: 12
-                            Label { text: qsTr("Inspector name"); width: 130; anchors.verticalCenter: parent.verticalCenter; color: "#555" }
-                            TextField {
-                                width: 280
-                                text: page.insp().inspectorName || ""
-                                onTextChanged: page.insp().inspectorName = text
-                            }
-                            Label { text: qsTr("Certificate No"); width: 100; anchors.verticalCenter: parent.verticalCenter; color: "#555" }
-                            TextField {
-                                width: 220
-                                text: page.insp().inspectorCertNo || ""
-                                onTextChanged: page.insp().inspectorCertNo = text
+                        radius: 8
+                        color: "#F5F7FA"
+                        border.color: "#DDDDDD"
+                        Column {
+                            width: parent.width
+                            anchors.margins: 14
+                            spacing: 10
+                            Label { text: qsTr("Inspector"); font.bold: true; font.pixelSize: 16; color: "#303F9F" }
+                            Row {
+                                spacing: 12
+                                Label { text: qsTr("Inspector name"); width: 130; anchors.top: parent.top; color: "#555" }
+                                TextField {
+                                    width: 280
+                                    anchors.top: parent.top
+                                    text: page.insp().inspectorName || ""
+                                    onTextChanged: page.insp().inspectorName = text
+                                }
+                                Label { text: qsTr("Certificate No"); width: 100; anchors.top: parent.top; color: "#555" }
+                                TextField {
+                                    width: 220
+                                    anchors.top: parent.top
+                                    text: page.insp().inspectorCertNo || ""
+                                    onTextChanged: page.insp().inspectorCertNo = text
+                                }
                             }
                         }
                     }
-                }
 
-                InspectionExternal { id: extGroup; inspection: page.insp() }
-                InspectionInternal { id: intGroup; inspection: page.insp() }
-                InspectionThread { id: thrGroup; inspection: page.insp() }
-                InspectionValve { id: valGroup; inspection: page.insp() }
+                    InspectionExternal { id: extGroup; inspection: page.insp() }
+                    InspectionInternal { id: intGroup; inspection: page.insp() }
+                    InspectionThread { id: thrGroup; inspection: page.insp() }
+                    InspectionValve { id: valGroup; inspection: page.insp() }
 
-                // 操作按钮
-                Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 16
-                    Button {
-                        text: qsTr("Save and Close")
-                        width: 220; height: 44
-                        Material.background: "#303F9F"; Material.foreground: "white"
-                        font.pixelSize: 16; font.bold: true
-                        onClicked: { page.saveAll(); stack.pop() }
-                    }
-                    Button {
-                        text: qsTr("Reset")
-                        width: 220; height: 44
-                        Material.background: "#303F9F"; Material.foreground: "white"
-                        font.pixelSize: 16; font.bold: true
-                        onClicked: page.resetAll()
+                    // Action buttons.
+                    Row {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: 16
+                        Button {
+                            text: qsTr("Save and Close")
+                            width: 220; height: 44
+                            Material.background: "#303F9F"; Material.foreground: "white"
+                            font.pixelSize: 16; font.bold: true
+                            onClicked: { page.saveAll(); stack.pop() }
+                        }
+                        Button {
+                            text: qsTr("Reset")
+                            width: 220; height: 44
+                            Material.background: "#303F9F"; Material.foreground: "white"
+                            font.pixelSize: 16; font.bold: true
+                            onClicked: page.resetAll()
+                        }
                     }
                 }
             }

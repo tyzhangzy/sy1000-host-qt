@@ -15,8 +15,7 @@ Row {
         width: 160
         font.pixelSize: 16
         color: "#333"
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 9
+        anchors.verticalCenter: parent.verticalCenter
     }
     TextField {
         id: fld

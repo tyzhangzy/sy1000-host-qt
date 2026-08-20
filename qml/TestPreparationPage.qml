@@ -44,17 +44,26 @@ Page {
     }
 
     // Dark raised button (WPF MaterialDesignRaisedDarkButton).
-    component DarkButton: Button {
+    component DarkButton: Rectangle {
         property alias btnText: darkBtnText.text
+        signal clicked()
         width: 200; height: 60
-        Material.background: hovered ? "#1A237E" : "#283593"
-        Material.foreground: "white"
-        Material.elevation: 2
-        contentItem: Label {
+        radius: 4
+        color: mouseArea.hovered ? "#1A237E" : "#283593"
+        Behavior on color { ColorAnimation { duration: 100 } }
+        Label {
             id: darkBtnText
+            anchors.centerIn: parent
             text: ""
             color: "white"; font.pixelSize: 20; font.bold: true
             horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+        }
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onClicked: parent.clicked()
         }
     }
 
@@ -306,9 +315,24 @@ Page {
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.bottom: parent.bottom; anchors.bottomMargin: 16
                             spacing: 12
-                            DarkButton {
-                                btnText: qsTr("Appearance Inspection")
-                                onClicked: stack.push("AppearanceInspectionPage.qml", { sampleIndex: index, target: sampleData[index] })
+                            Rectangle {
+                                width: 200; height: 60; radius: 4
+                                color: aiMouse.hovered ? "#1A237E" : "#283593"
+                                Label {
+                                    anchors.centerIn: parent
+                                    text: qsTr("Appearance Inspection")
+                                    color: "white"; font.pixelSize: 20; font.bold: true
+                                }
+                                MouseArea {
+                                    id: aiMouse
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    cursorShape: Qt.PointingHandCursor
+                                    onClicked: {
+                                        console.log("AI inline rect clicked for index", index)
+                                        stack.push("AppearanceInspectionPage.qml", { sampleIndex: index, target: sampleData[index] })
+                                    }
+                                }
                             }
                             DarkButton {
                                 btnText: qsTr("Confirm")

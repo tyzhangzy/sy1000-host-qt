@@ -27,13 +27,39 @@ Rectangle {
         }
         Row {
             spacing: 8
-            Label { text: qsTr("Specification") + ":"; font.pixelSize: 16; color: "#333"; anchors.verticalCenter: parent.verticalCenter }
-            TextField { id: thrSpec; width: 220; height: 40; background: Rectangle { color: "transparent" }; padding: 4
-                Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 1; color: "#9E9E9E" }
+            Label {
+                text: qsTr("Specification") + ":"
+                font.pixelSize: 16; color: "#333"
+                anchors.verticalCenter: parent.verticalCenter
             }
-            Label { text: qsTr("Condition") + ":"; font.pixelSize: 16; color: "#333"; anchors.verticalCenter: parent.verticalCenter }
-            TextField { id: thrCond; width: 220; height: 40; background: Rectangle { color: "transparent" }; padding: 4
-                Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 1; color: "#9E9E9E" }
+            TextField {
+                id: thrSpec
+                width: 220
+                height: 40
+                background: Rectangle { color: "transparent" }
+                padding: 4
+                Rectangle {
+                    anchors.left: parent.left; anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    height: 1; color: "#9E9E9E"
+                }
+            }
+            Label {
+                text: qsTr("Condition") + ":"
+                font.pixelSize: 16; color: "#333"
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            TextField {
+                id: thrCond
+                width: 220
+                height: 40
+                background: Rectangle { color: "transparent" }
+                padding: 4
+                Rectangle {
+                    anchors.left: parent.left; anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    height: 1; color: "#9E9E9E"
+                }
             }
         }
         FieldRow { id: thrEval; label: qsTr("Evaluation") + ":" }
