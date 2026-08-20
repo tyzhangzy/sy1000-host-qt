@@ -78,8 +78,26 @@ bool UserDao::verifyPassword(const QString &password, const QString &storedHash)
 User UserDao::authenticate(const std::string &username, const std::string &password)
 {
     User u = findByUsername(username);
-    if (u.id != 0 && verifyPassword(QString::fromStdString(password), QString::fromStdString(u.password)))
+    if (u.id == 0)
+        return {};
+
+    const QString plain = QString::fromStdString(password);
+    const QString stored = QString::fromStdString(u.password);
+
+    // New hashed format.
+    if (verifyPassword(plain, stored))
         return u;
+
+    // Backward compatibility: databases created before H2 stored plaintext
+    // passwords. Allow them to log in and migrate to hashed storage.
+    if (plain == stored) {
+        User updated = u;
+        updated.password = hashPassword(plain).toStdString();
+        if (update(updated))
+            u.password = updated.password;
+        return u;
+    }
+
     return {};
 }
 
