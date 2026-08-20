@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
     // Create + save.
     UnifiedTestResult r = TestResultService::createUnifiedTestResult("tester", "company", sample, std);
-    r.sample.overallResult = TestResultService::determineOverallResult(sample.appearanceInspection, sample.hydroStaticTest);
+    r.samples.front().overallResult = TestResultService::determineOverallResult(sample.appearanceInspection, sample.hydroStaticTest);
 
     // Add sampled curve points and environment data (report closure).
     const auto base = std::chrono::system_clock::now().time_since_epoch().count();
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
         pt.timestamp = sy1000::DateTime(std::chrono::milliseconds(base / 1000000 + i * 500));
         pt.pressure = 5.0 + i * 6.0;
         pt.weight = 100.0 + i;
-        r.sample.hydroStaticTest.pressureWeightData.push_back(pt);
+        r.samples.front().hydroStaticTest.pressureWeightData.push_back(pt);
     }
     r.testEnvironment.roomTemperature = 23.0;
     r.testEnvironment.humidity = 45.0;
@@ -75,12 +75,12 @@ int main(int argc, char *argv[])
     std::printf("loaded serial=%s tester=%s manufacturer=%s overall=%d hydro_rate=%.2f standard=%s\n",
                 loaded.testSerialNo.c_str(),
                 loaded.testerName.c_str(),
-                loaded.sample.manufacturer.c_str(),
-                static_cast<int>(loaded.sample.overallResult),
-                loaded.sample.hydroStaticTest.residualDeformationRate,
+                loaded.primarySample().manufacturer.c_str(),
+                static_cast<int>(loaded.primarySample().overallResult),
+                loaded.primarySample().hydroStaticTest.residualDeformationRate,
                 loaded.testStandard.standardName.c_str());
     std::printf("curve_points=%d env_temp=%.1f humidity=%.1f eq=%s model=%s\n",
-                static_cast<int>(loaded.sample.hydroStaticTest.pressureWeightData.size()),
+                static_cast<int>(loaded.primarySample().hydroStaticTest.pressureWeightData.size()),
                 loaded.testEnvironment.roomTemperature,
                 loaded.testEnvironment.humidity,
                 loaded.testEnvironment.equipmentId.c_str(),
@@ -89,11 +89,11 @@ int main(int argc, char *argv[])
     const int n = TestResultDao::count();
     std::printf("total results=%d\n", n);
 
-    const bool ok = !loaded.sample.manufacturer.empty() &&
-                    loaded.sample.manufacturer == "ACME" &&
-                    loaded.sample.hydroStaticTest.residualDeformationRate == 1.5 &&
+    const bool ok = !loaded.primarySample().manufacturer.empty() &&
+                    loaded.primarySample().manufacturer == "ACME" &&
+                    loaded.primarySample().hydroStaticTest.residualDeformationRate == 1.5 &&
                     loaded.testStandard.standardName == "GB1234" &&
-                    loaded.sample.hydroStaticTest.pressureWeightData.size() == 6 &&
+                    loaded.primarySample().hydroStaticTest.pressureWeightData.size() == 6 &&
                     loaded.testEnvironment.equipmentId == "SY1000-0001" &&
                     loaded.testEnvironment.equipmentModel == "SY1000";
     std::printf(ok ? "SMOKE PASS\n" : "SMOKE FAIL\n");

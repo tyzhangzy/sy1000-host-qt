@@ -20,8 +20,9 @@ UnifiedTestResult rowToResult(const QSqlQuery &q)
     r.testDate = serial::fromEpochMillis(q.value(2).toLongLong());
     r.testerName = q.value(3).toString().toStdString();
     r.testerCompany = q.value(4).toString().toStdString();
-    r.sample.manufacturer = q.value(5).toString().toStdString();
-    r.sample.overallResult = static_cast<TestResultStatus>(q.value(6).toInt(0));
+    r.samples.emplace_back();
+    r.samples.front().manufacturer = q.value(5).toString().toStdString();
+    r.samples.front().overallResult = static_cast<TestResultStatus>(q.value(6).toInt(0));
 
     // The JSON payload is the authoritative full record; the columns are kept
     // only as index/query fields. Fall back to the columns when the payload is
@@ -51,8 +52,8 @@ int TestResultDao::insert(const UnifiedTestResult &r)
     q.addBindValue(serial::toEpochMillis(r.testDate));
     q.addBindValue(QString::fromStdString(r.testerName));
     q.addBindValue(QString::fromStdString(r.testerCompany));
-    q.addBindValue(QString::fromStdString(r.sample.manufacturer));
-    q.addBindValue(static_cast<int>(r.sample.overallResult));
+    q.addBindValue(QString::fromStdString(r.primarySample().manufacturer));
+    q.addBindValue(static_cast<int>(r.primarySample().overallResult));
     q.addBindValue(serial::unifiedTestResultToJson(r));
     if (!q.exec())
         return 0;
@@ -69,8 +70,8 @@ bool TestResultDao::update(const UnifiedTestResult &r)
     q.addBindValue(serial::toEpochMillis(r.testDate));
     q.addBindValue(QString::fromStdString(r.testerName));
     q.addBindValue(QString::fromStdString(r.testerCompany));
-    q.addBindValue(QString::fromStdString(r.sample.manufacturer));
-    q.addBindValue(static_cast<int>(r.sample.overallResult));
+    q.addBindValue(QString::fromStdString(r.primarySample().manufacturer));
+    q.addBindValue(static_cast<int>(r.primarySample().overallResult));
     q.addBindValue(serial::unifiedTestResultToJson(r));
     q.addBindValue(r.id);
     return q.exec();

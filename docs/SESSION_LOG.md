@@ -5,131 +5,211 @@
 
 ---
 
+## 2026-08-20 · 修复高优先级问题 H1-H4（代码审查 08-20） ✅
+
+- **依据**：`docs/CODE_REVIEW_20260820.md`（高优先级问题 H1-H4；H5 已由同轮 L18 修复）
+- **状态**：待提交（构建 ✅ / 6 个 headless 冒烟测试全绿 ✅）
+
+### H1 试验标准未真正用于判定与落库
+
+- `src/services/hydroadapter.cpp`：
+  - `setTestStandard()` 同步调用 `m_controller.setResidualDeformationRateLimit(residualRate)`，使判定限值与准备页输入一致。
+  - `buildResult()` 改用 `m_standardName / m_holdTime / m_residualRate`，不再硬编码 `Demo` 和 `3.0`。
+
+### H2 密码明文存储 + 硬编码默认密码
+
+- `src/dao/userdao.h/.cpp`：新增 `hashPassword()` / `verifyPassword()`（SHA-256 + 16 字节随机 salt，存储格式 `hash:salt`）；用 `authenticate()` 替代原 `findByUsernameAndPassword()` 明文 SQL 比对。
+- `src/dao/database.cpp`：默认 admin 密码改为哈希存储。
+- `src/services/userservice.cpp`：新增用户 / 重置密码时自动哈希。
+- `src/services/loginservice.cpp`：改用 `UserDao::authenticate()`。
+
+### H3 多样品试验数据丢失
+
+- `src/models/model.h`：`UnifiedTestResult` 的 `Sample sample` 改为 `std::vector<Sample> samples`，并新增 `primarySample()` 兼容旧代码。
+- `src/services/hydroadapter.cpp`：`buildResult()` 现在生成全部 4 个样品的完整数据，仅主样品携带压力/重量曲线。
+- `src/dao/json_serializer.cpp`：序列化/反序列化支持 `samples` 数组；兼容旧记录的 `"sample"` 单样品字段。
+- `src/dao/testresultdao.cpp`、`src/services/resultservice.cpp`、`src/report/testreportgenerator.cpp`、测试文件统一改用 `primarySample()` 或 `samples`。
+
+### H4 串口阻塞主线程 + 称重轮询从未启动
+
+- `src/devices/devicemanager.h/.cpp`：将 `PrecisaScale` 移至独立 `QThread`，天平 Modbus 轮询不再阻塞 GUI 主线程；新增重量缓存与线程安全更新。
+- `src/services/deviceservice.cpp`：天平连接成功后调用 `startContinuousReading()`，解决轮询从未启动的问题。
+
+### H5 未完成外观检查即可开始试验
+
+- 已由 L18 修复：`qml/TestPreparationPage.qml` "开始水压试验"前强制 4 个样品通过 `saveSample()`，其中校验 `inspectionCompleted` 为 true。
+
+---
+
 ## 2026-08-20 · 修复低优先级问题 L1-L20（代码审查 08-20） ✅
 
 - **依据**：`docs/CODE_REVIEW_20260820.md`（低优先级问题全部处理）
 - **状态**：待提交（构建 ✅ / 6 个 headless 冒烟测试全绿 ✅ / qmllint 0 Error ✅ / `SY1000.exe` 启动无回归、stderr 干净 ✅）
 
 ### L1 泄漏阈值 0.5 硬编码
+
 - `hydrotypes.h`：`TaskParams.leakThresholdKg` / `TestOptions.leakThresholdKg`（默认 0.5）
 - `states.cpp`：`HoldingAtWorkingState` 从 options 传入；`tasks.cpp`：`HoldTask::finishWithResult` 改用参数阈值
 
 ### L2 DB 初始化失败仅 qWarning
+
 - `main.cpp`：初始化失败改 `qCritical` + `return -1`（快速退出，不再静默失败）
 
 ### L3 PDF 路径非跨平台 + 文件名未 sanitize
+
 - `testreportgenerator.cpp`：改用 `QStandardPaths::DocumentsLocation`；新增 `sanitizeFileName()` 过滤 `\ / : * ? " < > |` 与控制字符
 
 ### L4 报告分页
+
 - `testreportgenerator.cpp`：`buildHtml` 在"水压试验数据"表格与曲线图前加 `page-break-before:always`，避免超一页被切
 
 ### L5 死代码
+
 - `devicemanager.h/.cpp`：删除未使用的 `connectAll()`；`controller.h`：删除 `voice()`/`voicePrompt` 信号；`states.cpp`：移除全部 `c.voice()` 调用
 
 ### L6 脆弱断言
+
 - `testcontroller.cpp`：`stateCount >= 10` 改为里程碑集合断言（PressurizingToWorking/HoldingAtTesting/CalculatingResult/Completed 必须经过）
 
 ### L7 检验员信息无录入入口
+
 - `AppearanceInspectionPage.qml`：新增"检验员"卡片（检验员姓名/证书号输入）
 - `testreportgenerator.cpp`：样品信息表加"检验员/证书号"行（缺省回退登录用户）
 - `ReportViewPage.qml`：显示检验员
 
 ### L8 create_date 硬编码 / 无唯一约束 / 最后管理员可删
+
 - `userdao.cpp`：`insert()` 用真实当前时间；`database.cpp`：`username UNIQUE` + 唯一索引；`userservice.cpp`：`removeUser` 拒绝删除最后一名管理员
 
 ### L9 q.next() 未检查
+
 - `testresultdao.cpp::count()`、`database.cpp::seed()`：`exec() && next()` 检查
 
 ### L10 SimulatedDeviceProvider const hack
+
 - `ideviceprovider.h`：`currentPressure()` 改为非 const；`simdevice.h`：去掉 `mutable` hack（改用 `setReleaseValveOpen` 建模压力释放，L19 配套）
 
 ### L11 登录欢迎语被切页覆盖
+
 - `Main.qml`：登录成功经 700ms `Timer` 再切主菜单，欢迎语可见
 
 ### L12 新增用户未清 company
+
 - `UserManagementPage.qml`：成功添加后清空 company 输入框
 
 ### L13 main.cpp 析构顺序
+
 - `main.cpp`：服务对象（hydro/login/result/user/device）声明移到 engine 之前 → 析构顺序倒序：engine 先销毁，服务后销毁
 
 ### L14 openUrlExternally 未转义
+
 - `resultservice.h/.cpp`：新增 `openReportPdf()`（`QUrl::fromLocalFile`）；`ReportViewPage.qml` 改用它
 
 ### L15 headless 测试共享真实数据库
+
 - `database.h/.cpp`：新增 `Database::initialize(path)` 重载；`testcore/testlogin` 改用 `QTemporaryDir` + 结束清理连接
 
 ### L16 CMake 打包/版本
+
 - `CMakeLists.txt`：`find_package(Qt6 6.3)`（对齐 `qt_standard_project_setup`）；新增 `install(TARGETS SY1000)` + `install(FILES config.json)` + windeployqt/linuxdeployqt 注释
 
 ### L17 include 卫生
+
 - `testresultservice.cpp`：补 `<ctime>`（`std::time/localtime_s`）；`tasio.cpp` 的 `<cstring>` 已于上轮补齐
 
 ### L18 准备页默认压力不一致 / 开始不校验
+
 - `hydrotypes.h`：`TestOptions` 默认 30/45（对齐准备页）；`TestPreparationPage.qml`："开始"前强制应用标准卡数值 + 校验 4 样品（`saveSample` 返回 bool）
 
 ### L19 ReleaseTask 只等倒计时
+
 - `ideviceprovider.h`：新增 `setReleaseValveOpen()`（默认 no-op）；`simdevice.h`/`testcontroller` 模拟泄压时压力衰减
 - `tasks.cpp`：`ReleaseTask` 泄压倒计时结束后校验压力是否回落（容差 0.5），未回落则最多再等 `releaseMaxExtraSec` 秒，仍不回落 `ReleaseFailed` 中止
 - `hydrotypes.h`：`TaskParams/TestOptions.releaseMaxExtraSec`（默认 60）
 
 ### L20 重复 push / Drawer modal
+
 - 4 个抽屉页面加 `pageSource` 标识；`Main.qml` 新增 `openPage()` 去重 + `Drawer modal:true`（点遮罩关闭）；`MainMenuPage` 卡片同样去重
 
 ### i18n
+
 - ts 新增：`AppearanceInspectionPage`（Inspector/Inspector name/Certificate No）、`ReportViewPage`（Inspector: %1）、`TestPage/TestPreparationPage`（Result saved (id=%1)）、`sy1000_core`（Waiting for pressure to drop...）
 
 ---
-
 
 - **依据**：`docs/CODE_REVIEW_20260820.md`（中优先级问题全部处理）
 - **状态**：待提交（构建 ✅ / 6 个 headless 冒烟测试全绿 ✅ / qmllint 0 Error ✅ / `SY1000.exe` 启动无回归、stderr 干净 ✅）
 
 ### M1 stopTest 脆弱守卫 + 确认弹窗残留
+
 - `core/controller.cpp`：`stopTest()` 先摘除 `m_currentTask`、清空 `m_pendingConfirm` 再 `stop()`，消除同步 `finished(Cancelled)` 重入 + 二次 `transitionTo(Aborted)` 依赖守卫兜底；`runTask()` 启动新任务时清空旧挂起确认
 - `core/subtask.cpp`：`finish()` 清空 `m_confirmCallback`，事后点击"确定"不再唤醒已停止任务的回调
 - `qml/TestPage.qml`：`onRunningChanged` 非运行态自动关闭 `HydroTestMessageDialog`
 
 ### M2 设备写操作失败静默
+
 - `devices/tasio.cpp/.h`：`setWaterInlet/setFastPump/setSlowPump/setWaterJacketLock` 改为返回 bool 并 `qWarning` 记录 `writeSingleCoil` 失败
 - `core/controller.cpp`：`safeShutdown()` 解锁 1~4 号全部水套（原只解锁 1 号）
 
 ### M3 rowToResult 列与 payload 双写
+
 - `dao/testresultdao.cpp`：payload 为权威记录，解析失败才回退列字段，避免部分解析覆盖列数据
 
 ### M4 按 id 查询全表扫描
+
 - `dao/testresultdao.h/.cpp`、`services/testresultservice.h/.cpp`：新增 `findById(int)` 主键查询
 - `services/resultservice.cpp`：`details()/reportData()/generatePdf()` 改用 `findById`，去掉 `findAll()` 全表扫描 + 全量 JSON 解析
 
 ### M5 死按钮
+
 - `services/hydroadapter.h/.cpp`：新增 `lastResultId`（Q_PROPERTY + NOTIFY）与 `saveCurrentResult()`（每轮至多保存一次，防重复落库）
 - `qml/TestPage.qml`、`qml/TestPreparationPage.qml`："保存试验结果 / 查看试验报告"接通 → 保存或 `stack.push("ReportViewPage.qml", {resultId})`
 
 ### M6 i18n C++ 状态文本
+
 - `tasks.cpp / states.cpp / controller.cpp / hydroadapter.cpp`：所有 C++ 状态/提示文本改走 `QCoreApplication::translate("sy1000_core", ...)`（统一 context）
 - `i18n/sy1000_zh_CN.ts`：新增 `sy1000_core` context（36 条）及 `TestPage/TestPreparationPage` 2 条提示，lrelease 302 条全完成
 
 ### M7 状态栏显示原始枚举整数
+
 - `services/hydroadapter.h/.cpp`：新增 `Q_PROPERTY(QString stateName READ stateName NOTIFY stateChanged)`（14 个状态中文映射）
 - `qml/TestPage.qml:56`、`qml/TestPreparationPage.qml:90`：`hydro.state` → `hydro.stateName`
 
 ### M8 串口 COM1/COM2 硬编码
+
 - `services/configmanager.h/.cpp`：新增 `tasPort()/scalePort()`（config.json keys）
 - `config.json`：新增 `"tasPort"/"scalePort"`
 - `services/deviceservice.h/.cpp`：连接改读配置端口；新增 `availablePorts()`（`QSerialPortInfo` 枚举），状态文本附可用串口列表
 
 ### M9 加压结果字段无意义 + 曲线点无上限
+
 - `core/states.h/.cpp`：`PressurizingToWorkingState::onTaskFinished` 不再读 `PressurizeTask` 永不填充的 T10/T30（存 0 的假数据）；新增 `HoldingAtWorkingState::onTaskFinished` 捕获 HoldTask 的 `workingPressureT10/T30` 与 `workingPressureWeightT10/T30`
 - `services/hydroadapter.cpp`：`m_curvePoints` 上限 20000 点，超限裁掉最旧点
 
 ### M10 RealTimeChart 线程安全 + 缓存死代码
+
 - `ui/charts/RealTimeChart.h/.cpp`：`paint()`（FramebufferObject 渲染线程）全程持 `m_dataMutex`；所有 setter/getter 读写共享状态均加锁；`m_isPaused` 判定移入锁内；`calculateYRange` 不再在渲染线程发信号
 - 删除单序列"增量绘制"死代码分支（`addSeriesValueAt` 每次都使缓存失效、永远走不到且含陈旧像素 bug），改为统一重建缓存图；删除 `m_cacheValid/m_lastDrawnIndex/缓存范围` 成员
 
 ### 附带修复（预先存在的问题）
+
 - `qml/ResultDetailsPage.qml`：`Column { Label{}; Label{} }` 中非法 `;` 分隔 QML 子对象导致 qmllint 报错、configure 非零退出 → 移除分号，qmllint 恢复 0 Error
 
 ---
 
+## 2026-08-19 · 检查输入框用 background 去边框（修正 variant 无效）✅
+
+- **提交**：待填（终端被 qmlscene 阻塞，未提交）
+- **范围**：`FieldRow / InspectionInternal / InspectionThread / InspectionValve.qml`
+- **修改内容**：
+  - `FieldRow.qml`：TextField 改用标准属性 `background: Rectangle { color: "transparent" }` 去掉边框，仅保留底部 Rectangle 一条横线（下划线）；标签与横线底部对齐、宽度 160
+  - `InspectionInternal / InspectionThread / InspectionValve.qml`：手写输入框同样用 `background` 去边框、保留下划线
+  - 说明：此前误用 `Material.variant`（无效属性）会导致组件编译失败、页面无法加载；`background` 是 TextField 标准属性，必然有效
+- **状态**：代码已保存到工作区；因 qmlscene 测试进程阻塞终端，构建/提交待终端恢复后执行
+
+---
+
+w/检查输入框去掉边框，仅保留下划线 ✅
 
 - **提交**：`c9ce254` `feat(ui): field inputs borderless, underline only`
 - **范围**：`FieldRow / InspectionInternal / InspectionThread / InspectionValve.qml`
@@ -209,11 +289,13 @@
 - **范围**：新建 4 个检查分组组件，页面只负责加载
 
 ### 实现
+
 - 新建 `InspectionExternal / InspectionInternal / InspectionThread / InspectionValve.qml`：每个是独立分组组件（深蓝标题条 + 字段"标签:下划线输入框" + 评定 3 单选框），各自封装 `load/save/reset`
 - `AppearanceInspectionPage.qml` 只加载 4 个组件（传 `inspection` 对象），保存/重置调各组件方法
 - CMake 资源加入 4 个组件
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -233,6 +315,7 @@
 - **范围**：`AppearanceInspectionDialog.qml` → 新建 `AppearanceInspectionPage.qml`
 
 ### 实现
+
 - "外观检测评估"由对话框改为**页面** `AppearanceInspectionPage.qml`，点击跳转（`stack.push`，传 sampleIndex/target）
 - 页面有深蓝标题栏，标题"复合气瓶外观检查评估表"
 - 四组（外部/内部/螺纹/阀）卡片：深蓝标题条 + 字段"标签:下划线输入框"底部对齐 + 评定结果 3 单选框（合格/待修复/判废）；外部 5 复选框水平均匀分布
@@ -240,6 +323,7 @@
 - 删除旧 `AppearanceInspectionDialog.qml`，CMake 资源改为新页面
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -259,11 +343,13 @@
 - **范围**：`qml/AppearanceInspectionDialog.qml`（"外观检测评估"按钮加载的对话框）
 
 ### 实现（对照 WPF `AppearenceInspectionWindow.xaml`）
+
 - 去掉"检查员信息"区块（WPF 无此区块）
 - 四组（外部/内部/螺纹/阀）字段改为 WPF 式布局："标签:输入框"一行式、CheckBox 并排、螺纹规格/状况并排、瓶阀编号/连接螺纹并排
 - 每组评定结果 3 个 RadioButton（合格/待修复/判废），加载/保存/重置逻辑同步（去掉检查员，设检查日期）
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -283,11 +369,13 @@
 - **范围**：`qml/AppearanceInspectionDialog.qml`（"外观检测评估"按钮加载的对话框）
 
 ### 实现（对照 WPF `AppearenceInspectionWindow.xaml`）
+
 - 标题改为"复合气瓶外观检查评估表"
 - 四个分组（外部/内部/螺纹/阀）评定结果由 `ComboBox` 改为 **`RadioButton`（合格/待修复/待更换/判废）**
 - 底部按钮改为自定义 **"保存并关闭"（Accept）+ "重置"（Reset，清空全部字段）**
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -325,10 +413,12 @@
 - **范围**：撤销 `f53f31b` 的 5 卡标题栏改动，恢复字段区第一个控件标签
 
 ### 实现
+
 - **恢复** 标准卡第一个字段"试验标准"标签、样品卡第一个字段"气瓶型号"标签；标题栏回到"输入试验标准"/"输入 N 号气瓶信息"
 - **修复**：`LoginPage.qml` 登录欢迎文字 `loginService.username()` → `loginService.username`（Q_PROPERTY 同名，调用报 TypeError）
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -339,10 +429,12 @@
 - **范围**：`qml/TestPreparationPage.qml` 右侧 5 卡的黄色标题栏
 
 ### 实现
+
 - 标准卡标题栏：`输入试验标准` → **`试验标准`**；字段区去掉重复的"试验标准"标签（保留输入框）
 - 样品卡标题栏：`输入 N 号气瓶信息` → **`气瓶型号 N`**；字段区去掉重复的"气瓶型号"标签（保留输入框）
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -353,6 +445,7 @@
 - **范围**：水压试验页（准备页 + 执行页）顶栏独立，不混入主菜单 header 内容；所有页面标题栏高度一致（80）
 
 ### 实现
+
 - `TestPreparationPage.qml` / `TestPage.qml`：加 `hideGlobalHeader: true`，隐藏 Main.qml 全局 header（设备名/用户/退出等主菜单内容）
 - `Main.qml`：header 条件改为 `!isLoginPage && !hideGlobalHeader`
 - 两页自绘顶栏 80 高（== Main.qml header 高度），内容左/中/右：
@@ -361,6 +454,7 @@
   - 右：气瓶压力标签 + 气瓶压力值显示框
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -371,10 +465,12 @@
 - **范围**：`qml/TestPreparationPage.qml` 顶栏与主体重叠、左右高度不一致、顶栏内容靠左显宽
 
 ### 修复
+
 - 用 `Column` 包裹顶栏 + 主体 `Row`，消除重叠，左右高度一致
 - 顶栏改为 **左/中/右三区分布**（对齐 WPF MainTestWindow）：左=标题，中=测试状态，右=气瓶压力+值
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -385,6 +481,7 @@
 - **范围**：用户点"开始水压试验"进入的是准备页 `TestPreparationPage.qml`，上一版误把布局加到了执行页 `TestPage`；本版把 MainTestWindow 布局补到准备页
 
 ### 实现（`qml/TestPreparationPage.qml`）
+
 - **顶栏**：测试状态显示框 + "气瓶压力"标签 + 压力值编辑框
 - **左侧列**（WPF MainTestWindow 左列）：
   - 上半：使用标准 + 1..4 号气瓶摘要（确 定保存后刷新）+ "开始水压试验"按钮
@@ -393,6 +490,7 @@
 - 顶部按钮/对话框移入页面级
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -403,6 +501,7 @@
 - **范围**：`qml/TestPage.qml` 重写 + hydroadapter 增加标准/样品信息接口
 
 ### 实现
+
 - **顶栏**（WPF ColorZone）：测试状态显示框（hydro.status/state）+ "气瓶压力"标签 + 压力值编辑框（currentPressure + MPa）
 - **左侧列**（WPF MainTestWindow 左列）：
   - 上半：使用标准（hydro.testStandardInfo()）+ 1..4 号气瓶（hydro.sampleInfo(i)）+ "开始水压试验"按钮
@@ -411,6 +510,7 @@
 - `hydroadapter`：新增 `setTestStandard/testStandardInfo/sampleInfo`；准备页确 定时保存标准名/保压/变形率
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -421,6 +521,7 @@
 - **范围**：`qml/TestPreparationPage.qml` 重写，与 WPF TestPreparationPage 控件内容和布局一致
 
 ### 实现
+
 - 一行 5 张卡（WPF Grid 5 列）：标准卡 + 4 张样品卡
 - 每卡顶部 Amber 标题栏（ColorZone SecondaryMid + ☰ hamburger + 标题）
 - **标准卡**（StandardCardUserControl）：试验标准(GB/T9251-2022)、公称工作压力(30 MPa)、试验压力(45 MPa)、保压时间(30 秒)、允许容积残余变形率(5%) + "确 定"
@@ -430,6 +531,7 @@
 - 复用 `AppearanceInspectionDialog`
 
 ### 验证
+
 - ✅ 构建成功；qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -466,11 +568,13 @@
 - **范围**：主菜单卡片配色 + 登出按钮背景与图标对齐 WPF
 
 ### 实现（`qml/MainMenuPage.qml`）
+
 - **开始水压试验卡片**：accent 设为 `#FFC107`（Amber）—— 对齐 WPF `RaisedSecondaryButton`（Secondary 色）
 - **登出菜单按钮**：补深色背景 `#283593`（hover `#1A237E`，对齐 `RaisedDarkButton`），白字
 - **登出图标**：由 `→` 改为 ExitToApp 风格 `⇤`
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -481,10 +585,12 @@
 - **范围**：右下角按钮由"返回主菜单"改为"登出菜单"
 
 ### 实现
+
 - `qml/MainMenuPage.qml`：`logoutBtn` 文案 `qsTr("Return to Main Menu")` → `qsTr("Log out Menu")`（"登出菜单"）
 - 翻译：新增 `Log out Menu`→登出菜单（`tools/correct_translations.py` 补充）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -495,11 +601,13 @@
 - **范围**：主菜单功能卡片（测试功能 + 管理系统三按钮）风格对齐 WPF 的 MaterialDesignRaisedButton
 
 ### 调整（`qml/ShadowCard.qml`）
+
 - 卡片面由**白色卡片 + 圆形 Indigo 图标**改为 **accent 填充背景（Indigo）+ 白色图标 + 白色文字**
 - hover 用 `Qt.darker(accent, 1.25)` 变深（对齐 MaterialDesign 按钮 hover）
 - 保留模拟阴影（Elevation）与点击
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`ShadowCard.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -510,13 +618,16 @@
 - **范围**：主菜单顶栏右上角缺少登录者信息（WPF 有 Account 图标 + 登录用户）
 
 ### 根因
+
 - `LoginService::username()` 是 `Q_INVOKABLE` 方法，QML 绑定 `text: loginService.username()` 在登录前求值为空后**不自动更新**（无 NOTIFY）→ 登录后用户名不显示
 
 ### 修复
+
 - `src/services/loginservice.h/.cpp`：`username` 改为 `Q_PROPERTY(... NOTIFY usernameChanged)`，登录成功 `emit usernameChanged()`
 - `qml/Main.qml`：header 右侧改为 **👤 图标 + `loginService.username`**（属性绑定自动更新），对齐 WPF Account 图标 + 登录用户
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -527,11 +638,13 @@
 - **范围**：①连接状态框显示软件 + TasIO/天平 两 COM 口状态；②主菜单右下角按钮加箭头
 
 ### 实现
+
 - `src/services/deviceservice.cpp`：`connectDevices()` 返回 `软件名\nTasIO(COM1): 已连接/未连接\n天平(COM2): 已连接/未连接`
 - `qml/Main.qml`：header 新增连接状态框（`connStatus`），连接状态按钮点击后在框内显示状态（原 ToolTip）；修复 Rectangle 无 padding 的 QML 错误
 - `qml/MainMenuPage.qml`：右下角按钮 `text: "→  " + qsTr("Return to Main Menu")`（带箭头 + 返回主菜单）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -542,11 +655,13 @@
 - **范围**：主菜单右下角按钮文案由"退出登录"改为"返回主菜单"
 
 ### 实现
+
 - `qml/MainMenuPage.qml`：`logoutBtn` 文案 `qsTr("Log out")` → `qsTr("Return to Main Menu")`（"返回主菜单"），宽 200→220
 - 翻译：新增 `Return to Main Menu`→返回主菜单；清理 6 个 Drawer 文案的 unfinished 标记（Connection Status 等）
 - `tools/correct_translations.py` 补充这些词条
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；ts 0 unfinished；qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -557,11 +672,13 @@
 - **范围**：登录后主菜单缺标题栏（header）——因 `stack.replace` 后 `depth===1`，header 的 `visible: stack.depth > 1` 恒为假
 
 ### 修复
+
 - `qml/LoginPage.qml`：加 `readonly property bool isLoginPage: true`
 - `qml/Main.qml`：header `visible` 由 `stack.depth > 1` 改为 `stack.currentItem ? !stack.currentItem.isLoginPage : false`
   - 登录页隐藏 header（无边框），MainMenu 及其它页显示标题栏
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -572,14 +689,17 @@
 - **范围**：登录后进入主菜单却只显示"管理系统"区——根因是分区 Rectangle 高度异常
 
 ### 根因
+
 - 主菜单两个分区 `Rectangle` 未设显式高度，`Column anchors.fill` 无法撑开 → 分区高度异常、内容错位，登录后看起来像只显示"管理系统"
 
 ### 修复（`qml/MainMenuPage.qml`）
+
 - 两个分区 Rectangle 加 `implicitHeight: <col>.implicitHeight + 40`，由内容撑开
 - 内层 Column 由 `anchors.fill` 改为 `anchors.left/right/top + margins 20`
 - 用 console.log 验证：`testRect h=245, mgmtRect h=245`（两分区均正常显示）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`MainMenuPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -590,13 +710,16 @@
 - **范围**：新建 `docs/MAIN_MENU_WPF.md`（WPF 登录后页面内容与布局规范），并按其补全 Qt 实现
 
 ### 新增文档
+
 - `docs/MAIN_MENU_WPF.md`：记录 WPF `MenuWindow` 的窗口/顶栏/测试功能/管理系统/退出登录/按钮行为，及 Qt 对照清单
 
 ### 补全实现
+
 - **顶栏汉堡按钮**（WPF HamburgerToggleButton）：header 最左加 "☰" 按钮
 - **侧边导航 Drawer**：汉堡按钮打开，列出主菜单功能（开始试验/结果管理/用户管理/系统维护/退出登录），点击 `stack.push` 跳转
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -607,13 +730,15 @@
 - **范围**：核对 WPF `MenuWindow` 顶栏后补全 Qt 顶栏缺失项
 
 ### 核对发现的缺失
-| WPF 顶栏 | Qt 之前 |
-|------|------|
-| DeviceName（config） | 硬编码 "SY1000" |
-| 连接状态按钮 | 无（放 MainMenuPage 右下） |
-| 退出按钮（Power） | 无 |
+
+| WPF 顶栏             | Qt 之前                    |
+| -------------------- | -------------------------- |
+| DeviceName（config） | 硬编码 "SY1000"            |
+| 连接状态按钮         | 无（放 MainMenuPage 右下） |
+| 退出按钮（Power）    | 无                         |
 
 ### 补全（`qml/Main.qml` header）
+
 - 左侧：**DeviceName**（`deviceService.deviceName()`，config）+ **连接状态按钮**（点击 `ToolTip.show(connectDevices())`）
 - 中间：当前页标题（titleLabel）
 - 右侧：用户名 + **电源退出按钮**（⏻）
@@ -621,6 +746,7 @@
 - `MainMenuPage`：移除重复的连接状态按钮（改在顶栏），保留右下退出登录
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`Main.qml`/`MainMenuPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -631,10 +757,12 @@
 - **范围**：主菜单功能卡片用 `ShadowCard` 组件 + `Repeater` + 数据模型序号化，避免重复代码
 
 ### 实现（`qml/MainMenuPage.qml`）
+
 - 测试功能 / 管理系统区的卡片改为 `Repeater` + 数据 model（`{icon, text, page}`）
 - `ShadowCard` 作为唯一复用组件，通过 `modelData` 传入不同 icon/text/page，按序号渲染
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`MainMenuPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -645,15 +773,18 @@
 - **范围**：对照 WPF `MenuWindow` 重写 Qt `MainMenuPage` 的控件内容与布局
 
 ### 实现（`qml/MainMenuPage.qml`）
+
 - 由单一 2×2 Grid 改为 **两个分区**（对照 WPF）：
   - **测试功能**：标题 + 分隔线 + "开始水压试验"卡片（对应 WPF StartTestButton）
   - **管理系统**：标题 + 分隔线 + "试验结果管理 / 用户管理 / 系统维护"3 卡片一行（对应 WPF 3 列管理卡）
 - 右下角：退出登录（WPF LogoutButton）+ 连接状态按钮（WPF ConnectionStatusButton）
 
 ### 翻译
+
 - 新增 `Test Functions`→测试功能、`Management System`→管理系统、`Click to sign in...`→点击登录进入主菜单
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`MainMenuPage.qml` qmllint 无 Error；ts 0 unfinished；启动无回归、stderr 干净
 
 ---
@@ -664,9 +795,11 @@
 - **范围**：用户登录框高度 545→500
 
 ### 实现（`qml/LoginPage.qml`）
+
 - `loginCard` 高度 `545` → `500`（更紧凑，仍完整容纳标题/用户名/密码/语言/按钮/状态）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -677,12 +810,14 @@
 - **范围**：用户登录框重排——语言行移到登录按钮上方、风格与用户名/密码一致、纵向间距合理
 
 ### 实现（`qml/LoginPage.qml`）
+
 - 顺序调整为：标题 → 用户名 → 密码 → **语言行** → 登录按钮 → 状态
 - **语言行风格与用户名/密码一致**：🌐 图标 + 270×44 ComboBox（原来是无图标的 "Language:" 标签 + 150 ComboBox）
 - **间距参照 WPF**：标题下方 spacer 20（WPF Margin bottom 25）、按钮上方 spacer 22（WPF Margin top 40）
 - 登录卡高度 460→545 以容纳内容
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -693,10 +828,12 @@
 - **范围**：登录卡阴影此前只向下，左侧无阴影；改为四周可见（MaterialDesign DropShadowEffect 特性）
 
 ### 修复（`qml/LoginPage.qml`）
+
 - 阴影层改用**负 margin**（`leftMargin/rightMargin: -6..-1`、`topMargin: -2..0`、`bottomMargin: -18..-3`），使阴影向**四周**延伸，底部最明显
 - 截图验证：卡片左侧 x1300→1340 出现阴影渐变（R=178→254），此前为纯白
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；qmllint 无 Error；截图确认左/下阴影可见
 - ⚠️ 临时截图 `login_shot4/5/6.png` 可能被进程占用（untracked，未提交），重启后建议删除
 
@@ -708,14 +845,17 @@
 - **范围**：此前阴影 alpha 过弱在浅灰背景上不可见，增强为明显的向下阴影
 
 ### 修复（`qml/LoginPage.qml`）
+
 - 阴影改为 **4 层向下**（`anchors.bottomMargin` 负值 -4/-9/-15/-22，向下露出 22px）
 - alpha 提高至 `#14/#20/#2A/#33`（8%–20%），在浅灰背景上清晰可见
 - 截图验证：卡片底部下方 y750→765 渐变（R=131→179），层次感明显（此前纯背景 224 无阴影）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；qmllint 无 Error；截图确认阴影可见；启动无回归
 
 ### 备注
+
 - 临时截图文件 `login_shot4.png` 曾被系统进程占用未能删除（untracked，未提交），重启后建议手动删除。
 
 ---
@@ -726,12 +866,15 @@
 - **范围**：按 WPF 登录卡阴影（`ElevationAssist.Elevation="Dp12"` 的 `DropShadowEffect`）调整 Qt 阴影
 
 ### 核对
+
 - WPF 登录卡：MaterialDesign `Card` + `ElevationAssist.Elevation="Dp12"`，内部为 `DropShadowEffect`（Direction 270 向下、BlurRadius≈20、ShadowDepth≈10、柔和渐变）
 
 ### 调整（`qml/LoginPage.qml`）
+
 - Qt 无 `DropShadowEffect`（GraphicalEffects 不可用），用 **4 层半透明圆角矩形**近似：阴影改为**主要向下**（topMargin 2/5/9/13 递增）+ 左右轻微对称扩散，模拟 Dp12 柔和向下阴影
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -742,9 +885,11 @@
 - **范围**：用户登录框阴影增强，模拟 WPF Elevation Dp12
 
 ### 实现
+
 - `qml/LoginPage.qml`：登录卡阴影由单层改为 **3 层半透明圆角矩形**（alpha 递减、偏移递增：14/9/4px），营造柔和层次感
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -755,13 +900,16 @@
 - **范围**：登录页去掉系统标题栏，对齐 WPF `LoginWindow`（`WindowStyle=None` 无边框、最大化）
 
 ### 实现
+
 - `qml/Main.qml`：`ApplicationWindow` 加 `flags: Qt.Window | Qt.FramelessWindowHint`（无边框窗口）
 - 结合此前改动：登录页无 header、最大化全屏浅灰、左上角留空、右上角电源退出按钮 —— 与 WPF 启动界面一致
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ### 备注
+
 - 无边框窗口在非登录页由自定义深蓝 header 充当标题栏；窗口最大化固定（对齐 WPF）。
 
 ---
@@ -772,12 +920,14 @@
 - **范围**：启动界面左上角无控件（对齐 WPF 无边框登录窗口），仅右上角电源按钮
 
 ### 实现
+
 - `qml/Main.qml`：
   - header 加 `visible: stack.depth > 1`（登录页隐藏顶部深蓝条，左上角留空）
   - 移除 header 内退出按钮；用户名 Label 锚回 `parent.right`
 - `qml/LoginPage.qml`：新增电源退出按钮，`anchors` 到 `loginPage` 右上角（无 header 时即窗口右上角）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`Main.qml`/`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -788,9 +938,11 @@
 - **范围**："北京德康时代科技有限公司" 偏左，未与 logo / 设备名垂直中心对齐
 
 ### 修复
+
 - `manufacturer`（及 `deviceName`）Label 补 `width: parent.width` + `horizontalAlignment: AlignHCenter`，使其在 Column 内水平居中（此前 Label 宽度=文本宽且无水平锚定，靠左）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -801,10 +953,12 @@
 - **范围**：品牌区 logo / 设备名 / 制造商 的纵向排列间距
 
 ### 修复
+
 - WPF `StackPanel` 中 logo→DeviceName、DeviceName→Manufacturer 间距均为 **50px**（`Margin="0 50 0 0"`）
 - Qt 品牌区 `Column` 的 `spacing` 由 30 改为 **50**，对齐 WPF
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -815,6 +969,7 @@
 - **范围**：登录按钮改为 WPF `MaterialDesignRaisedButton` 风格
 
 ### 实现（`qml/LoginPage.qml`）
+
 - `import QtQuick.Controls.Material`
 - `signInButton` 设置：
   - `Material.background: "#303F9F"`（WPF PrimaryHueDark 深 Indigo）
@@ -823,6 +978,7 @@
   - `ToolTip`（"点击登录进入主菜单"，对齐 WPF ToolTip）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；启动无回归、stderr 干净
 
 ---
@@ -833,15 +989,18 @@
 - **范围**：登录页左侧三项（logo → 设备名 → 制造商）的值对齐 WPF `config.json`
 
 ### 核对（读 WPF 源码）
+
 - WPF `Resources/config.json`：`DeviceName="DKSY-I 气瓶水压检测装置"`、`Manufacturer="北京德康时代科技有限公司"`、`SerialNo="2511B01"`、`ManufactureDate="2025-11-10"`
 - Qt 之前的 `config.json` 是占位符（`SY1000`/`Quanshen`），与 WPF 不符
 
 ### 修复
+
 - `config.json` 更新为 WPF 真实值：deviceName/manufacturer/serialNo/manufactureDate
 - 登录页左侧显示：logo → deviceName(64px) → manufacturer(36px)，与 WPF 一致
 - 源文件与 exe 目录副本均 UTF-8 无 BOM，Qt `ConfigManager`（UTF-8 解析）正确返回中文
 
 ### 验证
+
 - ✅ 源与 exe 目录 config.json 均为 UTF-8、中文正确
 - ✅ `SY1000.exe` 构建成功、启动无回归、stderr 干净
 
@@ -853,15 +1012,18 @@
 - **范围**：在保持登录页布局不变的前提下，对比 WPF `LoginWindow` 微调细节
 
 ### 微调（布局结构不变）
+
 - **品牌区**：logo 宽 300→500（对齐 WPF）；标题由硬编码改为 **config 设备信息** `deviceService.deviceName()`(64px) / `manufacturer()`(36px)，对齐 WPF
 - **登录卡**：补 **Elevation 阴影**（Dp12 模拟，多层半透明圆角矩形）
 - **输入框**：用户名前补 👤、密码前补 🔒 图标（对齐 WPF Account / Lock 图标）；输入框 300→270（给图标留位）
 - **登录按钮**：高度 52→55（对齐 WPF）
 
 ### 相关改动
+
 - `src/services/deviceservice.h/.cpp`：新增 `Q_INVOKABLE deviceName()` / `manufacturer()`（读 ConfigManager，供 QML 品牌区使用）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；运行 stderr 干净
 - ✅ `testlogin`/`testcore`/`testcontroller` 冒烟通过
 
@@ -873,17 +1035,20 @@
 - **范围**：点击登录无反应、无法进入新界面的重大 bug
 
 ### 根因（stderr 定位）
+
 1. **`Page` 的 `property string title` 覆盖内置 FINAL 属性** → 8 个 Page 页面（MainMenu/ResultManagement/ResultDetails/ReportView/SystemMaintain/UserManagement/Test/TestPreparation）全部加载失败 → 登录后 `stack.replace("MainMenuPage.qml")` 静默失败，无法进入主菜单
 2. **quitBtn 跨父级锚定 `titleLabel`**（`Cannot anchor to an item that isn't a parent or sibling`）→ 此前按钮位置错乱/顶部超界的根因
 3. **`:/i18n/sy1000_zh_CN.qm` 加载失败** → qm 未嵌入资源，默认中文回退英文
 
 ### 修复
+
 - 8 个 Page 的 `property string title: qsTr("X")` 改为 `title: qsTr("X")`（用内置 title 属性）
 - `Main.qml` quitBtn 由 `anchors.bottom: titleLabel.bottom`（跨级非法）改为 `anchors.verticalCenter: parent.verticalCenter` + `transform: Translate { y: 6 }`
 - `CMakeLists.txt`：在 `qt_add_lrelease` 后新增 `qt_add_resources`，把生成的 `sy1000_zh_CN.qm` 嵌入到 `/i18n/`
 - 新增 `src/tests/testlogin.cpp`：验证 LoginService（admin/9999 登录成功 + `loginSucceeded` 信号）
 
 ### 验证
+
 - ✅ `MainMenuPage` 作为初始页运行 stderr 干净（无 QML 错误）；最终初始页恢复 `LoginPage`
 - ✅ 运行日志 stderr 完全为空（无 zh_CN 加载失败、无 QML 错误）
 - ✅ 6 个 headless 冒烟测试全绿（含新增 `testlogin`：LOGIN SMOKE PASS）
@@ -896,9 +1061,11 @@
 - **范围**：电源按钮底部对齐标题标签后，其顶部超出 header 上边界，整体下移 6px
 
 ### 修复
+
 - `qml/Main.qml`：`quitBtn` 保留 `anchors.bottom: titleLabel.bottom`，新增 `transform: Translate { y: 6 }` 将整个按钮下移 6px，使顶部位于 header 内
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；应用启动无回归
 
 ---
@@ -909,6 +1076,7 @@
 - **范围**：登录页右上角电源按钮，外圈（背景圆）与内圈（⏻ 图标）垂直中心错位（外圈偏上、内圈偏下）
 
 ### 修复
+
 - 根因：Qt Quick Controls `Button` 内部有 padding，`contentItem` 的居中中心与 `background` 圆中心不在同一位置
 - 将 `Button` 改为自定义 `Item`：
   - 外圈 `Rectangle`（`anchors.fill: parent`）与内圈 `Label`（`anchors.centerIn: parent`）**都居中于同一父级**，几何中心严格一致
@@ -916,6 +1084,7 @@
   - 点击/hover 用 `MouseArea` 实现（`cursorShape` 手型、hover 变色）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；应用启动无回归
 
 ---
@@ -926,16 +1095,19 @@
 - **范围**：为 `build/msvc/Debug/SY1000.exe` 补全启动所需 Qt 库，实现独立运行
 
 ### 操作
+
 - 使用 Qt 官方 `windeployqt --qmldir <qml> SY1000.exe` 自动部署
 - 部署内容：34 个 Qt DLL（Qt6Cored/Guid/Quick/Sqld/SerialPortd/Networkd/PrintSupportd 等）+ 平台插件 `qwindowsd.dll` + `platforms/qml/sqldrivers/styles/translations` 等 QML 插件 + 翻译
 - `Debug` 目录部署后约 254 MB
 
 ### 验证
+
 - ✅ 系统 PATH（Machine/User）均不含 Qt
 - ✅ 用干净 PATH（仅 System32/Windows/exe 目录）启动 `SY1000.exe` → **APP ALIVE（真正独立运行）**
 - ✅ `build/` 在 .gitignore 中，部署文件不会被 git 跟踪
 
 ### 备注
+
 - 若需发布，可将整个 `Debug`（或 Release）目录一起打包（exe + 全部 DLL + QML 插件）。
 
 ---
@@ -946,9 +1118,11 @@
 - **范围**：按用户要求，将电源式退出按钮的**底部**与 header 左上角标题标签（"| Login"）的**底部**对齐
 
 ### 实现
+
 - `qml/Main.qml`：标题 Label 加 `id: titleLabel`；退出按钮由 `anchors.verticalCenter` 改为 `anchors.bottom: titleLabel.bottom`（保留右侧锚定）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`Main.qml` qmllint 无 Error；应用启动无回归
 
 ---
@@ -959,6 +1133,7 @@
 - **范围**：修复"退出按钮位置不对"——原按钮锚定在 LoginPage 顶部（header 下方），与 WPF 窗口右上角不符
 
 ### 修复
+
 - 从 `qml/LoginPage.qml` 移除退出按钮
 - `qml/Main.qml` 顶部 header（窗口右上角）新增电源式退出按钮：
   - `visible: stack.depth === 1`（仅登录页显示）
@@ -967,6 +1142,7 @@
 - 位置现为**窗口右上角**（header 内，对齐 WPF QuitButton）
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`Main.qml`/`LoginPage.qml` qmllint 无 Error；应用启动无回归
 - 清理临时调试文件（debug_out.txt / debug_err.txt / login_shot.png）
 
@@ -978,12 +1154,14 @@
 - **范围**：按 WPF `LoginWindow.xaml` 的 `QuitButton`（右上角 Power 图标）给 Qt 登录页补退出按钮
 
 ### 实现
+
 - `qml/LoginPage.qml` 右上角新增电源式退出按钮：
   - 60×60 圆形（radius = 高/2），深蓝背景（#193660，hover 变 #303F9F）、白色 2px 边框
   - 内容为电源图标（⏻，白色）
   - `onClicked: Qt.quit()` 退出应用
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`LoginPage.qml` qmllint 无 Error；应用启动无回归
 
 ---
@@ -994,6 +1172,7 @@
 - **范围**：D14 卡片/控件样式对齐 WPF MaterialDesign
 
 ### 实现
+
 - 检查到 Qt6 无 `GraphicalEffects` 模块（阴影不可直接使用），改用纯 QML 模拟
 - 新建 `qml/ShadowCard.qml` 可复用组件：
   - **模拟 Elevation 阴影**：3 层半透明矩形叠加（alpha 递减）实现右下投影
@@ -1004,9 +1183,11 @@
 - `CMakeLists` 注册 `ShadowCard.qml` 资源
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功；`ShadowCard.qml`/`MainMenuPage.qml` qmllint 无 Error；应用启动无回归
 
 ### 备注
+
 - 样式组件可复用到其他页面卡片（SystemMaintainPage/TestPreparationPage 等），后续按需扩展。
 - 按钮 hover 沿用 Qt Quick Controls 2 Material 默认。
 
@@ -1018,13 +1199,16 @@
 - **范围**：D11 登录页默认中文、D12 真实 Logo
 
 ### 实现
+
 - **D12 真实 Logo**：复制 WPF `Resources/dklogo.png`（30KB）到 `qml/assets/dklogo.png`；`CMakeLists` 注册资源；`LoginPage.qml` 用 `Image`（PreserveAspectFit）替换原"DKQSY"占位矩形
 - **D11 默认中文**：`src/main.cpp` 启动时 `LanguageHelper::setLanguage("zh_CN")`（对齐 WPF 全中文界面）；`LoginPage` 语言 ComboBox 按 `lang.current()` 显示当前语言
 
 ### 验证
+
 - ✅ `SY1000.exe` 构建成功（dklogo 资源嵌入）；qmllint 无 Error；应用启动无回归
 
 ### 备注（D13 字体暂缓）
+
 - WPF 字体 `NotoSansCJKsc-VF.ttf` / `SourceHanSansSC-VF.ttf` / `SourceHanSerifSC-VF.ttf`（36-59MB）过大，暂不引入仓库；当前用系统字体 + 统一 Indigo/Amber 配色。
 
 ---
@@ -1035,6 +1219,7 @@
 - **范围**：读取 `sy1000-host-wpf` 源码中的中文文案（XAML Text/Content/Header + C#），逐条核对 `i18n/sy1000_zh_CN.ts` 翻译，按 WPF 用词修正不一致项
 
 ### 修正要点（对齐 WPF 原文）
+
 - **外观检查 4 部分标题**：External→外部检查、Internal→内部检查、Thread→瓶口螺纹检查、Valve→气瓶阀检查
 - **检查项**：热损伤迹象 / 有无划伤 / 有无磨损 / 有无分层 / 有无异常变形 / 有无气味 / 缺陷位置描述 / 杂物的种类和数量 / 内表面状况描述 / 螺纹规格 / 螺纹状况描述 / 螺纹状况评估 / 气瓶阀编号 / 连接螺纹状况描述 / 气密状况描述 / 爆破片是否更换
 - **结果状态**：To Repair→待修复、To Replace→待更换、Scrapped→判废；评定结果
@@ -1043,9 +1228,11 @@
 - 样品容积 Volume (L)→气瓶容积
 
 ### 工具
+
 - 新增 `tools/correct_translations.py`：source→WPF 用词映射，覆盖已有翻译（可复用）
 
 ### 验证
+
 - ✅ ts 0 unfinished；修正项全部生效；`lrelease` 重新生成 qm；`SY1000.exe` 启动无回归
 
 ---
@@ -1056,6 +1243,7 @@
 - **范围**：① 补全中英 i18n 翻译文件；② 按 WPF↔Qt 核对补齐 UI 遗漏
 
 ### 中文翻译文件补全
+
 - 原 `i18n/sy1000_zh_CN.ts` 仅 11 条翻译，严重不完整
 - 用 `lupdate` 从 `qml/`+`src/` 重新生成 ts（178 个 qsTr 源文本）
 - 新建 `tools/fill_translations.py`：内嵌 source→中文 映射，批量填充全部 178 条（含 `&amp;` 转义、带尾随空格 key）
@@ -1063,17 +1251,20 @@
 - 保留脚本 `tools/fill_translations.py` 便于日后更新翻译
 
 ### UI 遗漏补齐（WPF↔Qt 核对）
+
 - 样品卡补"使用单位(UserCompany)"字段（WPF 必填项）→ 传入 inspection 并写入结果
 - 结果详情页补外观检查 4 项结果显示；`details()` 返回 `external/internal/thread/valve`
 - 主菜单补"连接状态"按钮（调 `deviceService.connectDevices()`）
 - 修复 `ResultDetailsPage.qml` **预先存在**的 `function row(){ Label{} }` QML 语法错误（曾致运行时渲染问题）
 
 ### 验证
+
 - ✅ 全目标编译通过；5 个 headless 冒烟测试全绿
 - ✅ `lrelease` 生成 179 finished / 0 unfinished；`SY1000.exe` 启动无回归
 - ✅ 修正 3 处遗漏翻译（Username/Password 同文本启发式、空 qsTr("")）
 
 ### 已知限制
+
 - 报告查看多 PDF 翻页：因 Qt Pdf 模块未安装（QPdfView 不可用），未实现（记录在案）。
 
 ---
@@ -1084,6 +1275,7 @@
 - **范围**：实现 WPF 中此前 Qt 未实现的部分——试验结果数据的曲线与环境信息
 
 ### 实现
+
 - `src/services/hydroadapter.h/.cpp`：
   - 采样定时器在试验进行中采集 `PressureWeightPoint`（压力 + 样品1重量）到 `m_curvePoints`；`startTest()` 清空
   - `buildResult()` 填入 `h.pressureWeightData` + `h.workingPressure/testPressure`；填充 `testEnvironment`（室温/湿度 + config 设备ID/型号）
@@ -1093,13 +1285,16 @@
 - `src/tests/testcore.cpp`：新增曲线点 + 环境数据保存读回验证（curve_points=6、eq/model）
 
 ### 尝试未实现
+
 - **语音合成**：尝试接入 `QTextToSpeech`，但其依赖 `Qt6Multimedia`（本机 Qt 未安装），已撤销；保留 `voice()` 信号待后续环境具备时再接入。
 
 ### 验证
+
 - ✅ 全目标编译通过；5 个 headless 冒烟测试全绿（testcore 验证曲线点 + 环境数据 round-trip）
 - ✅ `testreport`：报告含 `data:image/png` 曲线；`SY1000.exe` 启动无回归
 
 ### 备注
+
 - 真实试验保存的结果现在带曲线点，PDF 报告曲线真实化。
 - 环境数据室温/湿度为占位值（无温湿度传感器），设备 ID/型号来自 config.json。
 
@@ -1111,16 +1306,19 @@
 - **范围**：`docs/TODO.md` 待办第 5 项
 
 ### 实现
+
 - `qml/ResultManagementPage.qml`：改为 **TabBar 双分区**，对齐 WPF 两个窗口
   - **Tab 1 "测试结果管理"**（对应 `TestResultManagementWindow`）：测试者 / 测试时间 / 产品型号 / 产品编号 / 生产厂家 / 删除
   - **Tab 2 "试验结果管理"**（对应 `UnifiedTestResultManagementWindow`）：生产厂商 / 气瓶编号 / 试验时间 / 试验人员 / 试验结果 / 查看详情
 - `src/services/resultservice.cpp`：`results()` 新增 `sampleModel`、`sampleSerial` 字段以支撑两 Tab 列
 
 ### 验证
+
 - ✅ `services.lib` + `SY1000.exe` 编译通过；`testcore` SMOKE PASS
 - ✅ `ResultManagementPage.qml` qmllint 零错误；`SY1000.exe` 启动无回归
 
 ### 备注
+
 - 未实现 WPF 的分页与"按厂商/日期"筛选（保留刷新/删除/详情），如需可后续补充。
 
 ---
@@ -1131,10 +1329,12 @@
 - **范围**：`docs/TODO.md` 待办第 9 项；顺带修复用户反馈的"debug 弹窗"观感
 
 ### 修复疑似"debug 弹窗"
+
 - 定位：项目源码无任何 `QMessageBox`，最可能来源为 **A3 试验中途以英文弹出的泄压确认框**（"Release Pressure / Please open the release valve..."），在中文界面中观感似调试信息。
 - 改动：`src/core/tasks.cpp` 泄压确认框文案本地化为中文操作指令——标题"泄压操作"、消息"请打开泄压阀，然后点击"确认"开始泄压。"、状态"泄压中，剩余 %1 秒"。
 
 ### C9 config.json 加载
+
 - 新增 `src/services/configmanager.h/.cpp`：`ConfigManager`
   - `load(path)`：从 `config.json` 读取（path 为空时搜索 exe 目录/当前目录）
   - `value(key, default)` 泛型访问 + `deviceName()/manufacturer()/serialNo()/manufactureDate()` 便捷访问；文件/键缺失回退默认值
@@ -1143,10 +1343,12 @@
 - `CMakeLists.txt`：`configmanager.cpp` 加入 services；新增 `testconfig` 测试；SY1000 POST_BUILD 复制 config.json
 
 ### 验证
+
 - ✅ 全目标编译通过；5 个 headless 冒烟测试全绿（新增 `testconfig`：CONFIG SMOKE PASS，正确读取/回退默认）
 - ✅ `SY1000.exe` 启动无回归，`config.json` 已复制到输出目录
 
 ### 备注
+
 - 若用户反馈的"debug 弹窗"并非泄压确认框（如 MSVC 断言窗口），请补充具体弹窗文本以便进一步定位。
 
 ---
@@ -1157,9 +1359,11 @@
 - **范围**：`docs/TODO.md` 建议顺序第 5 项（报告闭环）
 
 ### 说明
+
 - 检查到 Qt 安装中 **无 Qt Pdf 模块（QPdfView 不可用）**，但 `Qt6PrintSupport`（QPrinter）可用。
 
 ### C7 PDF 报告生成
+
 - 新增 `src/report/testreportgenerator.h/.cpp`：`TestReportGenerator`
   - `buildHtml(result)`：HTML 排版（标题/检验员/标准/样品/水压数据表/外观检查/总体结果），内嵌压力曲线图（`chartDataUri`，base64 PNG）
   - `generatePdf(result, outPath)`：`QTextDocument + QPrinter`（A4）输出 PDF，路径 `Documents/水压测试结果/{mfg}_{serial}_{yyyyMMdd_HHmm}/{mfg}_{serial}_试验报告.pdf`
@@ -1168,16 +1372,19 @@
 - `src/tests/testreport.cpp`：headless 测试（用 `QGuiApplication`，QPrinter 需要字体数据库）验证 PDF 生成
 
 ### A2 报告查看（替代方案）
+
 - 新建 `qml/ReportViewPage.qml`：A4 风格报告预览（原生渲染报告字段）+ "Generate & Open PDF" 按钮（`generatePdf` 后 `Qt.openUrlExternally`）
 - `qml/ResultDetailsPage.qml`：新增 "View Report" 按钮导航
 - `CMakeLists.txt`：注册 `ReportViewPage.qml`
 
 ### 验证
+
 - ✅ 全目标编译通过（report.lib / testreport.exe / SY1000.exe）；4 个 headless 冒烟测试全绿
 - ✅ `testreport`：生成 56KB PDF、html 含 `data:image/png` 曲线图、REPORT SMOKE PASS
 - ✅ `ReportViewPage.qml` qmllint 零错误；`SY1000.exe` 启动无回归
 
 ### 备注
+
 - 修复两处编译问题：① 函数误入匿名命名空间导致 `}` 不匹配；② `PressureWeightPoint.timestamp` 为 `DateTime`（time_point）需转 epoch 毫秒再绘图。
 - 若后续目标机需要内嵌 PDF 查看，可安装 Qt Pdf 模块后改用 `QPdfView`。
 
@@ -1189,22 +1396,27 @@
 - **范围**：`docs/TODO.md` 建议顺序第 4 项
 
 ### 核心机制：阻塞式确认请求
+
 - `src/core/subtask.h/.cpp`：`HydroSubTask` 新增 `requestConfirm(title,message)` 信号、`requestConfirmation()`（发射并暂停）、`confirmResponse(bool)` 槽（恢复回调）
 - `src/core/controller.h/.cpp`：新增 `confirmRequested` 信号 + `Q_INVOKABLE respondConfirm(bool)`；`runTask()` 转发子任务确认请求并记录 `m_pendingConfirm`
 - `src/services/hydroadapter.h/.cpp`：桥接 `confirmRequested` 到 QML，`respondConfirm()` 回传控制器
 
 ### 业务接入
+
 - `ReleaseTask::run()`（`src/core/tasks.cpp`）：泄压前弹窗"请打开泄压阀，确认开始泄压"，确认后开始倒计时，取消则中止
 
 ### UI
+
 - 新建 `qml/HydroTestMessageDialog.qml`（标题+消息+OK/取消；OK→`respondConfirm(true)`，取消→`false`）
 - `qml/TestPage.qml`：`Connections` 监听 `hydro.onConfirmRequested` 打开对话框（Page 根级覆盖整页）
 - `CMakeLists.txt`：注册新 QML 资源
 
 ### 测试适配
+
 - `src/tests/testcontroller.cpp`：连接 `confirmRequested` 自动确认，保证 headless 冒烟测试不阻塞挂起
 
 ### 验证
+
 - ✅ 全目标编译通过；3 个 headless 冒烟测试全绿（testcontroller 日志显示泄压态确认请求成功 auto-accept）
 - ✅ `HydroTestMessageDialog.qml` qmllint 零错误；`SY1000.exe` 启动无回归
 - ✅ 已提交并推送 `ba9bdf8`
@@ -1217,6 +1429,7 @@
 - **范围**：`docs/TODO.md` 建议顺序第 3 项
 
 ### `RealTimeChart`（`src/ui/charts/RealTimeChart.h/.cpp`）多序列 + 双 Y 轴重构
+
 - 从单序列 `QQueue<DataPoint> m_dataPoints` 重构为 `QVector<Series> m_series`（名称/颜色/左右轴标记/数据队列）
 - 双 Y 轴：左轴压力（`yMin/yMax`），右轴重量（新增 `rightYMin/rightYMax/rightYAxisLabel`）；`drawAxes` 绘制左右刻度与单位标签
 - 新增 QML API：`addSeries`/`addSeriesValue`/`addSeriesValueAt`/`clearSeries`/`seriesCount`；`addValue()` 兼容写序列 0
@@ -1225,12 +1438,15 @@
 - 顺序健壮性：`addSeries` 在序列为空时自动创建 pressure 占位序列 0，避免采样时序错位
 
 ### 数据接入
+
 - `src/services/hydroadapter.h/.cpp`：新增 `weightSample(int,double)` 信号，采样定时器每 100ms 同时发射压力与 1-4 号样品重量
 
 ### 试验页
+
 - `qml/TestPage.qml`：启用右轴 + 注册 4 个样品序列（红/绿/橙/蓝）+ 图例；`onPressureSample`→`addValue`，`onWeightSample`→`addSeriesValue`
 
 ### 验证
+
 - ✅ 全目标编译通过；3 个 headless 冒烟测试全绿；`SY1000.exe` 启动无回归
 - ✅ qmllint 语法零错误（`SyCharts` import 警告为运行时注册类型所致，非真实问题）
 - ✅ 已提交并推送 `9dd3941`
@@ -1243,21 +1459,25 @@
 - **范围**：`docs/TODO.md` 建议顺序第 1、2 项
 
 ### A1 外观检查补全
+
 - `qml/AppearanceInspectionDialog.qml`：从 4 下拉框升级为完整 WPF 式表单
   - 检验员信息（姓名/证书号/日期，缺省自动填当天）
   - External/Internal/Thread/Valve 四部分逐项检查（勾选 + 文本）+ 缺陷位置 + 其他备注
   - 结果值以 `0-3` 整数存储（对应 `InspectionResult` 枚举），确认后写回 `target.inspection` 并置 `inspectionCompleted=true`
 
 ### C6 外观检查接入结果保存
+
 - `qml/TestPreparationPage.qml`：初始化 `inspection` 数据对象；"保存并开始试验"时调用 `hydro.setSampleInspection(i+1, d.inspection)`
 - `src/services/hydroadapter.h/.cpp`：新增 `Q_INVOKABLE setSampleInspection()`（`QVariantMap`→`SampleInspectionData` 转换），`buildResult()` 写入 `sample.appearanceInspection`（持久化层 `json_serializer` 原已完整支持）
 
 ### 验证
+
 - ✅ 全目标编译通过；3 个 headless 冒烟测试全绿；`SY1000.exe` 启动无回归
 - ✅ `qmllint` 对新对话框 0 警告
 - ✅ 已提交并推送 `adfdf64`
 
 ### 备注（发现的问题）
+
 - **预先存在**：`ResultDetailsPage.qml:31` 中 `function row(){ Label{} }` 写法非法（QML 不能在 JS 函数体内声明 Item），会在运行时影响结果详情页渲染。建议后续一并修复（非本次引入）。
 
 ---

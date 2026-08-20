@@ -44,6 +44,8 @@ QString DeviceServiceAdapter::connectDevices()
     const QString scalePort = ConfigManager::scalePort();
     const bool tasOk = dm.tasIO().connect(tasPort);
     const bool scaleOk = dm.precisa().connect(scalePort);
+    if (scaleOk)
+        dm.precisa().startContinuousReading(); // H4: start scale polling once connected.
     const QString okS = QStringLiteral("已连接");
     const QString noS = QStringLiteral("未连接");
     const QString ports = availablePorts().isEmpty()

@@ -142,7 +142,7 @@ QString chartDataUri(const HydroStaticTestData &h)
 
 QString TestReportGenerator::buildHtml(const UnifiedTestResult &r)
 {
-    const auto &s = r.sample;
+    const auto &s = r.primarySample();
     const auto &h = s.hydroStaticTest;
     const auto &insp = s.appearanceInspection;
     const auto &ts = r.testStandard;
@@ -206,7 +206,7 @@ QString TestReportGenerator::buildHtml(const UnifiedTestResult &r)
 bool TestReportGenerator::generatePdf(const UnifiedTestResult &r, QString *outPath,
                                       const QString &baseFolder)
 {
-    const auto &s = r.sample;
+    const auto &s = r.primarySample();
     const auto stamp = QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMdd_HHmm"));
     // Manufacturer / serial are used in the folder & file names, so they are
     // sanitized to be safe on every platform (L3).

@@ -9,6 +9,8 @@
 #include <QStandardPaths>
 #include <QVariant>
 
+#include "dao/userdao.h"
+
 QString Database::databasePath()
 {
     const QString docs = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
@@ -97,7 +99,8 @@ void Database::seed()
                                  " VALUES (?, ?, ?, ?, ?)"));
         q.addBindValue(QStringLiteral("admin"));
         q.addBindValue(QStringLiteral("Quanshen"));
-        q.addBindValue(QStringLiteral("9999"));
+        // Store a salted hash instead of the plaintext default password (H2).
+        q.addBindValue(UserDao::hashPassword(QStringLiteral("9999")));
         q.addBindValue(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd HH:mm:ss")));  // real timestamp (L8)
         q.addBindValue(1);
         if (!q.exec()) {

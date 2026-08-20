@@ -1,5 +1,6 @@
 #include "services/userservice.h"
 
+#include <QString>
 #include <QVariantMap>
 
 #include "dao/userdao.h"
@@ -33,7 +34,7 @@ bool UserServiceAdapter::addUser(const QString &username, const QString &company
     sy1000::User u;
     u.username = username.toStdString();
     u.company = company.toStdString();
-    u.password = password.toStdString();
+    u.password = UserDao::hashPassword(password).toStdString();
     u.isAdmin = isAdmin ? 1 : 0;
     return UserDao::insert(u) > 0;
 }
@@ -56,9 +57,11 @@ bool UserServiceAdapter::removeUser(int id)
 
 bool UserServiceAdapter::resetPassword(int id, const QString &newPassword)
 {
+    if (newPassword.isEmpty())
+        return false;
     for (auto &candidate : UserDao::findAll()) {
         if (candidate.id == id) {
-            candidate.password = newPassword.toStdString();
+            candidate.password = UserDao::hashPassword(newPassword).toStdString();
             return UserDao::update(candidate);
         }
     }

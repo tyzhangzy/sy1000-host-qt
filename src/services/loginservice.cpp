@@ -18,7 +18,7 @@ bool LoginService::tryLogin(const QString &username, const QString &password)
         return false;
     }
 
-    sy1000::User user = UserDao::findByUsernameAndPassword(username.toStdString(), password.toStdString());
+    sy1000::User user = UserDao::authenticate(username.toStdString(), password.toStdString());
     if (user.username.empty()) {
         m_error = QStringLiteral("Login failed: invalid username or password.");
         return false;

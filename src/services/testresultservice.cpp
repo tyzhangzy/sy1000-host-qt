@@ -50,7 +50,7 @@ UnifiedTestResult createUnifiedTestResult(const std::string &testerName,
     r.testDate = std::chrono::system_clock::now();
     r.testerName = testerName;
     r.testerCompany = testerCompany;
-    r.sample = sample;
+    r.samples.push_back(sample);
     r.testStandard = testStandard;
     return r;
 }

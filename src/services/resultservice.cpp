@@ -25,11 +25,11 @@ QVariantList ResultServiceAdapter::results() const
         m[QStringLiteral("serial")] = QString::fromStdString(r.testSerialNo);
         m[QStringLiteral("tester")] = QString::fromStdString(r.testerName);
         m[QStringLiteral("company")] = QString::fromStdString(r.testerCompany);
-        m[QStringLiteral("manufacturer")] = QString::fromStdString(r.sample.manufacturer);
-        m[QStringLiteral("sampleModel")] = QString::fromStdString(r.sample.sampleModel);
-        m[QStringLiteral("sampleSerial")] = QString::fromStdString(r.sample.serialNo);
-        m[QStringLiteral("overall")] = static_cast<int>(r.sample.overallResult);
-        m[QStringLiteral("rate")] = r.sample.hydroStaticTest.residualDeformationRate;
+        m[QStringLiteral("manufacturer")] = QString::fromStdString(r.primarySample().manufacturer);
+        m[QStringLiteral("sampleModel")] = QString::fromStdString(r.primarySample().sampleModel);
+        m[QStringLiteral("sampleSerial")] = QString::fromStdString(r.primarySample().serialNo);
+        m[QStringLiteral("overall")] = static_cast<int>(r.primarySample().overallResult);
+        m[QStringLiteral("rate")] = r.primarySample().hydroStaticTest.residualDeformationRate;
         const auto t = std::chrono::system_clock::to_time_t(r.testDate);
         m[QStringLiteral("date")] = QDateTime::fromSecsSinceEpoch(t).toString(QStringLiteral("yyyy-MM-dd HH:mm"));
         out.append(m);
@@ -49,23 +49,23 @@ QVariantMap ResultServiceAdapter::details(int id) const
     m[QStringLiteral("tester")] = QString::fromStdString(r.testerName);
     m[QStringLiteral("company")] = QString::fromStdString(r.testerCompany);
     m[QStringLiteral("date")] = QDateTime::fromSecsSinceEpoch(t).toString(QStringLiteral("yyyy-MM-dd HH:mm"));
-    m[QStringLiteral("sampleModel")] = QString::fromStdString(r.sample.sampleModel);
-    m[QStringLiteral("manufacturer")] = QString::fromStdString(r.sample.manufacturer);
-    m[QStringLiteral("sampleSerial")] = QString::fromStdString(r.sample.serialNo);
-    m[QStringLiteral("volume")] = r.sample.volume;
-    m[QStringLiteral("overall")] = static_cast<int>(r.sample.overallResult);
+    m[QStringLiteral("sampleModel")] = QString::fromStdString(r.primarySample().sampleModel);
+    m[QStringLiteral("manufacturer")] = QString::fromStdString(r.primarySample().manufacturer);
+    m[QStringLiteral("sampleSerial")] = QString::fromStdString(r.primarySample().serialNo);
+    m[QStringLiteral("volume")] = r.primarySample().volume;
+    m[QStringLiteral("overall")] = static_cast<int>(r.primarySample().overallResult);
     m[QStringLiteral("workPressure")] = r.testStandard.workingPressure;
     m[QStringLiteral("testPressure")] = r.testStandard.testingPressure;
-    m[QStringLiteral("rate")] = r.sample.hydroStaticTest.residualDeformationRate;
-    m[QStringLiteral("initialWeight")] = r.sample.hydroStaticTest.initialWeight;
-    m[QStringLiteral("pressureWeight")] = r.sample.hydroStaticTest.pressureWeight;
-    m[QStringLiteral("finalWeight")] = r.sample.hydroStaticTest.finalWeight;
-    m[QStringLiteral("fullDeformation")] = r.sample.hydroStaticTest.fullDeformation;
-    m[QStringLiteral("residualDeformation")] = r.sample.hydroStaticTest.residualDeformation;
-    m[QStringLiteral("external")] = static_cast<int>(r.sample.appearanceInspection.externalResult);
-    m[QStringLiteral("internal")] = static_cast<int>(r.sample.appearanceInspection.internalResult);
-    m[QStringLiteral("thread")] = static_cast<int>(r.sample.appearanceInspection.threadResult);
-    m[QStringLiteral("valve")] = static_cast<int>(r.sample.appearanceInspection.valveResult);
+    m[QStringLiteral("rate")] = r.primarySample().hydroStaticTest.residualDeformationRate;
+    m[QStringLiteral("initialWeight")] = r.primarySample().hydroStaticTest.initialWeight;
+    m[QStringLiteral("pressureWeight")] = r.primarySample().hydroStaticTest.pressureWeight;
+    m[QStringLiteral("finalWeight")] = r.primarySample().hydroStaticTest.finalWeight;
+    m[QStringLiteral("fullDeformation")] = r.primarySample().hydroStaticTest.fullDeformation;
+    m[QStringLiteral("residualDeformation")] = r.primarySample().hydroStaticTest.residualDeformation;
+    m[QStringLiteral("external")] = static_cast<int>(r.primarySample().appearanceInspection.externalResult);
+    m[QStringLiteral("internal")] = static_cast<int>(r.primarySample().appearanceInspection.internalResult);
+    m[QStringLiteral("thread")] = static_cast<int>(r.primarySample().appearanceInspection.threadResult);
+    m[QStringLiteral("valve")] = static_cast<int>(r.primarySample().appearanceInspection.valveResult);
     return m;
 }
 
@@ -75,7 +75,7 @@ QVariantMap ResultServiceAdapter::reportData(int id) const
     if (r.id == 0 && r.testSerialNo.empty())
         return {};
     const auto t = std::chrono::system_clock::to_time_t(r.testDate);
-    const auto &s = r.sample;
+    const auto &s = r.primarySample();
     const auto &h = s.hydroStaticTest;
     const auto &insp = s.appearanceInspection;
     QVariantMap m;

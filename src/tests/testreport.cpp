@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     ts.residualDeformationRate = 3.0;
     r.testStandard = ts;
 
-    Sample &s = r.sample;
+    Sample s;
     s.sampleId = "S1";
     s.sampleModel = "ModelX";
     s.manufacturer = "ACME";
@@ -60,6 +60,8 @@ int main(int argc, char *argv[])
     s.appearanceInspection.internalResult = sy1000::InspectionResult::Qualified;
     s.appearanceInspection.threadResult = sy1000::InspectionResult::Qualified;
     s.appearanceInspection.valveResult = sy1000::InspectionResult::Qualified;
+
+    r.samples.push_back(std::move(s));
 
     const QString html = sy1000::TestReportGenerator::buildHtml(r);
     std::printf("html length=%lld contains-chart=%s\n", static_cast<long long>(html.size()),

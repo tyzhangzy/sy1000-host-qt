@@ -213,6 +213,9 @@ Sample sampleFromJson(const QJsonObject &o)
 
 QString unifiedTestResultToJson(const UnifiedTestResult &r)
 {
+    QJsonArray samples;
+    for (const auto &s : r.samples)
+        samples.append(sampleToJson(s));
     QJsonObject o{
         { "id", r.id },
         { "testSerialNo", QString::fromStdString(r.testSerialNo) },
@@ -220,7 +223,7 @@ QString unifiedTestResultToJson(const UnifiedTestResult &r)
         { "testerName", QString::fromStdString(r.testerName) },
         { "testerCompany", QString::fromStdString(r.testerCompany) },
         { "testStandard", testStandardToJson(r.testStandard) },
-        { "sample", sampleToJson(r.sample) },
+        { "samples", samples },
         { "roomTemperature", r.testEnvironment.roomTemperature },
         { "humidity", r.testEnvironment.humidity },
         { "equipmentId", QString::fromStdString(r.testEnvironment.equipmentId) },
@@ -242,7 +245,19 @@ UnifiedTestResult unifiedTestResultFromJson(const QString &json)
     r.testerName = o.value("testerName").toString().toStdString();
     r.testerCompany = o.value("testerCompany").toString().toStdString();
     r.testStandard = testStandardFromJson(o.value("testStandard").toObject());
-    r.sample = sampleFromJson(o.value("sample").toObject());
+
+    // Multi-sample payload (H3).
+    const QJsonArray sampleArr = o.value("samples").toArray();
+    if (!sampleArr.isEmpty()) {
+        for (const auto &v : sampleArr)
+            r.samples.push_back(sampleFromJson(v.toObject()));
+    } else {
+        // Backward compatibility: old records stored a single "sample" field.
+        const QJsonObject legacy = o.value("sample").toObject();
+        if (!legacy.isEmpty())
+            r.samples.push_back(sampleFromJson(legacy));
+    }
+
     r.testEnvironment.roomTemperature = o.value("roomTemperature").toDouble();
     r.testEnvironment.humidity = o.value("humidity").toDouble();
     r.testEnvironment.equipmentId = o.value("equipmentId").toString().toStdString();

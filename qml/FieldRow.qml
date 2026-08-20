@@ -22,8 +22,7 @@ Row {
         id: fld
         width: root.width - 168
         height: 40
-        Material.background: "transparent"
-        Material.variant: Material.Text
+        background: Rectangle { color: "transparent" }
         padding: 4
         // The long underline line (no other border).
         Rectangle {

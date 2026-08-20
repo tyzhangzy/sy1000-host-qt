@@ -1,6 +1,9 @@
 #include "dao/userdao.h"
 
+#include <QByteArray>
 #include <QDateTime>
+#include <QCryptographicHash>
+#include <QRandomGenerator>
 #include <QSqlQuery>
 #include <QVariant>
 
@@ -22,6 +25,9 @@ QString nowText()
 {
     return QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
 }
+
+// Stored as "base64(sha256(password+salt)):base64(salt)".
+constexpr int SALT_BYTES = 16;
 } // namespace
 
 std::vector<User> UserDao::findAll()
@@ -43,15 +49,37 @@ User UserDao::findByUsername(const std::string &username)
     return {};
 }
 
-User UserDao::findByUsernameAndPassword(const std::string &username, const std::string &password)
+QString UserDao::hashPassword(const QString &password)
 {
-    QSqlQuery q;
-    q.prepare(QStringLiteral("SELECT id, username, company, password, is_admin FROM users"
-                             " WHERE username = ? AND password = ?"));
-    q.addBindValue(QString::fromStdString(username));
-    q.addBindValue(QString::fromStdString(password));
-    if (q.exec() && q.next())
-        return rowToUser(q);
+    if (password.isEmpty())
+        return QString();
+    QByteArray salt(SALT_BYTES, Qt::Uninitialized);
+    QRandomGenerator::system()->fillRange(reinterpret_cast<quint32 *>(salt.data()),
+                                          salt.size() / static_cast<int>(sizeof(quint32)));
+    const QByteArray hash = QCryptographicHash::hash(password.toUtf8() + salt, QCryptographicHash::Sha256);
+    return QString::fromLatin1(hash.toBase64() + ':' + salt.toBase64());
+}
+
+bool UserDao::verifyPassword(const QString &password, const QString &storedHash)
+{
+    if (password.isEmpty() || storedHash.isEmpty())
+        return false;
+    const QByteArray stored = storedHash.toLatin1();
+    const int sep = stored.indexOf(':');
+    if (sep <= 0)
+        return false;
+    const QByteArray hash = QByteArray::fromBase64(stored.left(sep));
+    const QByteArray salt = QByteArray::fromBase64(stored.mid(sep + 1));
+    if (hash.isEmpty())
+        return false;
+    return hash == QCryptographicHash::hash(password.toUtf8() + salt, QCryptographicHash::Sha256);
+}
+
+User UserDao::authenticate(const std::string &username, const std::string &password)
+{
+    User u = findByUsername(username);
+    if (u.id != 0 && verifyPassword(QString::fromStdString(password), QString::fromStdString(u.password)))
+        return u;
     return {};
 }
 

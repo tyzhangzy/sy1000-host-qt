@@ -33,8 +33,7 @@ Rectangle {
                 id: intDebris
                 width: 340
                 height: 40
-                Material.background: "transparent"
-                Material.variant: Material.Text
+                background: Rectangle { color: "transparent" }
                 padding: 4
                 Rectangle {
                     anchors.left: parent.left; anchors.right: parent.right

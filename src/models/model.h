@@ -156,8 +156,16 @@ struct UnifiedTestResult {
     std::string testerName;
     std::string testerCompany;
     TestStandard testStandard;
-    Sample sample;
+    std::vector<Sample> samples;
     TestEnvironmentData testEnvironment;
+
+    // Convenience accessor for code that predates multi-sample support.
+    // Returns the first sample, or a default-constructed one when empty.
+    const Sample &primarySample() const { return samples.empty() ? m_defaultSample : samples.front(); }
+    Sample &primarySample() { return samples.empty() ? m_defaultSample : samples.front(); }
+
+private:
+    Sample m_defaultSample;
 };
 
 } // namespace sy1000

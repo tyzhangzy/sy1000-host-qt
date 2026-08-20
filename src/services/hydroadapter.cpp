@@ -215,6 +215,9 @@ void HydroTestControllerAdapter::setTestStandard(const QString &name, int holdTi
     m_standardName = name;
     m_holdTime = holdTime;
     m_residualRate = residualRate;
+    // Keep the controller's pass/fail limit in sync with the preparation page
+    // input so the saved result and the actual decision use the same value (H1).
+    m_controller.setResidualDeformationRateLimit(static_cast<double>(residualRate));
 }
 
 QString HydroTestControllerAdapter::testStandardInfo() const
@@ -298,39 +301,45 @@ UnifiedTestResult HydroTestControllerAdapter::buildResult() const
 {
     const auto &d = m_controller.testData();
 
-    const auto &s = m_samples[1];
-    Sample sample;
-    sample.sampleId = QStringLiteral("S1").toStdString();
-    sample.sampleModel = s.model.toStdString();
-    sample.manufacturer = s.manufacturer.toStdString();
-    sample.serialNo = s.serialNo.toStdString();
-    sample.volume = s.volume;
-
-    auto &h = sample.hydroStaticTest;
-    h.initialWeight = d.initialWeights[1];
-    h.pressureWeight = d.testingPressureWeights[1];
-    h.finalWeight = d.releasedWeights[1];
-    h.fullDeformation = d.fullDeformations[1];
-    h.residualDeformation = d.residualDeformations[1];
-    h.residualDeformationRate = d.residualDeformationRates[1];
-    h.testResult = d.results[1];
-    h.workingPressure = m_controller.options().workingPressure;
-    h.testPressure = m_controller.options().testingPressure;
-    // Attach the appearance inspection data captured on the preparation page.
-    sample.appearanceInspection = m_inspections[1];
-    sample.overallResult = TestResultService::determineOverallResult(sample.appearanceInspection, h);
-    // Attach the sampled curve points so the saved report carries a real curve.
-    h.pressureWeightData = m_curvePoints;
-
     TestStandard ts;
-    ts.standardName = QStringLiteral("Demo").toStdString();
+    ts.standardName = m_standardName.toStdString();
     ts.workingPressure = m_controller.options().workingPressure;
     ts.testingPressure = m_controller.options().testingPressure;
-    ts.residualDeformationRate = 3.0;
+    ts.pressureHoldingTime = m_holdTime;
+    ts.residualDeformationRate = m_residualRate;
 
     UnifiedTestResult r = TestResultService::createUnifiedTestResult(m_testerName.toStdString(),
                                                                      m_testerCompany.toStdString(),
-                                                                     sample, ts);
+                                                                     Sample(), ts);
+    // Build all four samples so no data is dropped (H3).
+    for (int i = 1; i <= 4; ++i) {
+        const auto &info = m_samples[i];
+        Sample sample;
+        sample.sampleId = (QStringLiteral("S") + QString::number(i)).toStdString();
+        sample.sampleModel = info.model.toStdString();
+        sample.manufacturer = info.manufacturer.toStdString();
+        sample.serialNo = info.serialNo.toStdString();
+        sample.volume = info.volume;
+
+        auto &h = sample.hydroStaticTest;
+        h.initialWeight = d.initialWeights[i];
+        h.pressureWeight = d.testingPressureWeights[i];
+        h.finalWeight = d.releasedWeights[i];
+        h.fullDeformation = d.fullDeformations[i];
+        h.residualDeformation = d.residualDeformations[i];
+        h.residualDeformationRate = d.residualDeformationRates[i];
+        h.testResult = d.results[i];
+        h.workingPressure = m_controller.options().workingPressure;
+        h.testPressure = m_controller.options().testingPressure;
+        sample.appearanceInspection = m_inspections[i];
+        sample.overallResult = TestResultService::determineOverallResult(sample.appearanceInspection, h);
+        // Only the primary sample carries the full pressure/weight curve for the
+        // report; the other samples store the per-sample weight result data.
+        if (i == 1)
+            h.pressureWeightData = m_curvePoints;
+        r.samples.push_back(std::move(sample));
+    }
+
     // Environment data (from config + placeholders; sensors would feed these live).
     r.testEnvironment.roomTemperature = 23.0;
     r.testEnvironment.humidity = 45.0;
